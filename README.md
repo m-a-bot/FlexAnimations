@@ -8,3 +8,22 @@
 – цвет фона окна/контейнера;
 – режим анимации (параметры, по которым будет меняться цвет или форма);
 – размер окна/контейнера;
+
+<details>
+<summary>AnimationMode</summary>
+* SingleColorMode
+* GradientMode
+* RandomMode
+* CustomMode
+</details>
+
+<details>
+<summary>AnimationType</summary>
+```diff
+- Random
++ Figures
+@@ Lines @@
++ Mixed
+Without shapes and lines
+```
+</details>
