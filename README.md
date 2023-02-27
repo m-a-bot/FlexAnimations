@@ -9,13 +9,13 @@
 – режим анимации (параметры, по которым будет меняться цвет или форма);
 – размер окна/контейнера;
 
-AnimationMode
+## AnimationMode
 * SingleColorMode
 * GradientMode
 * RandomMode
 * CustomMode
 
-AnimationType
+## AnimationType
 ```diff
 - Random
 + Figures
@@ -23,3 +23,5 @@ AnimationType
 + Mixed
 Without shapes and lines
 ```
+
+## AnimationColor
