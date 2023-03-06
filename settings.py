@@ -1,0 +1,5 @@
+# window settings
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+
+DEFAULT_WINDOW_TITLE = "Welcome"
