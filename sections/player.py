@@ -29,13 +29,13 @@ class PlayerSection(arcade.Section):
         arcade.draw_lrtb_rectangle_filled(self.left, self.right, self.top,
                                           self.bottom, COLOR1)
         
-        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2, self.bottom + self.height/2 - SIZE_BUTTON/2, 
+        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2 - SIZE_BUTTON/2, self.bottom + self.height/2 - SIZE_BUTTON/2, 
                 SIZE_BUTTON, SIZE_BUTTON, self.play)
 
-        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2 + 60, self.bottom + self.height/2 - SIZE_BUTTON/2, 
+        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2 + 60 - SIZE_BUTTON/2, self.bottom + self.height/2 - SIZE_BUTTON/2, 
                 SIZE_BUTTON, SIZE_BUTTON, self.up)
 
-        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2 - 60, self.bottom + self.height/2 - SIZE_BUTTON/2, 
+        arcade.draw_lrwh_rectangle_textured((self.left + self.right) / 2 - 60 - SIZE_BUTTON/2, self.bottom + self.height/2 - SIZE_BUTTON/2, 
                 SIZE_BUTTON, SIZE_BUTTON, self.star_square)
 
         arcade.draw_lrwh_rectangle_textured(20, self.bottom + self.height/2 - SIZE_BUTTON/2, 
