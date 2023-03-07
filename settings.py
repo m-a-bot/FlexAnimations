@@ -1,5 +1,5 @@
-# window settings
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
+# Window
+WIDTH = 800
+HEIGHT = 600
+TITLE = "2d animation"
 
-DEFAULT_WINDOW_TITLE = "Welcome"
