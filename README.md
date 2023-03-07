@@ -34,3 +34,6 @@ Discord, Telegram
 - Tkinter
 > Animations
 - Arcade 
+
+![image_2023-03-07_15-49-58](https://user-images.githubusercontent.com/54447582/223429771-f6bf5016-4725-4728-86cb-1eabb908cac6.png)
+
