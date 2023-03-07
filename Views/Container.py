@@ -4,6 +4,8 @@ from sections.canvas import CanvasSection
 from sections.volume_slider1 import ModalSection
 
 
+
+
 class ContainerView(arcade.View):
 
     def __init__(self):
@@ -29,4 +31,6 @@ class ContainerView(arcade.View):
 
 
     def on_draw(self):
+
         arcade.start_render()
+
