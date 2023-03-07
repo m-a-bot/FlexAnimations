@@ -1,5 +1,5 @@
 import arcade
-from Views.Container import ContainerView
+from views.Container import ContainerView
 
 def main():
     window = arcade.Window(800, 600, "2d animation")
