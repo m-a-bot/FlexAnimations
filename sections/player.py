@@ -1,4 +1,5 @@
 import arcade
+from scripts.SoundPlayer import SoundPlayer
 
 
 COLOR1 = arcade.color_from_hex_string("#E1DFDF")
@@ -10,6 +11,9 @@ class PlayerSection(arcade.Section):
     def __init__(self, left, bottom, width, height):
 
         super().__init__(left, bottom, width, height)
+
+        self.__player = SoundPlayer(r"resources/music/sample-6s.wav")
+        self.music_play = False
 
         self.play = arcade.load_texture(":resources:onscreen_controls/flat_dark/play.png")
 
@@ -43,3 +47,12 @@ class PlayerSection(arcade.Section):
 
         arcade.draw_lrwh_rectangle_textured(self.right - 60, self.bottom + self.height/2 - SIZE_BUTTON/2, 
                 SIZE_BUTTON, SIZE_BUTTON, self.sound_on)                                          
+
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        
+        if self.music_play:
+                self.__player.stop()
+                self.music_play = False
+        else:
+                self.__player.play()
+                self.music_play = True
