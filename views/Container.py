@@ -1,11 +1,13 @@
 from typing import Optional
 from settings import ROOT_DIR
 from sections.volume_slider import VolumeSliderSection
+from arcade.experimental.uislider import UISlider
 import arcade
 import arcade.gui
 import arcade.gui.events
 from arcade.gui.widgets import _Rect
 import os
+from tkinter.filedialog import askopenfilename
 from settings import ROOT_DIR
 
 
@@ -17,6 +19,14 @@ class ContainerView(arcade.View):
     def __init__(self):
 
         super().__init__()
+
+        self.sound_off = True
+        self.paused = False
+        self.cur_song_index = 0
+        self.songs = [":resources:music/1918.mp3"]
+        self.hud_is_visible = False
+        # self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
+        
 
         self.setup()
         
@@ -35,7 +45,7 @@ class ContainerView(arcade.View):
 
         self.main_layout = arcade.gui.UILayout(0, 0, self.window.width, self.window.height)
 
-        self.ui_manager.add(self.main_layout.with_background(arcade.make_soft_square_texture(100, (0,140,0, 90), outer_alpha=255)))
+        self.ui_manager.add(self.main_layout.with_background(arcade.make_soft_square_texture(100, arcade.color_from_hex_string("#346734"), outer_alpha=255)))
 
         self.player_bar = arcade.gui.UILayout(0, 0, self.window.width, 80)
         self.buttons = arcade.gui.UIBoxLayout(vertical=False)
@@ -71,7 +81,7 @@ class ContainerView(arcade.View):
             os.path.join(ROOT_DIR, "resources/icons/icons8-добавить-файл-96.png"),0.5
         )
         # add event
-        # self.btn_play.on_click = 
+        self.btn_up.on_click = self.upload
         self.center_buttons.add(self.btn_up)
 
         self.buttons.add(self.center_buttons)
@@ -87,6 +97,10 @@ class ContainerView(arcade.View):
 
         self.main_layout.add(self.player_bar.with_background(
             arcade.make_soft_square_texture(100, (150,150,150,255), outer_alpha=255)))
+        
+        self.slider = UISlider(value=50, width=150, y=85).with_background(arcade.make_soft_square_texture(50, arcade.color_from_hex_string("#E3E3E3"), outer_alpha=255), 5, 2, 5, 2)
+
+        self.slider = arcade.gui.UIAnchorWidget(child=self.slider, anchor_x="right", align_x=-5, anchor_y="bottom", align_y=85)
 
         self.ui_manager.add(self.main_layout)
 
@@ -152,31 +166,30 @@ class ContainerView(arcade.View):
     def btn_sound_clicked(self, *_):
         
         if self.sound_off:
-            self.section.enabled=False
-            self.set_sound_on()
+            
+            self.ui_manager.add(self.slider)
+
             self.sound_off = False
         else:
-            self.section.enabled=True
-            self.set_sound_off()
+            self.ui_manager.remove(self.slider)
+
             self.sound_off = True
 
 
     def set_pause(self):
-        self.btn_play.texture_pressed = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/pause_square.png")
-        self.btn_play.texture = \
-            arcade.load_texture(":resources:onscreen_controls/flat_dark/pause_square.png")
-        self.btn_play.texture_hovered = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/pause_square.png")
+        self.btn_play.texture = arcade.load_texture(os.path.join(ROOT_DIR, "resources/icons/icons8-пауза-в-кружке-96.png"))
+
         
     def set_play(self):
-        self.btn_play.texture_pressed = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png")
-        self.btn_play.texture = \
-            arcade.load_texture(":resources:onscreen_controls/flat_dark/play.png")
-        self.btn_play.texture_hovered = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png")
+        self.btn_play.texture = arcade.load_texture(os.path.join(ROOT_DIR, "resources/icons/icons8-play-в-круге-96.png"))
         
+
+    def upload(self, *_):
+        filename = askopenfilename()
+        self.songs.append(filename)
+        print(self.songs)
+
+
     def set_sound_on(self):
         self.btn_sound_on.texture_pressed = \
             arcade.load_texture(":resources:onscreen_controls/shaded_dark/sound_on.png")
