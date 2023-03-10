@@ -4,7 +4,9 @@ from sections.volume_slider import VolumeSliderSection
 import arcade
 import arcade.gui
 import arcade.gui.events
+from arcade.gui.widgets import _Rect
 import os
+from settings import ROOT_DIR
 
 
 SIZE_BUTTON = 40
@@ -16,104 +18,111 @@ class ContainerView(arcade.View):
 
         super().__init__()
 
-        self.paused = False
-        self.sound_off = False
+        self.setup()
+        
+        # self.ui_manager.add(layout)
+        
+        # self.section = VolumeSliderSection(layout.right - SPACE_BETWEEN_BUTTONS - SIZE_BUTTON / 2 + 6.5, self.btn_sound_on.top + 60, 10, 100)
+        # self.section.enabled=False
+        # self.section_manager.add_section(self.section)
 
+
+    def setup(self):
+        
         # UIManager
         self.ui_manager = arcade.gui.UIManager()
         self.ui_manager.enable()
 
-        layout = arcade.gui.UILayout(x= (self.window.width - self.window.width/1.5) / 2, width=self.window.width/1.5, height=80)
+        self.main_layout = arcade.gui.UILayout(0, 0, self.window.width, self.window.height)
 
-        box = arcade.gui.UIBoxLayout(vertical=False, space_between=SPACE_BETWEEN_BUTTONS)
+        self.ui_manager.add(self.main_layout.with_background(arcade.make_soft_square_texture(100, (0,140,0, 90), outer_alpha=255)))
+
+        self.player_bar = arcade.gui.UILayout(0, 0, self.window.width, 80)
+        self.buttons = arcade.gui.UIBoxLayout(vertical=False)
+        self.center_buttons = arcade.gui.UIBoxLayout(vertical=False)
 
         # gear
-        __texture: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/flat_dark/gear.png")
-        __texture_shared: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/shaded_dark/gear.png") 
-
-        self.btn_gear = arcade.gui.UITextureButton(
-            width=SIZE_BUTTON,
-            height=SIZE_BUTTON,
-            texture=__texture,
-            texture_hovered = __texture_shared,
-            texture_pressed = __texture_shared,
+        self.btn_gear = self.add_texture_button(
+            os.path.join(ROOT_DIR, "resources/icons/icons8-горизонтальный-микшер-настроек-96.png"),
+            0.5
         )
         self.btn_gear.on_click = self.btn_gear_clicked
-        box.add(self.btn_gear)
+        self.buttons.add(self.btn_gear)
 
 
         # star_square
-        __texture: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/flat_dark/star_square.png")
-        __texture_shared: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/shaded_dark/star_square.png") 
-
-        self.btn_star_square = arcade.gui.UITextureButton(
-            width=SIZE_BUTTON,
-            height=SIZE_BUTTON,
-            texture=__texture,
-            texture_hovered = __texture_shared,
-            texture_pressed = __texture_shared,
+        self.btn_star_square = self.add_texture_button(
+            os.path.join(ROOT_DIR, "resources/icons/icons8-история-деятельности-96.png"),0.5
         )
         # add event
         # self.btn_play.on_click = 
-        box.add(self.btn_star_square)
+        self.center_buttons.add(self.btn_star_square)
 
         # play
-        __texture: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/flat_dark/play.png")
-        __texture_shared: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png") 
-
-        self.btn_play = arcade.gui.UITextureButton(
-            width=SIZE_BUTTON,
-            height=SIZE_BUTTON,
-            texture=__texture,
-            texture_hovered = __texture_shared,
-            texture_pressed = __texture_shared,
+        self.btn_play = self.add_texture_button(
+            os.path.join(ROOT_DIR, "resources/icons/icons8-play-в-круге-96.png"),0.5
         )
         # add event
         self.btn_play.on_click = self.btn_play_clicked
-        box.add(self.btn_play)
+        self.center_buttons.add(self.btn_play)
 
         # up
-        __texture: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/flat_dark/up.png")
-        __texture_shared: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/shaded_dark/up.png") 
-
-        self.btn_up = arcade.gui.UITextureButton(
-            width=SIZE_BUTTON,
-            height=SIZE_BUTTON,
-            texture=__texture,
-            texture_hovered = __texture_shared,
-            texture_pressed = __texture_shared,
+        self.btn_up = self.add_texture_button(
+            os.path.join(ROOT_DIR, "resources/icons/icons8-добавить-файл-96.png"),0.5
         )
         # add event
         # self.btn_play.on_click = 
-        box.add(self.btn_up)
+        self.center_buttons.add(self.btn_up)
+
+        self.buttons.add(self.center_buttons)
 
         # sound_on
-        __texture: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/flat_dark/sound_on.png")
-        __texture_shared: Optional[arcade.texture.Texture] = arcade.load_texture(":resources:onscreen_controls/shaded_dark/sound_on.png") 
-
-        self.btn_sound_on = arcade.gui.UITextureButton(
-            width=SIZE_BUTTON,
-            height=SIZE_BUTTON,
-            texture=__texture,
-            texture_hovered = __texture_shared,
-            texture_pressed = __texture_shared,
+        self.btn_sound_on = self.add_texture_button(
+            os.path.join(ROOT_DIR, "resources/icons/icons8-громкий-звук-96.png"),0.5
         )
         self.btn_sound_on.on_click = self.btn_sound_clicked
-        box.add(self.btn_sound_on)
+        self.buttons.add(self.btn_sound_on)
 
+        self.player_bar.add(arcade.gui.UIAnchorWidget(child=self.buttons, anchor_y="bottom", align_y=20, size_hint=(1,0)))
 
-        layout.add(arcade.gui.UIAnchorWidget(child=box))
+        self.main_layout.add(self.player_bar.with_background(
+            arcade.make_soft_square_texture(100, (150,150,150,255), outer_alpha=255)))
 
-        bg_player = arcade.load_texture(os.path.join(ROOT_DIR, "resources/background_player.png"))
+        self.ui_manager.add(self.main_layout)
 
-        self.ui_manager.add(arcade.gui.UITexturePane(child=layout,
-                                                    tex = bg_player))
+    def on_resize(self, width: int, height: int):
         
-        # self.ui_manager.add(layout)
-        
-        self.section = VolumeSliderSection(layout.right - SPACE_BETWEEN_BUTTONS - SIZE_BUTTON / 2 + 6.5, self.btn_sound_on.top + 60, 10, 100)
-        self.section.enabled=False
-        self.section_manager.add_section(self.section)
+        super().on_resize(width, height)
+
+        self.main_layout._rect = _Rect(0,0,width, height)
+        self.player_bar._rect = _Rect(0,0,width, 80)
+
+        if width <= 500:
+            self.buttons._space_between = width // 10
+            self.center_buttons._space_between = 10
+        elif width <= 768:
+            self.buttons._space_between = width // 5.7
+            self.center_buttons._space_between = 20
+        elif width <= 1024:
+            self.buttons._space_between = width // 4.4
+            self.center_buttons._space_between = 70
+        elif width <= 1366:
+            self.buttons._space_between = width // 4
+            self.center_buttons._space_between = 75
+        else:
+            self.buttons._space_between = width // 3
+            self.center_buttons._space_between = 80
+
+
+    def add_texture_button(self, texture_name, scale=1):
+
+        __texture = arcade.load_texture(texture_name) 
+
+        return arcade.gui.UITextureButton(
+            texture = __texture,
+            scale = scale
+        )
+
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color_from_hex_string("#BABAB4"))
@@ -122,9 +131,11 @@ class ContainerView(arcade.View):
     def on_draw(self):
         self.clear()
         arcade.start_render()
+
+        
         # arcade.draw_xywh_rectangle_filled(self.window.width//6, 0, self.window.width//1.5, 80, arcade.color_from_hex_string("#E1DFDF"))
         self.ui_manager.draw()
-
+        arcade.draw_text(self.window.width, 20, self.window.height - 50)
     
     def btn_play_clicked(self, *_):
         
@@ -185,6 +196,7 @@ class ContainerView(arcade.View):
     def btn_gear_clicked(self, *_):
         settingsView = SettingsView()
         self.window.show_view(settingsView)
+
 
 
 class SettingsView(arcade.View):

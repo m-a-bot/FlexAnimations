@@ -63,7 +63,7 @@ class MyWindow(arcade.Window):
         self.manager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x",
-                anchor_y="center_y",
+                anchor_y="bottom",
                 child=self.v_box)
         )
 
