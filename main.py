@@ -1,9 +1,10 @@
 import arcade
 from settings import *
 from views.Container import ContainerView
+from views.test import TestView
 
 def main():
-    window = arcade.Window(WIDTH, HEIGHT, TITLE)
+    window = arcade.Window(WIDTH, HEIGHT, TITLE, resizable=True)
 
     container_view = ContainerView()
     window.show_view(container_view)
