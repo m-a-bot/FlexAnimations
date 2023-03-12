@@ -3,7 +3,7 @@ import numpy
 import numpy.random
 from assets.MovementSprite import MovementSprite
 from typing import Optional
-from settings import ROOT_DIR
+from settings import ROOT_DIR, resource_path
 from sections.volume_slider import VolumeSliderSection
 from arcade.experimental.uislider import UISlider
 import arcade
@@ -100,8 +100,11 @@ class ContainerView(arcade.View):
 
     def load_textures(self):
 
-        self.play_texture = arcade.load_texture(os.path.join(ROOT_DIR, "resources/icons/icons8-play-в-круге-96.png"))
-        self.stop_texture = arcade.load_texture(os.path.join(ROOT_DIR, "resources/icons/icons8-пауза-в-кружке-96.png"))
+        try:
+            self.play_texture = arcade.load_texture(resource_path(os.path.join(ROOT_DIR, "resources/icons/icons8-play-в-круге-96.png")))
+            self.stop_texture = arcade.load_texture(resource_path(os.path.join(ROOT_DIR, "resources/icons/icons8-пауза-в-кружке-96.png")))
+        except:
+            ...
 
 
     def setup(self):
@@ -221,14 +224,16 @@ class ContainerView(arcade.View):
             
 
     def add_texture_button(self, texture_name, scale=1):
-
-        __texture = arcade.load_texture(texture_name) 
-
-        return arcade.gui.UITextureButton(
-            texture = __texture,
-            scale = scale
-        )
-
+        
+        try:
+            __texture = arcade.load_texture(resource_path(texture_name)) 
+        
+            return arcade.gui.UITextureButton(
+                texture = __texture,
+                scale = scale
+            )
+        except:
+            ...
 
     def on_draw(self):
         self.clear()
