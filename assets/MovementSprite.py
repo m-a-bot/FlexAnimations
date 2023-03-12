@@ -3,7 +3,6 @@ import arcade
 import numpy.random
 from settings import WIDTH, HEIGHT
 
-
 class MovementSprite(arcade.Sprite):
 
     def __init__(self, delta_x=0, delta_y=0, barriers = None, filename: str = None, scale: float = 1, image_x: float = 0, image_y: float = 0, image_width: float = 0, image_height: float = 0, center_x: float = 0, center_y: float = 0, repeat_count_x: int = 1, repeat_count_y: int = 1, flipped_horizontally: bool = False, flipped_vertically: bool = False, flipped_diagonally: bool = False, hit_box_algorithm: Optional[str] = "Simple", hit_box_detail: float = 4.5, texture: arcade.Texture = None, angle: float = 0):
@@ -14,6 +13,18 @@ class MovementSprite(arcade.Sprite):
         self.barriers = barriers
 
         self.rotation_angle = numpy.random.choice([-2,-1,1,2])
+
+
+    # @staticmethod
+    # @property
+    # def set_window_width(value):
+    #     MovementSprite.width = value
+
+    
+    # @staticmethod
+    # @property
+    # def set_window_height(value):
+    #     MovementSprite.height = value
 
 
     def move(self):
@@ -31,6 +42,8 @@ class MovementSprite(arcade.Sprite):
             self.delta_x *= -1
         if self.center_y + radius > HEIGHT and self.delta_y > 0:
             self.delta_y *= -1
+
+        # print(MovementSprite.width, MovementSprite.height)
 
 
     def update(self):
