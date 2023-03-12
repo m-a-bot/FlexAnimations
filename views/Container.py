@@ -9,6 +9,11 @@ class ContainerView(arcade.View):
 
         super().__init__()
         
+        self.add_figures()
+        
+        self.bg = arcade.load_texture(":resources:images/backgrounds/stars.png")
+
+    def add_figures(self):
         self.figures = arcade.SpriteList()
 
         x = [-3, -1, 1, 3]
@@ -57,8 +62,7 @@ class ContainerView(arcade.View):
                                            center_x=500,
                                            center_y=100,
                                            scale=numpy.random.choice(scales)))
-        
-        self.bg = arcade.load_texture(":resources:images/backgrounds/stars.png")
+
 
     def on_update(self, delta_time: float):
         # count_figures = len(self.figures)
