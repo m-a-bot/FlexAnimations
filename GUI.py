@@ -1,7 +1,7 @@
 import arcade
 import arcade.gui
 from tkinter.filedialog import askopenfilename
-class AppWindow(arcade.View):
+class GUI(arcade.View):
     def __init__(self, my_window: arcade.Window, fullscreen = True):
         super().__init__(my_window)
         self.set_location = (0, 0)
@@ -200,8 +200,3 @@ class AppWindow(arcade.View):
                         if self.media_player:
                             self.media_player.volume = self.volume_level/100
                     
-
-if __name__ == "__main__":
-    window = arcade.Window(1920, 1080, title="Player", fullscreen = False)
-    window.show_view(AppWindow(window))
-    arcade.run()

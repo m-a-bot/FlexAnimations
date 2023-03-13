@@ -2,6 +2,7 @@ import arcade
 from settings import *
 from views.Container import ContainerView
 from views.test import TestView
+from .GUI import GUI
 
 def main():
     window = arcade.Window(WIDTH, HEIGHT, TITLE, resizable=False)
