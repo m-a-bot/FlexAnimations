@@ -177,7 +177,8 @@ class GUI(arcade.View):
         
         # показывает/убирает hud в зависимости от положения мыши
     def on_mouse_motion(self, x, y, dx, dy):
-        if y < self.height//6:
+        if y < self.height//6 + 50:
+
             self.hud_is_visible = True
         else:
             self.hud_is_visible = False                                        
@@ -199,4 +200,4 @@ class GUI(arcade.View):
                         self.volume_level = y-self.height//7
                         if self.media_player:
                             self.media_player.volume = self.volume_level/100
-                    
+
