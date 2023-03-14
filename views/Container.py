@@ -232,8 +232,8 @@ class ContainerView(arcade.View):
                 texture = __texture,
                 scale = scale
             )
-        except:
-            ...
+        except Exception as error:
+            print(error)
 
     def on_draw(self):
         self.clear()

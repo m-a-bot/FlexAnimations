@@ -1,8 +1,8 @@
 import os
 import sys
 # Window
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1280
+HEIGHT = 720
 TITLE = "2d animation"
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
