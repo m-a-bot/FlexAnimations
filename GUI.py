@@ -31,7 +31,7 @@ class GUI(arcade.View):
 
         samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
 
-        self.music_track = MusicTrack(0, self.hud_height + 50, self.width, 60)
+        self.music_track = MusicTrack(0, self.hud_height + 50, self.width, 80)
         self.music_track.enabled = False
         self.music_track.music_data = self.mdata[:,0]
 
@@ -173,6 +173,7 @@ class GUI(arcade.View):
             
             self.paused = True
             self.play_button_off()
+            self.music_track.enabled=False
         if not self.paused:
             self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
@@ -234,8 +235,10 @@ class GUI(arcade.View):
         if y < self.hud_height + 50:
 
             self.hud_is_visible = True
+            self.music_track._bottom = self.hud_height + 50
         else:
             self.hud_is_visible = False
+            self.music_track._bottom = 25
 
     def switch_sound_bar(self, *_):
         self.sound_bar_is_visible = not self.sound_bar_is_visible
