@@ -4,7 +4,6 @@ import numpy.random
 from assets.MovementSprite import MovementSprite
 from typing import Optional
 from settings import ROOT_DIR, resource_path
-from sections.volume_slider import VolumeSliderSection
 from arcade.experimental.uislider import UISlider
 import arcade
 import arcade.gui
@@ -13,6 +12,7 @@ from arcade.gui.widgets import _Rect
 import os
 from tkinter.filedialog import askopenfilename
 from settings import ROOT_DIR
+from scipy.io import wavfile
 
 
 SIZE_BUTTON = 40
