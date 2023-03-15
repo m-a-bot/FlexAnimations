@@ -1,7 +1,9 @@
 import arcade
 import arcade.gui
+from sections.music_track import MusicTrack
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
+from scipy.io import wavfile
 
 SCALE_BUTTONS = 0.7
 
@@ -22,15 +24,25 @@ class GUI(arcade.View):
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
         self.volume_level = 50  # уровень громкости
-        self.songs = [":resources:music/1918.mp3"]
+        self.songs = ["resources/music/sample-6s.wav", "resources/music/follow.wav"]
         self.cur_song_index = 0
         self.media_player = None
         self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
 
+        samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+
+        self.music_track = MusicTrack(0, self.hud_height + 50, self.width, 60)
+        self.music_track.enabled = False
+        self.music_track.music_data = self.mdata[:,0]
+
+        self.section_manager.add_section(self.music_track)
+
         self.setup_gui()
 
-        self.slider = UISlider(value=50, x=self.volume.left, y=self.hud_height + 5, width=180, height=40)
+        self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=180, height=40)
         self.slider.on_change = self.set_player_volume
+
+        
         
 
     def setup_gui(self):
@@ -154,8 +166,11 @@ class GUI(arcade.View):
         self.media_player = None
         self.play_button_off()
         self.cur_song_index += 1
+        self.music_track.current_song_index=0
+
         if self.cur_song_index >= len(self.songs):
             self.cur_song_index = 0
+            
             self.paused = True
             self.play_button_off()
         if not self.paused:
@@ -163,8 +178,12 @@ class GUI(arcade.View):
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
 
+            samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+            self.music_track.music_data = self.mdata[:,0]
+
     def play_button_clicked(self, *_):
         self.paused = False
+        self.music_track.enabled = True
         if not self.media_player:
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
@@ -174,6 +193,7 @@ class GUI(arcade.View):
             self.media_player.volume = self.volume_level / 100
             self.play_button_on()
         elif self.media_player.playing:
+            self.music_track.enabled = False
             self.media_player.pause()
             self.play_button_off()
 
@@ -224,6 +244,18 @@ class GUI(arcade.View):
             self.ui_manager.add(self.slider)
         else:
             self.ui_manager.remove(self.slider)
+
+    def on_update(self, delta_time):
+        
+        if self.media_player is not None:
+        
+            if self.media_player.playing:
+                self.music_track.current_song_index += 1
+
+        self.music_track.update(delta_time)
+
+        
+
 
     def show_sound_bar(self, *_):
         arcade.draw_lrtb_rectangle_filled(self.width * .968 - self.width // 100, self.width * .968 + self.width // 100,
