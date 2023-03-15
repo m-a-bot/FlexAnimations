@@ -32,31 +32,39 @@ class MusicTrack(arcade.Section):
             s = 0
             i = 0
 
+            try:
+                single_frame_data = self.music_data[self.current_song_index * 735: (self.current_song_index+1) * 735]
+
+                for x in single_frame_data:
+                    s += x
+                    i += 1
+                    if i == 15:
+                        self.points.append(s / i)
+                        s = 0
+                        i = 0
+
+                A = min(self.points)
+                B = max(self.points)
+
+                for i, x in enumerate(self.points):
+                    self.points[i] = (x - A) / (B - A)
             
-            single_frame_data = self.music_data[self.current_song_index * 735: (self.current_song_index+1) * 735]
-
-            for x in single_frame_data:
-                s += x
-                i += 1
-                if i == 15:
-                    self.points.append(s / i)
-                    s = 0
-                    i = 0
-
-            A = min(self.points)
-            B = max(self.points)
-
-            for i, x in enumerate(self.points):
-                self.points[i] = (x - A) / (B - A)
+            except:
+                ...
 
 
     def on_draw(self):
         
-        arcade.draw_xywh_rectangle_filled(self.left, self.bottom, self.width, self.height, (255,0,0, 50))
+        arcade.draw_xywh_rectangle_filled(self.left, self.bottom, self.width, self.height, (255,255,255, 30))
 
         if self.music_data is not None:
-            for i in range(1, 49):
+            try:
+                points = []
+                for i in range(0, 49):
 
-                arcade.draw_line(self.x[i-1], self.bottom+self.points[i-1] * self.height,
-                                     self.x[i], self.bottom+ self.points[i] * self.height, (0,0,0), line_width=5)
+                    points.append([self.x[i], self.bottom + self.points[i] * self.height])
+                    
+                arcade.draw_line_strip(points, (190,0,0), line_width=5)
+            except:
+                ...
 
