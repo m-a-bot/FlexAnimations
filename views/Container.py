@@ -35,7 +35,6 @@ class ContainerView(arcade.View):
         self.paused = False
         self.cur_song_index = 0
         self.songs = [":resources:music/1918.mp3"]
-        self.hud_is_visible = False
         # self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
         
 
@@ -242,12 +241,8 @@ class ContainerView(arcade.View):
         arcade.draw_lrwh_rectangle_textured(0,0, self.window.width, self.window.height, self.bg)
 
         self.figures.draw()
-        if self.hud_is_visible:
-            self.ui_manager.draw()
-            self.ui_manager.enable()
-            
-        else:
-            self.ui_manager.disable()
+        self.ui_manager.draw()
+
         # arcade.draw_xywh_rectangle_filled(self.window.width//6, 0, self.window.width//1.5, 80, arcade.color_from_hex_string("#E1DFDF"))
         
         arcade.draw_text(self.window.width, 20, self.window.height - 50)

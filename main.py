@@ -6,7 +6,7 @@ from GUI import GUI
 import pyglet
 
 def main():
-    window = arcade.Window(WIDTH, HEIGHT, TITLE, resizable=False)
+    window = arcade.Window(WIDTH, HEIGHT, TITLE, resizable=True)
 
     container_view = ContainerView()
     window.show_view(container_view)
