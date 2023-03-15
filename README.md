@@ -35,7 +35,9 @@ Discord, Telegram
 > Animations
 - Arcade 
 
+![image](https://user-images.githubusercontent.com/54447582/225424327-e3e08c21-a334-4d96-ace5-a508d8ccfb16.png)
+
 ![image](https://user-images.githubusercontent.com/54447582/224539348-56c58a54-065f-4f04-aa31-7e56d3bdf113.png)
 
-![image](https://user-images.githubusercontent.com/54447582/224539327-76212924-a0ad-43b1-9c05-d2174a54a7f9.png)
+
 
