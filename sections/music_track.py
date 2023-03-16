@@ -21,7 +21,7 @@ class MusicTrack(arcade.Section):
 
         self.points = []
 
-        self.x = np.linspace(self.left, self.right, 49)
+        self.x = np.linspace(self.left, self.right, 49 * 2)
 
 
     def update(self, delta_time):
@@ -33,7 +33,7 @@ class MusicTrack(arcade.Section):
             i = 0
 
             try:
-                single_frame_data = self.music_data[self.current_song_index * 735: (self.current_song_index+1) * 735]
+                single_frame_data = self.music_data[self.current_song_index * 735: (self.current_song_index+2) * 735]
 
                 for x in single_frame_data:
                     s += x
@@ -59,12 +59,22 @@ class MusicTrack(arcade.Section):
 
         if self.music_data is not None:
             try:
-                points = []
-                for i in range(0, 49):
+                points_left = []
+                points_right = []
+                i = 0
+                while i < 49:
 
-                    points.append([self.x[i], self.bottom + self.points[i] * self.height])
+                    points_left.append([self.x[i], self.bottom + self.points[i] * self.height])
+                    i += 1
+
+                while i < 49*2:
+
+                    points_right.append([self.x[i], self.bottom + self.points[i] * self.height])
+                    i += 1
                     
-                arcade.draw_line_strip(points, (190,0,0), line_width=5)
+                arcade.draw_line_strip(points_left, (190,0,0), line_width=5)
+                arcade.draw_line(*points_left[-1], *points_right[0], (190, 0,0), line_width=5)
+                arcade.draw_line_strip(points_right, (0,0,0, 159), line_width=5)
             except:
                 ...
 

@@ -204,6 +204,7 @@ class GUI(arcade.View):
         self.clear()
 
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
+
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
