@@ -1,6 +1,7 @@
 import arcade
 import arcade.gui
 from sections.music_track import MusicTrack
+from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
@@ -35,7 +36,10 @@ class GUI(arcade.View):
         self.music_track.enabled = False
         self.music_track.music_data = self.mdata[:,0]
 
+        self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
+
         self.section_manager.add_section(self.music_track)
+        self.section_manager.add_section(self.menu)
 
         self.setup_gui()
 
@@ -140,8 +144,10 @@ class GUI(arcade.View):
         )
 
     def open_settings(self, *_):
-        # сюда дописывать код для кнопки настроек
-        ...
+
+        self.menu.enabled = True
+
+        self.hud_is_visible = False
 
     def play_button_on(self):
         self.play_button.texture_pressed = \
