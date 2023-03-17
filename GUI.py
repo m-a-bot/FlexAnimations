@@ -5,6 +5,8 @@ from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
+from arcade.experimental import Shadertoy
+
 
 SCALE_BUTTONS = 0.7
 
@@ -19,7 +21,16 @@ class GUI(arcade.View):
         self.hud_height = self.height // 8
         # endregion
 
-        self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
+        # self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
+
+        shader_source = None
+        shader_file_path = "scripts/shaders/test.glsl"
+
+        with open(shader_file_path) as file:
+
+            shader_source = file.read()
+        
+        self.shadertoy = Shadertoy(self.window.get_size(), main_source=shader_source)
         
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
@@ -209,8 +220,9 @@ class GUI(arcade.View):
     def on_draw(self):
         self.clear()
 
-        arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
+        # arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
 
+        self.shadertoy.render()
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
