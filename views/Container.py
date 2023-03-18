@@ -30,21 +30,6 @@ class ContainerView(arcade.View):
         
         self.bg = arcade.load_texture(":resources:images/backgrounds/stars.png")
         
-        
-        self.sound_off = True
-        self.paused = False
-        self.cur_song_index = 0
-        self.songs = [":resources:music/1918.mp3"]
-        # self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
-        
-
-        
-        
-        # self.ui_manager.add(layout)
-        
-        # self.section = VolumeSliderSection(layout.right - SPACE_BETWEEN_BUTTONS - SIZE_BUTTON / 2 + 6.5, self.btn_sound_on.top + 60, 10, 100)
-        # self.section.enabled=False
-        # self.section_manager.add_section(self.section)
 
     def add_figures(self):
         self.figures = arcade.SpriteList()

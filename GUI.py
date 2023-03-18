@@ -23,8 +23,9 @@ class GUI(arcade.View):
 
         # self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
 
+        self.time = 0.0
         shader_source = None
-        shader_file_path = "scripts/shaders/test.glsl"
+        shader_file_path = "scripts/shaders/Image.glsl"
 
         with open(shader_file_path) as file:
 
@@ -43,7 +44,7 @@ class GUI(arcade.View):
 
         samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
 
-        self.music_track = MusicTrack(0, self.hud_height + 50, self.width, 80)
+        self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
         self.music_track.enabled = False
         self.music_track.music_data = self.mdata[:,0]
 
@@ -58,7 +59,12 @@ class GUI(arcade.View):
         self.slider.on_change = self.set_player_volume
 
         
-        
+    def update(self, delta_time: float):
+        super().on_update(delta_time)
+
+        self.time += delta_time
+
+
 
     def setup_gui(self):
 
@@ -221,8 +227,8 @@ class GUI(arcade.View):
         self.clear()
 
         # arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
-
-        self.shadertoy.render()
+        mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
+        self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))

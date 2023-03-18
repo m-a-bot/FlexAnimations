@@ -21,7 +21,7 @@ class MusicTrack(arcade.Section):
 
         self.points = []
 
-        self.x = np.linspace(self.left, self.right, 49 * 2)
+        self.x = np.linspace(self.left + 15, self.right - 15, 49 * 2)
 
 
     def update(self, delta_time):
@@ -55,26 +55,28 @@ class MusicTrack(arcade.Section):
 
     def on_draw(self):
         
-        arcade.draw_xywh_rectangle_filled(self.left, self.bottom, self.width, self.height, (255,255,255, 30))
+        arcade.draw_xywh_rectangle_filled(self.left, self.bottom, self.width, self.height, (26, 26, 26, 130))
+
+        arcade.draw_xywh_rectangle_outline(self.left, self.bottom, self.width, self.height, (87, 87, 87), 4.5)
 
         if self.music_data is not None:
             try:
-                points_left = []
-                points_right = []
+
                 i = 0
                 while i < 49:
-
-                    points_left.append([self.x[i], self.bottom + self.points[i] * self.height])
-                    i += 1
+                    
+                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
+                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  color = (77, 191, 143), tilt_angle=5)
+                    i+=1
 
                 while i < 49*2:
 
-                    points_right.append([self.x[i], self.bottom + self.points[i] * self.height])
+                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
+                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  color = (145, 214, 75), tilt_angle=5)
                     i += 1
                     
-                arcade.draw_line_strip(points_left, (190,0,0), line_width=5)
-                arcade.draw_line(*points_left[-1], *points_right[0], (190, 0,0), line_width=5)
-                arcade.draw_line_strip(points_right, (0,0,0, 159), line_width=5)
             except:
                 ...
 
