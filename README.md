@@ -19,7 +19,7 @@
 
 Разработка происходит в циклах по 2 недели. В начале спринта происходит планирование задач на спринт, определение приоритетных задач. В середине спринта небольшое обсуждение промежуточных итогов спринта, определение задач, которым необходимо уделить дополнительное внимание.
 
-Таск менеджер  - trello.com.
+Таск менеджер Trello https://trello.com/b/B6NQIt8N/командный-проект.
 
 Проект бьется на две части, gui и анимация.
 
@@ -35,9 +35,7 @@ Discord, Telegram
 > Animations
 - Arcade 
 
-![image](https://user-images.githubusercontent.com/54447582/225424327-e3e08c21-a334-4d96-ace5-a508d8ccfb16.png)
-
-![image](https://user-images.githubusercontent.com/54447582/224539348-56c58a54-065f-4f04-aa31-7e56d3bdf113.png)
+![image](https://user-images.githubusercontent.com/54447582/226122150-79c8186b-1aea-4369-a583-3feb9d07e8f1.png)
 
 
 
