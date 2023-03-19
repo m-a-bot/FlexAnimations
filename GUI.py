@@ -37,12 +37,13 @@ class GUI(arcade.View):
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
         self.volume_level = 50  # уровень громкости
-        self.songs = ["resources/music/Rammstein_-_AUSLNDER_64649307.wav","resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
-                      "resources/music/Rammstein_-_Keine_Lust_63121988.wav","resources/music/Rammstein_-_Ohne_Dich_63121957.wav"
-                        ]
+
+        self.songs = ["resources/music/Rammstein_-_AUSLNDER_64649307.wav","resources/music/Rammstein_-_Ohne_Dich_63121957.wav","resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
+                      "resources/music/Rammstein_-_Keine_Lust_63121988.wav",]
+
         self.cur_song_index = 0
         self.media_player = None
-        self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
+        self.my_music = self.load_wav()
 
         samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
 
@@ -75,8 +76,8 @@ class GUI(arcade.View):
         self.height_player_bar = 80
 
         self.player_bar = arcade.gui.UILayout(0, 0, self.window.width, self.height_player_bar)
-        self.buttons = arcade.gui.UIBoxLayout(vertical=False, space_between=self.width // 3.5)
-        self.center_buttons = arcade.gui.UIBoxLayout(vertical=False, space_between=85)
+        self.buttons = arcade.gui.UIBoxLayout(vertical=False, space_between=self.width // 4.8)
+        self.center_buttons = arcade.gui.UIBoxLayout(vertical=False, space_between=65)
 
         # Settings button
         self.settings = self.add_texture_button(
@@ -99,6 +100,16 @@ class GUI(arcade.View):
 
         self.center_buttons.add(self.star)
 
+        self.left_button = self.add_texture_button(
+            texture_file_name=":resources:onscreen_controls/flat_dark/left.png",
+            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/left.png",
+            press_texture_file_name=":resources:onscreen_controls/shaded_dark/left.png",
+            _scale=0.9 * SCALE_BUTTONS
+        )
+
+        self.left_button.on_click = self.left_button_clicked  # type: ignore                               
+        self.center_buttons.add(self.left_button)
+
         # Play/pause button
 
         self.play_button = self.add_texture_button(
@@ -110,6 +121,16 @@ class GUI(arcade.View):
 
         self.play_button.on_click = self.play_button_clicked  # type: ignore                               
         self.center_buttons.add(self.play_button)
+
+        self.right_button = self.add_texture_button(
+            texture_file_name=":resources:onscreen_controls/flat_dark/right.png",
+            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/right.png",
+            press_texture_file_name=":resources:onscreen_controls/shaded_dark/right.png",
+            _scale=0.9 * SCALE_BUTTONS
+        )
+
+        self.right_button.on_click = self.right_button_clicked  # type: ignore                               
+        self.center_buttons.add(self.right_button)
 
         # Up button
         self.up = self.add_texture_button(
@@ -138,9 +159,9 @@ class GUI(arcade.View):
         self.player_bar.add(arcade.gui.UIAnchorWidget(child=self.buttons, anchor_y="bottom", align_y=20))
 
         self.up_down = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/up.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/up.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/up.png",
+            texture_file_name=":resources:onscreen_controls/flat_dark/down.png",
+            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/down.png",
+            press_texture_file_name=":resources:onscreen_controls/shaded_dark/down.png",
             _scale=0.9 * SCALE_BUTTONS * 0.5
         )
 
@@ -217,6 +238,44 @@ class GUI(arcade.View):
 
             samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
             self.music_track.music_data = self.mdata[:,0]
+
+
+    def load_wav(self):
+        return arcade.load_sound(self.songs[self.cur_song_index])
+
+
+    def left_button_clicked(self, *_):
+        
+        self.cur_song_index = min(0, self.cur_song_index-1)
+        self.my_music = self.load_wav()
+
+        if self.media_player is not None:
+            self.media_player.pause()
+            self.media_player = self.my_music.play(volume=self.volume_level / 100)
+            self.media_player.push_handlers(on_eos=self.music_over)
+            self.play_button_on()
+        else:
+            self.media_player = self.my_music.play(volume=self.volume_level / 100)
+            self.media_player.push_handlers(on_eos=self.music_over)
+            self.play_button_on()
+        
+
+
+    def right_button_clicked(self, *_):
+        
+        self.cur_song_index = (self.cur_song_index+1) % len(self.songs)
+        self.my_music = self.load_wav()
+
+        if self.media_player is not None:
+            self.media_player.pause()
+            self.media_player = self.my_music.play(volume=self.volume_level / 100)
+            self.media_player.push_handlers(on_eos=self.music_over)
+            self.play_button_on()
+        else:
+            self.media_player = self.my_music.play(volume=self.volume_level / 100)
+            self.media_player.push_handlers(on_eos=self.music_over)
+            self.play_button_on()
+
 
     def play_button_clicked(self, *_):
         self.paused = False
