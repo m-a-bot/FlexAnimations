@@ -9,7 +9,7 @@ from GUI import GUI
 
 if __name__ == "__main__":
    
-    window = arcade.Window(WIDTH, HEIGHT, TITLE)
+    window = arcade.Window(WIDTH, HEIGHT, TITLE, update_rate=1/24)
 
     window.show_view(GUI())
 
