@@ -37,9 +37,10 @@ class GUI(arcade.View):
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
         self.volume_level = 50  # уровень громкости
+
         self.songs = ["resources/music/Rammstein_-_AUSLNDER_64649307.wav","resources/music/Rammstein_-_Ohne_Dich_63121957.wav","resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
-                      "resources/music/Rammstein_-_Keine_Lust_63121988.wav",
-                        ]
+                      "resources/music/Rammstein_-_Keine_Lust_63121988.wav",]
+
         self.cur_song_index = 0
         self.media_player = None
         self.my_music = self.load_wav()
