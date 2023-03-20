@@ -37,5 +37,6 @@ Discord, Telegram
 
 ![image](https://user-images.githubusercontent.com/54447582/226207957-d69ea2ea-e5d7-4a3d-80de-026f2af63b53.png)
 
+![image](https://user-images.githubusercontent.com/54447582/226440749-f067ba2e-a876-440b-8d5e-249e30ea6abe.png)
 
 
