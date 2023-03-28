@@ -1,3 +1,4 @@
+from math import degrees
 import arcade
 import arcade.gui
 from sections.music_track import MusicTrack
@@ -6,7 +7,7 @@ from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
 from arcade.experimental import Shadertoy
-
+import pymunk
 
 SCALE_BUTTONS = 0.7
 
@@ -32,7 +33,28 @@ class GUI(arcade.View):
         #     shader_source = file.read()
         
         # self.shadertoy = Shadertoy(self.window.get_size(), main_source=shader_source)
-        
+        self.sprites = arcade.SpriteList()
+        # region Physics settins
+        self.space = pymunk.Space()
+        self.space.gravity = 0, -1500
+
+        self.mass = 1
+        self.radius = 30
+
+        # 
+        segment_shapes = [
+            pymunk.Segment(self.space.static_body, (5, 5), (5, self.height-5), 2),
+            pymunk.Segment(self.space.static_body, (5, self.height-5), (self.width-5, self.height-5), 2),
+            pymunk.Segment(self.space.static_body, (self.width-5, self.height-5),(self.width-5, 5), 2),
+            pymunk.Segment(self.space.static_body, (5, 5), (self.width-5, 5), 2)
+        ]
+
+        for segment_shape in segment_shapes:
+            segment_shape.elasticity = 0.8
+            segment_shape.friction = 1.0    
+
+        self.space.add(*segment_shapes)
+        # endregion
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
@@ -63,9 +85,12 @@ class GUI(arcade.View):
 
         
     def update(self, delta_time: float):
-        super().on_update(delta_time)
+        self.space.step(delta_time)
 
-        self.time += delta_time
+        for index, sprite in enumerate(self.sprites):
+            sprite.angle = degrees(self.space.bodies[index].angle)
+            sprite.set_position(self.space.bodies[index].position.x, self.space.bodies[index].position.y)
+            
 
 
 
@@ -301,6 +326,11 @@ class GUI(arcade.View):
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
         # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
         # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
+
+
+        self.sprites.draw()
+        self.sprites.draw_hit_boxes()
+
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
@@ -384,6 +414,15 @@ class GUI(arcade.View):
             if not self.slider._rect.collide_with_point(x,y):
                 self.sound_bar_is_visible = False
                 self.ui_manager.remove(self.slider)
+
+            circle_moment = pymunk.moment_for_circle(self.mass, 0, self.radius)
+            circle_body = pymunk.Body(self.mass, circle_moment)
+            circle_body.position = x, y
+            circle_shape = pymunk.Circle(circle_body, self.radius)
+            circle_shape.elasticity = 0.8
+            circle_shape.friction = 1.0
+            self.space.add(circle_body, circle_shape)
+            self.sprites.append(arcade.Sprite(":resources:images/tiles/bomb.png", scale=0.5, center_x=circle_body.position.x, center_y=circle_body.position.y))
 
     def set_player_volume(self, *_):
 
