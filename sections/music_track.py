@@ -1,5 +1,6 @@
 import arcade
 import numpy as np
+from settings import FPS
 
 # TODO
 """
@@ -8,6 +9,10 @@ import numpy as np
 1/60 сек = 735 эл.
 735 = 49 * 15
 """
+
+frame = 44100 // FPS
+step = 49
+
 # TODO
 # Переименовать self.current_song_index
 class MusicTrack(arcade.Section):
@@ -21,7 +26,7 @@ class MusicTrack(arcade.Section):
 
         self.points = []
 
-        self.x = np.linspace(self.left + 15, self.right - 15, 49 * 2)
+        self.x = np.linspace(self.left + 15, self.right - 15, step * 2)
 
 
     def update(self, delta_time):
@@ -33,12 +38,12 @@ class MusicTrack(arcade.Section):
             i = 0
 
             try:
-                single_frame_data = self.music_data[self.current_song_index * 735: (self.current_song_index+2) * 735]
+                single_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+2) * frame]
 
                 for x in single_frame_data:
                     s += x
                     i += 1
-                    if i == 15:
+                    if i == frame // step:
                         self.points.append(s / i)
                         s = 0
                         i = 0

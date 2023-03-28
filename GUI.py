@@ -41,6 +41,7 @@ class GUI(arcade.View):
         self.mass = 1
         self.radius = 30
 
+        # 
         segment_shapes = [
             pymunk.Segment(self.space.static_body, (5, 5), (5, self.height-5), 2),
             pymunk.Segment(self.space.static_body, (5, self.height-5), (self.width-5, self.height-5), 2),
@@ -53,12 +54,6 @@ class GUI(arcade.View):
             segment_shape.friction = 1.0    
 
         self.space.add(*segment_shapes)
-        #test
-        self.segment_shape2 = pymunk.Segment(self.space.static_body, (100,160), (900,100), 2)
-        self.segment_shape2.elasticity = 0.8
-        self.segment_shape2.friction = 1.0
-        self.space.add(self.segment_shape2)
-
         # endregion
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
@@ -91,6 +86,7 @@ class GUI(arcade.View):
         
     def update(self, delta_time: float):
         self.space.step(delta_time)
+
         for index, sprite in enumerate(self.sprites):
             sprite.angle = degrees(self.space.bodies[index].angle)
             sprite.set_position(self.space.bodies[index].position.x, self.space.bodies[index].position.y)
@@ -331,9 +327,10 @@ class GUI(arcade.View):
         # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
         # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
 
-        arcade.draw_lines([self.segment_shape2.a, self.segment_shape2.b], arcade.color.RED, 4)
 
         self.sprites.draw()
+        self.sprites.draw_hit_boxes()
+
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))

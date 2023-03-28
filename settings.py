@@ -4,6 +4,7 @@ import sys
 WIDTH = 1280
 HEIGHT = 720
 TITLE = "2d animation"
+FPS = 24
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
