@@ -271,7 +271,7 @@ class GUI(arcade.View):
 
     def left_button_clicked(self, *_):
         
-        self.cur_song_index = min(0, self.cur_song_index-1)
+        self.cur_song_index = max(0, self.cur_song_index-1)
         self.my_music = self.load_wav()
 
         if self.media_player is not None:
