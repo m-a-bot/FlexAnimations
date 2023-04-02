@@ -1,7 +1,6 @@
 import arcade
 import numpy
 import numpy.random
-from assets.MovementSprite import MovementSprite
 from typing import Optional
 from settings import ROOT_DIR, resource_path
 from arcade.experimental.uislider import UISlider
@@ -17,6 +16,11 @@ from scipy.io import wavfile
 
 SIZE_BUTTON = 40
 SPACE_BETWEEN_BUTTONS = 60
+
+class MovementSprite:
+
+    def __init__(self, *_) -> None:
+        pass
 
 class ContainerView(arcade.View):
 
