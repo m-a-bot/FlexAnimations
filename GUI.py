@@ -1,3 +1,4 @@
+from math import degrees
 import arcade
 import arcade.gui
 from sections.music_track import MusicTrack
@@ -32,7 +33,7 @@ class GUI(arcade.View):
         #     shader_source = file.read()
         
         # self.shadertoy = Shadertoy(self.window.get_size(), main_source=shader_source)
-        
+
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
@@ -63,9 +64,8 @@ class GUI(arcade.View):
 
         
     def update(self, delta_time: float):
-        super().on_update(delta_time)
-
-        self.time += delta_time
+        ...
+            
 
 
 
@@ -246,7 +246,7 @@ class GUI(arcade.View):
 
     def left_button_clicked(self, *_):
         
-        self.cur_song_index = min(0, self.cur_song_index-1)
+        self.cur_song_index = max(0, self.cur_song_index-1)
         self.my_music = self.load_wav()
 
         if self.media_player is not None:
@@ -301,6 +301,8 @@ class GUI(arcade.View):
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
         # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
         # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
+
+
         
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
@@ -356,6 +358,7 @@ class GUI(arcade.View):
         else:
             self.ui_manager.remove(self.slider)
 
+
     def on_update(self, delta_time):
         
         if self.media_player is not None:
@@ -365,17 +368,6 @@ class GUI(arcade.View):
 
         self.music_track.update(delta_time)
 
-        
-
-
-    def show_sound_bar(self, *_):
-        arcade.draw_lrtb_rectangle_filled(self.width * .968 - self.width // 100, self.width * .968 + self.width // 100,
-                                          self.height // 4, self.height // 8 + self.height // 225, arcade.color.GRAY)
-        arcade.draw_line(self.width * .968, self.height // 7, self.width * .968, self.height // 4 - self.height // 65,
-                         arcade.color.WHITE, line_width=5)
-        arcade.draw_line(self.width * .968 - self.width // 150, self.height // 7 + self.volume_level,
-                         self.width * .968 + self.width // 150, self.height // 7 + self.volume_level,
-                         arcade.color.WHITE, line_width=5)
 
     # mouse-press ивенты
     def on_mouse_press(self, x, y, button, modifiers):
@@ -384,6 +376,7 @@ class GUI(arcade.View):
             if not self.slider._rect.collide_with_point(x,y):
                 self.sound_bar_is_visible = False
                 self.ui_manager.remove(self.slider)
+
 
     def set_player_volume(self, *_):
 
