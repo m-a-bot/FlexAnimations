@@ -34,8 +34,15 @@ Discord, Telegram
 - Tkinter
 > Animations
 - Arcade 
+> Physics
+- pymunk
+> Sound
+- scipy
 
 ![image](https://user-images.githubusercontent.com/54447582/226207957-d69ea2ea-e5d7-4a3d-80de-026f2af63b53.png)
 
+#### Two dynamic objects 
+![image](https://user-images.githubusercontent.com/54447582/229371406-58eabd46-c76b-4183-82df-75f0ceac74ed.png)
 
-
+### Kinematic and dynamic
+![image](https://user-images.githubusercontent.com/54447582/229371428-ed8f1a47-b2ee-4d6d-bbdd-4f261cf08641.png)
