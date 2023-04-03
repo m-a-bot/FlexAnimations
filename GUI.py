@@ -11,6 +11,7 @@ from scipy.io import wavfile
 from arcade.experimental import Shadertoy
 import pymunk
 from pymunk import Vec2d
+from scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
 
 
@@ -48,16 +49,28 @@ class GUI(arcade.View):
         self.sprites = arcade.SpriteList()
         # add sprites
 
-        for _ in range(20):
+        for _ in range(5):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 10, pymunk.Body.DYNAMIC, elasticity=0.9, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
-                                          file_name=":resources:images/tiles/mushroomRed.png", sprite_scale=1.3))
+                                          _texture=arcade.make_circle_texture(50, (255, 0, 0)), sprite_scale=1.3))
             
-        for _ in range(10):
+        for _ in range(5):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.9, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
-                                          file_name=":resources:images/items/coinGold.png", sprite_scale=0.9))
+                                          _texture=arcade.make_soft_square_texture(40, (0,0,255), outer_alpha=255), sprite_scale=0.9))
+            
+        r_grad = arcade.Texture("rect_grad", image = get_rectangle_gradient(120, 120, (120, 120, 9), (255, 45, 129)))
+        triangle1 = arcade.Texture("triangle1", image = get_triangle_random(90, 100))
         
+        for _ in range(5):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture = r_grad, sprite_scale=1))
+        
+        for _ in range(3):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture = triangle1, sprite_scale=1))
         
 
         # self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
