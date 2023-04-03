@@ -29,7 +29,7 @@ class MusicTrack(arcade.Section):
         self.x = np.linspace(self.left + 15, self.right - 15, step * 2)
 
 
-    def update(self, delta_time):
+    def update(self, *_):
         
         self.points.clear()
 

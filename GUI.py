@@ -1,6 +1,8 @@
 from math import degrees
+import random
 import arcade
 import arcade.gui
+from settings import FPS
 from sections.music_track import MusicTrack
 from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
@@ -8,6 +10,10 @@ from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
 from arcade.experimental import Shadertoy
 import pymunk
+from pymunk import Vec2d
+from scripts.Render import *
+from assets.MovementSprite import PhysicsSprite
+
 
 SCALE_BUTTONS = 0.7
 
@@ -33,28 +39,72 @@ class GUI(arcade.View):
         #     shader_source = file.read()
         
         # self.shadertoy = Shadertoy(self.window.get_size(), main_source=shader_source)
-        self.sprites = arcade.SpriteList()
-        # region Physics settins
+
+        ### Physics
+
         self.space = pymunk.Space()
-        self.space.gravity = 0, -1500
+        self.space.gravity = Vec2d(0, 0)
+        self.space.damping = 0.99
 
-        self.mass = 1
-        self.radius = 30
+        self.sprites = arcade.SpriteList()
+        # add sprites
 
-        # 
-        segment_shapes = [
-            pymunk.Segment(self.space.static_body, (5, 5), (5, self.height-5), 2),
-            pymunk.Segment(self.space.static_body, (5, self.height-5), (self.width-5, self.height-5), 2),
-            pymunk.Segment(self.space.static_body, (self.width-5, self.height-5),(self.width-5, 5), 2),
-            pymunk.Segment(self.space.static_body, (5, 5), (self.width-5, 5), 2)
+        for _ in range(5):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 10, pymunk.Body.DYNAMIC, elasticity=0.9, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture=arcade.make_circle_texture(50, (255, 0, 0)), sprite_scale=1.3))
+            
+        for _ in range(5):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.9, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture=arcade.make_soft_square_texture(40, (0,0,255), outer_alpha=255), sprite_scale=0.9))
+            
+        r_grad = arcade.Texture("rect_grad", image = get_rectangle_gradient(120, 120, (120, 120, 9), (255, 45, 129)))
+        triangle1 = arcade.Texture("triangle1", image = get_triangle_random(90, 100))
+        
+        for _ in range(5):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture = r_grad, sprite_scale=1))
+        
+        for _ in range(3):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture = triangle1, sprite_scale=1))
+        
+
+        # self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
+        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        
+        # self.flipper2 = PhysicsSprite(self.space, (self.width * 0.7, self.height * 0.4), 1, 
+        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        
+        # self.flipper3 = PhysicsSprite(self.space, (self.width * 0.5, self.height * 0.7), 1, 
+        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        
+        # self.sprites.append(self.flipper1)
+        # self.sprites.append(self.flipper2)
+        # self.sprites.append(self.flipper3)
+
+
+        ### Game area
+        self.g_lb = (20,20)
+        self.g_lt = (20,self.height-20)
+        self.g_rb = (self.width-20,20)
+        self.g_rt = (self.width-20,self.height-20)
+
+        static_lines = [
+            pymunk.Segment(self.space.static_body, self.g_lb, self.g_lt, 3),
+            pymunk.Segment(self.space.static_body, self.g_lt, self.g_rt, 3),
+            pymunk.Segment(self.space.static_body, self.g_rt, self.g_rb, 3),
+            pymunk.Segment(self.space.static_body, self.g_lb, self.g_rb, 3)
         ]
+        for line in static_lines:
+            line.elasticity = 1.0
 
-        for segment_shape in segment_shapes:
-            segment_shape.elasticity = 0.8
-            segment_shape.friction = 1.0    
+        self.space.add(*static_lines)
 
-        self.space.add(*segment_shapes)
-        # endregion
+        #
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
@@ -85,13 +135,51 @@ class GUI(arcade.View):
 
         
     def update(self, delta_time: float):
-        self.space.step(delta_time)
 
-        for index, sprite in enumerate(self.sprites):
-            sprite.angle = degrees(self.space.bodies[index].angle)
-            sprite.set_position(self.space.bodies[index].position.x, self.space.bodies[index].position.y)
+        # self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
+        # self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
+        # self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
+
+        self.space.step(1 / FPS)
+
+        for sprite in self.sprites:
+            sprite.center_x = sprite.shape.body.position.x
+            sprite.center_y = sprite.shape.body.position.y
+            sprite.angle = degrees(sprite.shape.body.angle)
+
+
+    def on_draw(self):
+        self.clear()
+
+        arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
+        # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
+        # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
+
+        # arcade.draw_line(*self.g_lb, *self.g_lt, (150,0,0,140), 3)
+        # arcade.draw_line(*self.g_lt, *self.g_rt, (150,0,0,140), 3)
+        # arcade.draw_line(*self.g_rt, *self.g_rb, (150,0,0,140), 3)
+        # arcade.draw_line(*self.g_lb, *self.g_rb, (150,0,0,140), 3)
+
+        # self.sprites.draw_hit_boxes()
+        self.sprites.draw()
+        
+        if self.hud_is_visible or self.sound_bar_is_visible:
+            arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
             
+            arcade.draw_line(0, self.hud_height, self.width, self.hud_height, arcade.color.BLACK, line_width=5)
+            self.ui_manager.enable()
+            self.ui_manager.draw()
 
+            if self.media_player:
+                arcade.draw_circle_filled(
+                    (self.media_player.time / arcade.Sound.get_length(self.media_player)) * self.width,
+                    self.hud_height, self.width // 150, arcade.color.RED)
+                arcade.draw_line(0, self.hud_height,
+                                 (self.media_player.time / arcade.Sound.get_length(self.media_player)) * self.width,
+                                 self.hud_height, arcade.color.RED, line_width=5)
+
+        else:
+            self.ui_manager.disable()
 
 
     def setup_gui(self):
@@ -271,7 +359,7 @@ class GUI(arcade.View):
 
     def left_button_clicked(self, *_):
         
-        self.cur_song_index = min(0, self.cur_song_index-1)
+        self.cur_song_index = max(0, self.cur_song_index-1)
         self.my_music = self.load_wav()
 
         if self.media_player is not None:
@@ -320,35 +408,7 @@ class GUI(arcade.View):
 
         # HUD
 
-    def on_draw(self):
-        self.clear()
-
-        arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
-        # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
-        # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
-
-
-        self.sprites.draw()
-        self.sprites.draw_hit_boxes()
-
-        
-        if self.hud_is_visible or self.sound_bar_is_visible:
-            arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
-            
-            arcade.draw_line(0, self.hud_height, self.width, self.hud_height, arcade.color.BLACK, line_width=5)
-            self.ui_manager.enable()
-            self.ui_manager.draw()
-
-            if self.media_player:
-                arcade.draw_circle_filled(
-                    (self.media_player.time / arcade.Sound.get_length(self.media_player)) * self.width,
-                    self.hud_height, self.width // 150, arcade.color.RED)
-                arcade.draw_line(0, self.hud_height,
-                                 (self.media_player.time / arcade.Sound.get_length(self.media_player)) * self.width,
-                                 self.hud_height, arcade.color.RED, line_width=5)
-
-        else:
-            self.ui_manager.disable()
+    
 
     #TODO
     #доделать
@@ -386,6 +446,7 @@ class GUI(arcade.View):
         else:
             self.ui_manager.remove(self.slider)
 
+
     def on_update(self, delta_time):
         
         if self.media_player is not None:
@@ -395,17 +456,6 @@ class GUI(arcade.View):
 
         self.music_track.update(delta_time)
 
-        
-
-
-    def show_sound_bar(self, *_):
-        arcade.draw_lrtb_rectangle_filled(self.width * .968 - self.width // 100, self.width * .968 + self.width // 100,
-                                          self.height // 4, self.height // 8 + self.height // 225, arcade.color.GRAY)
-        arcade.draw_line(self.width * .968, self.height // 7, self.width * .968, self.height // 4 - self.height // 65,
-                         arcade.color.WHITE, line_width=5)
-        arcade.draw_line(self.width * .968 - self.width // 150, self.height // 7 + self.volume_level,
-                         self.width * .968 + self.width // 150, self.height // 7 + self.volume_level,
-                         arcade.color.WHITE, line_width=5)
 
     # mouse-press ивенты
     def on_mouse_press(self, x, y, button, modifiers):
@@ -415,14 +465,6 @@ class GUI(arcade.View):
                 self.sound_bar_is_visible = False
                 self.ui_manager.remove(self.slider)
 
-            circle_moment = pymunk.moment_for_circle(self.mass, 0, self.radius)
-            circle_body = pymunk.Body(self.mass, circle_moment)
-            circle_body.position = x, y
-            circle_shape = pymunk.Circle(circle_body, self.radius)
-            circle_shape.elasticity = 0.8
-            circle_shape.friction = 1.0
-            self.space.add(circle_body, circle_shape)
-            self.sprites.append(arcade.Sprite(":resources:images/tiles/bomb.png", scale=0.5, center_x=circle_body.position.x, center_y=circle_body.position.y))
 
     def set_player_volume(self, *_):
 
