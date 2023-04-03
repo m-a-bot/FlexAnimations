@@ -41,6 +41,8 @@ Discord, Telegram
 
 ![image](https://user-images.githubusercontent.com/54447582/226207957-d69ea2ea-e5d7-4a3d-80de-026f2af63b53.png)
 
+![image](https://user-images.githubusercontent.com/54447582/229621891-8ffc291d-3b4c-4e07-b183-0badc5699346.png)
+
 #### Two dynamic objects 
 ![image](https://user-images.githubusercontent.com/54447582/229371406-58eabd46-c76b-4183-82df-75f0ceac74ed.png)
 
