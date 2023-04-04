@@ -2,6 +2,11 @@ import numpy
 from PIL import Image, ImageDraw
 
 
+def test_mandelbrot(size, extent, quality):
+
+    return Image.effect_mandelbrot(size, extent, quality)
+
+
 def get_barycentric_coords(point, v0, v1, v2):
     T = numpy.zeros((3, 3))
     T[:2, 0] = v0

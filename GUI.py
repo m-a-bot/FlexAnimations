@@ -2,7 +2,7 @@ from math import degrees
 import random
 import arcade
 import arcade.gui
-from settings import FPS
+from settings import FPS, resource_path
 from sections.music_track import MusicTrack
 from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
@@ -29,6 +29,7 @@ class GUI(arcade.View):
         # endregion
 
         self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
+        self.bg = arcade.Texture("mandelbrot", test_mandelbrot((self.width, self.height), (-3, -2.5, 2, 2.5), 100))
 
         self.time = 0.0
         # shader_source = None
@@ -117,7 +118,7 @@ class GUI(arcade.View):
         self.media_player = None
         self.my_music = self.load_wav()
 
-        samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+        samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
 
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
         self.music_track.enabled = False
@@ -345,16 +346,16 @@ class GUI(arcade.View):
             self.play_button_off()
             self.music_track.enabled=False
         if not self.paused:
-            self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
+            self.my_music = arcade.load_sound(resource_path(self.songs[self.cur_song_index]))
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
 
-            samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+            samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
             self.music_track.music_data = self.mdata[:,0]
 
 
     def load_wav(self):
-        return arcade.load_sound(self.songs[self.cur_song_index])
+        return arcade.load_sound(resource_path(self.songs[self.cur_song_index]))
 
 
     def left_button_clicked(self, *_):
