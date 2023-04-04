@@ -12,6 +12,7 @@ from settings import FPS
 
 frame = 44100 // FPS
 step = 49
+sound_group = frame // step
 
 # TODO
 # Переименовать self.current_song_index
@@ -21,6 +22,8 @@ class MusicTrack(arcade.Section):
         super().__init__(left, bottom, width, height)
 
         self.music_data = None
+
+        self.single_frame_data = None
 
         self.current_song_index = 0
 
@@ -38,12 +41,13 @@ class MusicTrack(arcade.Section):
             i = 0
 
             try:
-                single_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+2) * frame]
+                self.single_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+1) * frame] 
+                two_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+2) * frame]
 
-                for x in single_frame_data:
+                for x in two_frame_data:
                     s += x
                     i += 1
-                    if i == frame // step:
+                    if i == sound_group:
                         self.points.append(s / i)
                         s = 0
                         i = 0
@@ -68,17 +72,17 @@ class MusicTrack(arcade.Section):
             try:
 
                 i = 0
-                while i < 49:
+                while i < step:
                     
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
                                                   color = (77, 191, 143), tilt_angle=5)
                     i+=1
 
-                while i < 49*2:
+                while i < step*2:
 
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
                                                   color = (145, 214, 75), tilt_angle=5)
                     i += 1
                     

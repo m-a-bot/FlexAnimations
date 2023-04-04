@@ -3,7 +3,7 @@ import random
 import arcade
 import arcade.gui
 from settings import FPS, resource_path
-from sections.music_track import MusicTrack
+from sections.music_track import MusicTrack, sound_group
 from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
@@ -29,7 +29,7 @@ class GUI(arcade.View):
         # endregion
 
         self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
-        self.bg = arcade.Texture("mandelbrot", test_mandelbrot((self.width, self.height), (-3, -2.5, 2, 2.5), 100))
+        # self.bg = arcade.Texture("mandelbrot", test_mandelbrot((self.width, self.height), (-3, -2.5, 2, 2.5), 100))
 
         self.time = 0.0
         # shader_source = None
@@ -48,14 +48,15 @@ class GUI(arcade.View):
         self.space.damping = 0.99
 
         self.sprites = arcade.SpriteList()
+        self.stop_animations = False
         # add sprites
 
-        for _ in range(5):
+        for _ in range(3):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 10, pymunk.Body.DYNAMIC, elasticity=0.9, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
                                           _texture=arcade.make_circle_texture(50, (255, 0, 0)), sprite_scale=1.3))
             
-        for _ in range(5):
+        for _ in range(2):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.9, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
                                           _texture=arcade.make_soft_square_texture(40, (0,0,255), outer_alpha=255), sprite_scale=0.9))
@@ -63,29 +64,35 @@ class GUI(arcade.View):
         r_grad = arcade.Texture("rect_grad", image = get_rectangle_gradient(120, 120, (120, 120, 9), (255, 45, 129)))
         triangle1 = arcade.Texture("triangle1", image = get_triangle_random(90, 100))
         
-        for _ in range(5):
+        for _ in range(4):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
                                           _texture = r_grad, sprite_scale=1))
         
-        for _ in range(3):
+        for _ in range(2):
             self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 1, pymunk.Body.DYNAMIC, elasticity=0.8, 
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
                                           _texture = triangle1, sprite_scale=1))
+            
+        circle = arcade.Texture("circle", image = get_custom_circle(100, 100, (57, 0, 23), (180, 0, 217)))
+        for _ in range(5):
+            self.sprites.append(PhysicsSprite(self.space, (random.randint(50, self.width-50), random.randint(50, self.height-50)), 10, pymunk.Body.DYNAMIC, elasticity=0.8, 
+                                          direction=(random.choice([-10, 10]),random.choice([-10, 10])),
+                                          _texture = circle, sprite_scale=1))
         
 
-        # self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
-        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
+                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
         
-        # self.flipper2 = PhysicsSprite(self.space, (self.width * 0.7, self.height * 0.4), 1, 
-        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        self.flipper2 = PhysicsSprite(self.space, (self.width * 0.7, self.height * 0.4), 1, 
+                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
         
-        # self.flipper3 = PhysicsSprite(self.space, (self.width * 0.5, self.height * 0.7), 1, 
-        #                               pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+        self.flipper3 = PhysicsSprite(self.space, (self.width * 0.5, self.height * 0.7), 1, 
+                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png", sprite_scale=0.6)
         
-        # self.sprites.append(self.flipper1)
-        # self.sprites.append(self.flipper2)
-        # self.sprites.append(self.flipper3)
+        self.sprites.append(self.flipper1)
+        self.sprites.append(self.flipper2)
+        self.sprites.append(self.flipper3)
 
 
         ### Game area
@@ -111,8 +118,9 @@ class GUI(arcade.View):
         self.sound_bar_is_visible = False  # видна ли планка с саундом
         self.volume_level = 50  # уровень громкости
 
-        self.songs = ["resources/music/Rammstein_-_AUSLNDER_64649307.wav","resources/music/Rammstein_-_Ohne_Dich_63121957.wav","resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
-                      "resources/music/Rammstein_-_Keine_Lust_63121988.wav",]
+        self.songs = ["resources/music/Rammstein_-_Keine_Lust_63121988.wav",
+                      "resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
+        ]
 
         self.cur_song_index = 0
         self.media_player = None
@@ -134,19 +142,53 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=180, height=40)
         self.slider.on_change = self.set_player_volume
 
-        
+    
     def update(self, delta_time: float):
 
-        # self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
-        # self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
-        # self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
+        self.time += delta_time
+        
+        if self.stop_animations:
 
-        self.space.step(1 / FPS)
+            if self.music_track.single_frame_data is None:
+                self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
+                self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
+                self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
+            else:
+                
+                try:
+                    group1 = self.music_track.single_frame_data[:sound_group]
+                    group2 = self.music_track.single_frame_data[sound_group:2*sound_group]
+                    group3 = self.music_track.single_frame_data[2*sound_group:3*sound_group]
 
-        for sprite in self.sprites:
-            sprite.center_x = sprite.shape.body.position.x
-            sprite.center_y = sprite.shape.body.position.y
-            sprite.angle = degrees(sprite.shape.body.angle)
+                    parameter1 = sum(group1) / sound_group
+                    parameter2 = max(group2) - min(group2)
+                    parameter3 = sum(group3) / sound_group
+
+                    if parameter1 > group1[len(group1)//2]:
+                        self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/12)
+                    else:
+                        self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), -3.14/12)
+                    
+                    if parameter2 > group2[len(group1)//2]:
+                        self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), 3.14/16)
+                    else:
+                        self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/16)
+
+                    if parameter3 > 145:
+                        self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), -3.14/14)
+                    else:
+                        self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/18)
+                        
+                except Exception as ex:
+                    print(ex)
+                
+
+            self.space.step(1 / FPS)
+
+            for sprite in self.sprites:
+                sprite.center_x = sprite.shape.body.position.x
+                sprite.center_y = sprite.shape.body.position.y
+                sprite.angle = degrees(sprite.shape.body.angle)
 
 
     def on_draw(self):
@@ -154,7 +196,7 @@ class GUI(arcade.View):
 
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
         # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
-        # self.shadertoy.render(time=self.time, mouse_position=mouse_pos)
+        # self.shadertoy.render(time=self.time)
 
         # arcade.draw_line(*self.g_lb, *self.g_lt, (150,0,0,140), 3)
         # arcade.draw_line(*self.g_lt, *self.g_rt, (150,0,0,140), 3)
@@ -321,6 +363,8 @@ class GUI(arcade.View):
             arcade.load_texture(":resources:onscreen_controls/flat_dark/pause_square.png")
         self.play_button.texture_hovered = \
             arcade.load_texture(":resources:onscreen_controls/shaded_dark/pause_square.png")
+        
+        self.stop_animations = True
 
     def play_button_off(self):
         self.play_button.texture_pressed = \
@@ -330,6 +374,7 @@ class GUI(arcade.View):
         self.play_button.texture_hovered = \
             arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png")
 
+        self.stop_animations = False
         # сам медиа-плеер
 
     def music_over(self):
