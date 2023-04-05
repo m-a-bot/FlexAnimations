@@ -28,8 +28,7 @@ class GUI(arcade.View):
         self.hud_height = self.height // 8
         # endregion
 
-        self.bg = arcade.load_texture(":resources:images/backgrounds/abstract_1.jpg")
-        # self.bg = arcade.Texture("mandelbrot", test_mandelbrot((self.width, self.height), (-3, -2.5, 2, 2.5), 100))
+        self.bg = arcade.load_texture("resources/icons/фон.png")
 
         self.time = 0.0
         # shader_source = None
@@ -139,7 +138,7 @@ class GUI(arcade.View):
 
         self.setup_gui()
 
-        self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=180, height=40)
+        self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
     
@@ -237,10 +236,10 @@ class GUI(arcade.View):
 
         # Settings button
         self.settings = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/gear.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/gear.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/gear.png",
-            _scale=1.5 * SCALE_BUTTONS
+            texture_file_name="resources/icons/icons8-настройки-96.png",
+            hover_texture_file_name="resources/icons/icons8-настройки-96.png",
+            press_texture_file_name="resources/icons/icons8-настройки-96.png",
+            _scale=0.9 * SCALE_BUTTONS
         )
 
         self.settings.on_click = self.open_settings  # type: ignore                                        
@@ -248,18 +247,18 @@ class GUI(arcade.View):
 
         # Star button
         self.star = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/star_square.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/star_square.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/star_square.png",
-            _scale=1.5 * SCALE_BUTTONS
+            texture_file_name="resources/icons/icons8-звездочка-96.png",
+            hover_texture_file_name="resources/icons/icons8-звездочка-96.png",
+            press_texture_file_name="resources/icons/icons8-звездочка-96.png",
+            _scale=0.9 * SCALE_BUTTONS
         )
 
         self.center_buttons.add(self.star)
 
         self.left_button = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/left.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/left.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/left.png",
+            texture_file_name="resources/icons/icons8-предыдущий трек-96.png",
+            hover_texture_file_name="resources/icons/icons8-предыдущий трек-96.png",
+            press_texture_file_name="resources/icons/icons8-предыдущий трек-96.png",
             _scale=0.9 * SCALE_BUTTONS
         )
 
@@ -269,19 +268,19 @@ class GUI(arcade.View):
         # Play/pause button
 
         self.play_button = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/play.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/play.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/play.png",
-            _scale=1.5 * SCALE_BUTTONS
+            texture_file_name="resources/icons/icons8-play-в-круге-96.png",
+            hover_texture_file_name="resources/icons/icons8-play-в-круге-96.png",
+            press_texture_file_name="resources/icons/icons8-play-в-круге-96.png",
+            _scale=0.9 * SCALE_BUTTONS
         )
 
         self.play_button.on_click = self.play_button_clicked  # type: ignore                               
         self.center_buttons.add(self.play_button)
 
         self.right_button = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/right.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/right.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/right.png",
+            texture_file_name="resources/icons/icons8-следующий трек-96.png",
+            hover_texture_file_name="resources/icons/icons8-следующий трек-96.png",
+            press_texture_file_name="resources/icons/icons8-следующий трек-96.png",
             _scale=0.9 * SCALE_BUTTONS
         )
 
@@ -290,9 +289,9 @@ class GUI(arcade.View):
 
         # Up button
         self.up = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/up.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/up.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/up.png",
+            texture_file_name="resources/icons/icons8-добавить-файл-96.png",
+            hover_texture_file_name="resources/icons/icons8-добавить-файл-96.png",
+            press_texture_file_name="resources/icons/icons8-добавить-файл-96.png",
             _scale=0.9 * SCALE_BUTTONS
         )
 
@@ -301,10 +300,10 @@ class GUI(arcade.View):
 
         # Volume button
         self.volume = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/sound_on.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/sound_on.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/sound_on.png",
-            _scale=1.5 * SCALE_BUTTONS
+            texture_file_name="resources/icons/icons8-громкий-звук-96.png",
+            hover_texture_file_name="resources/icons/icons8-громкий-звук-96.png",
+            press_texture_file_name="resources/icons/icons8-громкий-звук-96.png",
+            _scale=0.9 * SCALE_BUTTONS
         )
 
         self.volume.on_click = self.switch_sound_bar  # type: ignore
@@ -315,10 +314,10 @@ class GUI(arcade.View):
         self.player_bar.add(arcade.gui.UIAnchorWidget(child=self.buttons, anchor_y="bottom", align_y=20))
 
         self.up_down = self.add_texture_button(
-            texture_file_name=":resources:onscreen_controls/flat_dark/down.png",
-            hover_texture_file_name=":resources:onscreen_controls/shaded_dark/down.png",
-            press_texture_file_name=":resources:onscreen_controls/shaded_dark/down.png",
-            _scale=0.9 * SCALE_BUTTONS * 0.5
+            texture_file_name="resources/icons/icons8-скрыть-показать-дорожку-96.png",
+            hover_texture_file_name="resources/icons/icons8-скрыть-показать-дорожку-96.png",
+            press_texture_file_name="resources/icons/icons8-скрыть-показать-дорожку-96.png",
+            _scale=0.6 * SCALE_BUTTONS
         )
 
         self.up_down.on_click = self.up_down_button_clicked  # type: ignore     
@@ -358,21 +357,20 @@ class GUI(arcade.View):
 
     def play_button_on(self):
         self.play_button.texture_pressed = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/pause_square.png")
+            arcade.load_texture("resources/icons/icons8-pause-в-круге-96.png")
         self.play_button.texture = \
-            arcade.load_texture(":resources:onscreen_controls/flat_dark/pause_square.png")
+            arcade.load_texture("resources/icons/icons8-pause-в-круге-96.png")
         self.play_button.texture_hovered = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/pause_square.png")
-        
+        arcade.load_texture("resources/icons/icons8-pause-в-круге-96.png")
         self.stop_animations = True
 
     def play_button_off(self):
         self.play_button.texture_pressed = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png")
+            arcade.load_texture("resources/icons/icons8-play-в-круге-96.png")
         self.play_button.texture = \
-            arcade.load_texture(":resources:onscreen_controls/flat_dark/play.png")
+            arcade.load_texture("resources/icons/icons8-play-в-круге-96.png")
         self.play_button.texture_hovered = \
-            arcade.load_texture(":resources:onscreen_controls/shaded_dark/play.png")
+            arcade.load_texture("resources/icons/icons8-play-в-круге-96.png")
 
         self.stop_animations = False
         # сам медиа-плеер
