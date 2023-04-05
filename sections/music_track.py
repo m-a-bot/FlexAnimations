@@ -13,6 +13,8 @@ from settings import FPS
 frame = 44100 // FPS
 step = 49
 sound_group = frame // step
+PINK = (238, 20, 223)
+BLUE = (20, 230, 238)
 
 # TODO
 # Переименовать self.current_song_index
@@ -75,15 +77,16 @@ class MusicTrack(arcade.Section):
                 while i < step:
                     
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
-                                                  color = (77, 191, 143), tilt_angle=5)
+                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  color = PINK, tilt_angle=5)
                     i+=1
 
                 while i < step*2:
 
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
-                                                  color = (145, 214, 75), tilt_angle=5)
+                                                 self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                 color = BLUE, tilt_angle=5)
+
                     i += 1
                     
             except:
