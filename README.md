@@ -49,3 +49,6 @@ Discord, Telegram
 
 ### Kinematic and dynamic
 ![image](https://user-images.githubusercontent.com/54447582/229371428-ed8f1a47-b2ee-4d6d-bbdd-4f261cf08641.png)
+
+### Tasks
+![image](https://user-images.githubusercontent.com/54447582/230046878-0e7f45b8-1752-4c43-8222-19da26d8fa0d.png)
