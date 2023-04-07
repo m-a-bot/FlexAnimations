@@ -25,7 +25,7 @@ class MusicTrack(arcade.Section):
 
         self.music_data = None
 
-        self.single_frame_data = None
+        self.single_frame_data = []
 
         self.current_song_index = 0
 

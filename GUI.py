@@ -148,7 +148,7 @@ class GUI(arcade.View):
         
         if self.stop_animations:
 
-            if self.music_track.single_frame_data is None:
+            if len(self.music_track.single_frame_data) == 0:
                 self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
                 self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
                 self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
@@ -180,6 +180,7 @@ class GUI(arcade.View):
                         
                 except Exception as ex:
                     print(ex)
+                    print(self.music_track.single_frame_data)
                 
 
             self.space.step(1 / FPS)
