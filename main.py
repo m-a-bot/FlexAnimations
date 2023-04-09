@@ -1,12 +1,17 @@
 import arcade
-from Views.Container import ContainerView
+from settings import *
+from views.Container import ContainerView
+from views.test import TestView
+from GUI import GUI
+import pyglet
 
-def main():
-    window = arcade.Window(800, 600, "4d animation")
-    container_view = ContainerView()
-    window.show_view(container_view)
-    arcade.run()
-
+from GUI import GUI
 
 if __name__ == "__main__":
-    main()
+   
+    window = arcade.Window(WIDTH, HEIGHT, TITLE, update_rate=1/FPS)
+
+    window.show_view(GUI())
+
+    arcade.run()
+
