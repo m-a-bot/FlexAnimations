@@ -11,11 +11,12 @@ from scipy.io import wavfile
 from arcade.experimental import Shadertoy
 import pymunk
 from pymunk import Vec2d
-from scripts.Render import *
+from assets.scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
 
-
+PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
+DEBUG = True
 
 class GUI(arcade.View):
 
@@ -30,15 +31,9 @@ class GUI(arcade.View):
 
         self.bg = arcade.load_texture("resources/icons/фон.png")
 
+        self.text = arcade.Text("", 50, self.height - 50, PINK, 14)
+
         self.time = 0.0
-        # shader_source = None
-        # shader_file_path = "scripts/shaders/Image.glsl"
-
-        # with open(shader_file_path) as file:
-
-        #     shader_source = file.read()
-        
-        # self.shadertoy = Shadertoy(self.window.get_size(), main_source=shader_source)
 
         ### Physics
 
@@ -79,19 +74,19 @@ class GUI(arcade.View):
                                           direction=(random.choice([-10, 10]),random.choice([-10, 10])),
                                           _texture = circle, sprite_scale=1))
         
+        if False:
+            self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
+                                          pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
 
-        self.flipper1 = PhysicsSprite(self.space, (self.width * 0.3, self.height * 0.2), 1,
-                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
-        
-        self.flipper2 = PhysicsSprite(self.space, (self.width * 0.7, self.height * 0.4), 1, 
-                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
-        
-        self.flipper3 = PhysicsSprite(self.space, (self.width * 0.5, self.height * 0.7), 1, 
-                                      pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png", sprite_scale=0.6)
-        
-        self.sprites.append(self.flipper1)
-        self.sprites.append(self.flipper2)
-        self.sprites.append(self.flipper3)
+            self.flipper2 = PhysicsSprite(self.space, (self.width * 0.7, self.height * 0.4), 1,
+                                          pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png")
+
+            self.flipper3 = PhysicsSprite(self.space, (self.width * 0.5, self.height * 0.7), 1,
+                                          pymunk.Body.KINEMATIC, 0.7, file_name=":resources:gui_basic_assets/red_button_press.png", sprite_scale=0.6)
+
+            self.sprites.append(self.flipper1)
+            self.sprites.append(self.flipper2)
+            self.sprites.append(self.flipper3)
 
 
         ### Game area
@@ -118,8 +113,7 @@ class GUI(arcade.View):
         self.volume_level = 50  # уровень громкости
 
         self.songs = ["resources/music/Rammstein_-_Keine_Lust_63121988.wav",
-                      "resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav",
-        ]
+                      "resources/music/follow.wav","resources/music/Rammstein_-_Deutschland_63121881.wav"]
 
         self.cur_song_index = 0
         self.media_player = None
@@ -148,55 +142,60 @@ class GUI(arcade.View):
         
         if self.stop_animations:
 
-            if len(self.music_track.single_frame_data) == 0:
-                self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
-                self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
-                self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
-            else:
-                
-                try:
-                    group1 = self.music_track.single_frame_data[:sound_group]
-                    group2 = self.music_track.single_frame_data[sound_group:2*sound_group]
-                    group3 = self.music_track.single_frame_data[2*sound_group:3*sound_group]
+            if False:
+                if len(self.music_track.single_frame_data) == 0:
+                    self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/40)
+                    self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/50)
+                    self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/100)
+                else:
 
-                    parameter1 = sum(group1) / sound_group
-                    parameter2 = max(group2) - min(group2)
-                    parameter3 = sum(group3) / sound_group
+                    try:
+                        group1 = self.music_track.single_frame_data[:sound_group]
+                        group2 = self.music_track.single_frame_data[sound_group:2*sound_group]
+                        group3 = self.music_track.single_frame_data[2*sound_group:3*sound_group]
 
-                    if parameter1 > group1[len(group1)//2]:
-                        self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/12)
-                    else:
-                        self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), -3.14/12)
-                    
-                    if parameter2 > group2[len(group1)//2]:
-                        self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), 3.14/16)
-                    else:
-                        self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/16)
+                        parameter1 = sum(group1) / sound_group
+                        parameter2 = max(group2) - min(group2)
+                        parameter3 = sum(group3) / sound_group
 
-                    if parameter3 > 145:
-                        self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), -3.14/14)
-                    else:
-                        self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/18)
-                        
-                except Exception as ex:
-                    print(ex)
-                    print(self.music_track.single_frame_data)
+                        if parameter1 > group1[len(group1)//2]:
+                            self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), 3.14/12)
+                        else:
+                            self.flipper1.rotate((self.flipper1.center_x, self.flipper1.center_y), -3.14/12)
+
+                        if parameter2 > group2[len(group1)//2]:
+                            self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), 3.14/16)
+                        else:
+                            self.flipper2.rotate((self.flipper2.center_x, self.flipper2.center_y), -3.14/16)
+
+                        if parameter3 > 145:
+                            self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), -3.14/14)
+                        else:
+                            self.flipper3.rotate((self.flipper3.center_x, self.flipper3.center_y), 3.14/18)
+
+                    except Exception as ex:
+                        print(ex)
+                        print(self.music_track.single_frame_data)
                 
 
             self.space.step(1 / FPS)
 
             for sprite in self.sprites:
+
                 sprite.center_x = sprite.shape.body.position.x
                 sprite.center_y = sprite.shape.body.position.y
                 sprite.angle = degrees(sprite.shape.body.angle)
+
+                if (0 >= sprite.shape.body.position.x or sprite.shape.body.position.x >= self.width
+                        or 0 >= sprite.shape.body.position.y or sprite.shape.body.position.y >= self.height
+                ):
+                    self.sprites.remove(sprite)
 
 
     def on_draw(self):
         self.clear()
 
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
-        # mouse_pos = self.window.mouse["x"], self.window.mouse["y"]
-        # self.shadertoy.render(time=self.time)
 
         # arcade.draw_line(*self.g_lb, *self.g_lt, (150,0,0,140), 3)
         # arcade.draw_line(*self.g_lt, *self.g_rt, (150,0,0,140), 3)
@@ -206,6 +205,11 @@ class GUI(arcade.View):
         # self.sprites.draw_hit_boxes()
         self.sprites.draw()
         
+        if DEBUG:
+            if len(self.songs) > 0:
+                self.text.text = f"{self.cur_song_index+1}/{len(self.songs)} - {self.songs[self.cur_song_index]}"
+                self.text.draw()
+
         if self.hud_is_visible or self.sound_bar_is_visible:
             arcade.draw_xywh_rectangle_filled(0, 0, self.width, self.hud_height, (0,0,0, 90))
             
@@ -399,7 +403,7 @@ class GUI(arcade.View):
 
 
     def load_wav(self):
-        return arcade.load_sound(resource_path(self.songs[self.cur_song_index]))
+        return arcade.load_sound(self.songs[self.cur_song_index])
 
 
     def left_button_clicked(self, *_):
@@ -421,7 +425,7 @@ class GUI(arcade.View):
 
     def right_button_clicked(self, *_):
         
-        self.cur_song_index = (self.cur_song_index+1) % len(self.songs)
+        self.cur_song_index = min(self.cur_song_index+1, len(self.songs)-1)
         self.my_music = self.load_wav()
 
         if self.media_player is not None:

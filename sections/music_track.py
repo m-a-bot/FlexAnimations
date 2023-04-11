@@ -10,6 +10,7 @@ from settings import FPS
 735 = 49 * 15
 """
 
+# TODO !?
 frame = 44100 // FPS
 step = 49
 sound_group = frame // step
@@ -60,8 +61,8 @@ class MusicTrack(arcade.Section):
                 for i, x in enumerate(self.points):
                     self.points[i] = (x - A) / (B - A)
             
-            except:
-                ...
+            except Exception as e:
+                print(e)
 
 
     def on_draw(self):
