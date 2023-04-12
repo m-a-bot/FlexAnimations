@@ -479,8 +479,11 @@ class GUI(arcade.View):
             self.hud_is_visible = True
             self.music_track._bottom = self.hud_height + 50
         else:
+
             self.hud_is_visible = False
             self.music_track._bottom = 25
+            self.sound_bar_is_visible = False
+            self.ui_manager.remove(self.slider)
 
     #TODO
     """
