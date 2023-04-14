@@ -3,7 +3,7 @@ import random
 import arcade
 import arcade.gui
 from settings import FPS, resource_path
-from sections.music_track import MusicTrack, sound_group
+from sections.music_track import MusicTrack
 from sections.menu import Menu
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
@@ -121,9 +121,11 @@ class GUI(arcade.View):
 
         samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
 
+        print(samplerate)
+
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
         self.music_track.enabled = False
-        self.music_track.music_data = self.mdata[:,0]
+        self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
         self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
 
@@ -399,7 +401,8 @@ class GUI(arcade.View):
             self.media_player.push_handlers(on_eos=self.music_over)
 
             samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
-            self.music_track.music_data = self.mdata[:,0]
+            print(samplerate)
+            self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
 
     def load_wav(self):
@@ -409,6 +412,9 @@ class GUI(arcade.View):
     def left_button_clicked(self, *_):
         
         self.cur_song_index = max(0, self.cur_song_index-1)
+        samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
+        print(samplerate)
+        self.music_track.set_music_data(samplerate, self.mdata[:,0])
         self.my_music = self.load_wav()
 
         if self.media_player is not None:
@@ -427,6 +433,9 @@ class GUI(arcade.View):
         
         self.cur_song_index = min(self.cur_song_index+1, len(self.songs)-1)
         self.my_music = self.load_wav()
+        samplerate, self.mdata = wavfile.read(resource_path(self.songs[self.cur_song_index]))
+        print(samplerate)
+        self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
         if self.media_player is not None:
             self.media_player.pause()
@@ -485,11 +494,7 @@ class GUI(arcade.View):
             self.sound_bar_is_visible = False
             self.ui_manager.remove(self.slider)
 
-    #TODO
-    """
-    Исправить баг
-    плеер не скрывается, когда активен slider
-    """
+
     def switch_sound_bar(self, *_):
         self.sound_bar_is_visible = not self.sound_bar_is_visible
 

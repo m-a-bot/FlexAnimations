@@ -2,18 +2,8 @@ import arcade
 import numpy as np
 from settings import FPS
 
-# TODO
-"""
-Использовать ряды Фурье
-1сек = 44100 эл.
-1/60 сек = 735 эл.
-735 = 49 * 15
-"""
+step = 40
 
-# TODO !?
-frame = 44100 // FPS
-step = 49
-sound_group = frame // step
 PINK = (238, 20, 223)
 BLUE = (20, 230, 238)
 
@@ -25,6 +15,8 @@ class MusicTrack(arcade.Section):
         super().__init__(left, bottom, width, height)
 
         self.music_data = None
+        self.frame = None
+        self.sound_group = None
 
         self.single_frame_data = []
 
@@ -33,6 +25,15 @@ class MusicTrack(arcade.Section):
         self.points = []
 
         self.x = np.linspace(self.left + 15, self.right - 15, step * 2)
+
+
+    def set_music_data(self, samplerate, data):
+
+        self.music_data = data
+
+        self.frame = samplerate // FPS
+
+        self.sound_group = self.frame // step
 
 
     def update(self, *_):
@@ -44,13 +45,13 @@ class MusicTrack(arcade.Section):
             i = 0
 
             try:
-                self.single_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+1) * frame] 
-                two_frame_data = self.music_data[self.current_song_index * frame: (self.current_song_index+2) * frame]
+                self.single_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+1) * self.frame] 
+                two_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+2) * self.frame]
 
                 for x in two_frame_data:
                     s += x
                     i += 1
-                    if i == sound_group:
+                    if i == self.sound_group:
                         self.points.append(s / i)
                         s = 0
                         i = 0
@@ -78,14 +79,14 @@ class MusicTrack(arcade.Section):
                 while i < step:
                     
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
                                                   color = PINK, tilt_angle=5)
                     i+=1
 
                 while i < step*2:
 
                     arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                 self.width / (49*2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                 self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
                                                  color = BLUE, tilt_angle=5)
 
                     i += 1
