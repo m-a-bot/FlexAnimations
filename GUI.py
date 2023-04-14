@@ -56,7 +56,6 @@ class GUI(arcade.View):
         self.my_music = self.load_wav()
 
         samplerate, self.mdata = wavfile.read((self.songs[self.cur_song_index]))
-
         print(samplerate)
 
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
