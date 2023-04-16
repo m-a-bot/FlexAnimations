@@ -123,6 +123,8 @@ class GUI(arcade.View):
 
         print(samplerate)
 
+        print(samplerate)
+
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
         self.music_track.enabled = False
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
@@ -401,6 +403,7 @@ class GUI(arcade.View):
             self.media_player.push_handlers(on_eos=self.music_over)
 
             samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+
             print(samplerate)
             self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
@@ -412,7 +415,9 @@ class GUI(arcade.View):
     def left_button_clicked(self, *_):
         
         self.cur_song_index = max(0, self.cur_song_index-1)
+
         samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+
         print(samplerate)
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
         self.my_music = self.load_wav()
@@ -434,6 +439,7 @@ class GUI(arcade.View):
         self.cur_song_index = min(self.cur_song_index+1, len(self.songs)-1)
         self.my_music = self.load_wav()
         samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+
         print(samplerate)
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
