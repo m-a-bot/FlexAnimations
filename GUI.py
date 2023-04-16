@@ -243,15 +243,24 @@ class GUI(arcade.View):
 
         # Settings button
         self.settings = self.add_texture_button(
+            texture_file_name="resources/icons/icons8-настройки-96.png",
+            hover_texture_file_name="resources/icons/icons8-настройки-96.png",
+            press_texture_file_name="resources/icons/icons8-настройки-96.png",
+            _scale=0.9 * SCALE_BUTTONS
+        )
+
+        self.settings.on_click = self.open_settings  # type: ignore                                        
+        self.buttons.add(self.settings)
+
+        # Star button
+        self.star = self.add_texture_button(
             texture_file_name="resources/icons/icons8-звездочка-96.png",
             hover_texture_file_name="resources/icons/icons8-звездочка-96.png",
             press_texture_file_name="resources/icons/icons8-звездочка-96.png",
             _scale=0.9 * SCALE_BUTTONS
         )
 
-
-        self.settings.on_click = self.open_settings  # type: ignore                                        
-        self.buttons.add(self.settings)
+        self.center_buttons.add(self.star)
 
         self.left_button = self.add_texture_button(
             texture_file_name="resources/icons/icons8-предыдущий трек-96.png",
@@ -518,7 +527,3 @@ class GUI(arcade.View):
 
         if self.media_player:
             self.media_player.volume = self.slider.value / 100
-
-window = arcade.Window(1920,1080)
-window.show_view(GUI())
-arcade.run()
