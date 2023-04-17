@@ -4,6 +4,7 @@ from views.Container import ContainerView
 from views.test import TestView
 from GUI import GUI
 import pyglet
+from animations.tornado import Tornado
 
 from GUI import GUI
 
