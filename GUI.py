@@ -13,6 +13,7 @@ import pymunk
 from pymunk import Vec2d
 from assets.scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
+from animations.tornado import Tornado
 
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
@@ -137,12 +138,19 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
+        self.tornado = Tornado()
+        self.tornado.fill_sprites(self.sprites)
+
+
+
     
     def update(self, delta_time: float):
 
         self.time += delta_time
+
+        self.tornado.animation_run(self.sprites, delta_time)
         
-        if self.stop_animations:
+        if False:
 
             if False:
                 if len(self.music_track.single_frame_data) == 0:
