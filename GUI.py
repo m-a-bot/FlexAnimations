@@ -16,6 +16,7 @@ from assets.scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
 from animations.tornado import Tornado
 from animations.confusion import Chaos
+from animations.wave import Wave
 
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
@@ -72,13 +73,16 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
-        # self.tornado = Tornado()
-        # self.tornado.fill_sprites(self.sprites)
+        self.tornado = Tornado()
+        self.tornado.fill_sprites(self.sprites)
+        # self.wave = Wave()
+        # self.wave.fill_sprites(self.sprites)
 
-        self.sim = PhysicsSimulation(self.window)
-        self.setup_simulation()
-        self.chaos = Chaos()
-        self.chaos.simulation = self.sim
+
+        # self.sim = PhysicsSimulation(self.window)
+        # self.setup_simulation()
+        # self.chaos = Chaos()
+        # self.chaos.simulation = self.sim
 
     
     def update(self, delta_time: float):
@@ -86,8 +90,8 @@ class GUI(arcade.View):
         self.time += delta_time
 
         # self.tornado.animation_run(self.sprites, delta_time)
-        
-        self.chaos.animation_run(self.sprites, delta_time)    
+        # self.wave.animation_run(self.sprites, delta_time)
+        # self.chaos.animation_run(self.sprites, delta_time)
 
 
     
