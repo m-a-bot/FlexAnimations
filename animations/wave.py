@@ -4,38 +4,6 @@ from settings import *
 from functools import partial
 import math
 
-
-def move_cart_to_center(x, y):
-    return x - WIDTH // 2, y - HEIGHT // 2
-
-
-def move_cart_to_origin(x, y):
-    return x + WIDTH // 2, y + HEIGHT // 2
-
-
-def polar_to_cart(r, phi):
-    x = r * math.cos(phi)
-    y = r * math.sin(phi)
-
-    return x, y
-
-
-def cart_to_polar(x, y):
-    phi = math.atan2(y, x)
-    r = math.sqrt(x ** 2 + y ** 2)
-
-    return r, phi
-
-
-def increase_angle(x, y, inc):
-    x, y = move_cart_to_center(x, y)
-    r, phi = cart_to_polar(x, y)
-    phi += inc
-    x, y = polar_to_cart(r, phi)
-    x, y = move_cart_to_origin(x, y)
-    return x, y
-
-
 def move(x, y, inc, a, b, c, d):
 
     x, y = x + inc, a + b * math.sin(c * x + d)

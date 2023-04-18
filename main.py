@@ -1,7 +1,7 @@
 import arcade
 from settings import *
-from Views.Container import ContainerView
-from Views.test import TestView
+from views.Container import ContainerView
+from views.test import TestView
 from GUI import GUI
 import pyglet
 from animations.tornado import Tornado

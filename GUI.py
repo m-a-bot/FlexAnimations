@@ -39,10 +39,16 @@ class GUI(arcade.View):
 
         self.time = 0.0
 
+        ### Physics
+        #
+        # self.space = pymunk.Space()
+        # self.space.gravity = Vec2d(0, 0)
+        # self.space.damping = 0.99
+        # self.animation = None
+
         self.sprites = arcade.SpriteList()
         self.stop_animations = False
         
-        #
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
