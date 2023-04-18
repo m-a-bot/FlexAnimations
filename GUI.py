@@ -44,7 +44,7 @@ class GUI(arcade.View):
         # self.space = pymunk.Space()
         # self.space.gravity = Vec2d(0, 0)
         # self.space.damping = 0.99
-        # self.animation = None
+
 
         self.sprites = arcade.SpriteList()
         self.stop_animations = False
@@ -69,6 +69,7 @@ class GUI(arcade.View):
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
         self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
+        self.menu.animation = None
 
         self.section_manager.add_section(self.music_track)
         self.section_manager.add_section(self.menu)
@@ -93,10 +94,8 @@ class GUI(arcade.View):
     def update(self, delta_time: float):
 
         self.time += delta_time
-
-        # self.tornado.animation_run(self.sprites, delta_time)
-        # self.wave.animation_run(self.sprites, delta_time)
-        # self.chaos.animation_run(self.sprites, delta_time)
+        if self.menu.animation is not None:
+            self.menu.animation.animation_run(self.sprites, delta_time)
 
 
     
