@@ -1,6 +1,8 @@
 import arcade
 from arcade import SpriteSolidColor, SpriteList
-
+from animations.tornado import Tornado
+from animations.wave import Wave
+from animations.confusion import Chaos
 
 class Buttons(arcade.View):
        def add_texture_button(texture_file_name: str,
@@ -52,9 +54,9 @@ class Menu(arcade.Section):
         self.btn_diff = self.height//5
 
         self.first_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Tornado.png",
+            hover_texture_file_name="resources/icons/Tornado.png",
+            press_texture_file_name="resources/icons/Tornado.png",
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - self.btn_diff
@@ -64,9 +66,9 @@ class Menu(arcade.Section):
         self.first_animation_mode_btn.on_click = self.first_animation_btn_on_click
 
         self.second_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Wave.png",
+            hover_texture_file_name="resources/icons/Wave.png",
+            press_texture_file_name="resources/icons/Wave.png",
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - 2*self.btn_diff
@@ -76,9 +78,9 @@ class Menu(arcade.Section):
         self.second_animation_mode_btn.on_click = self.second_animation_btn_on_click
 
         self.third_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Chaos.png",
+            hover_texture_file_name="resources/icons/Chaos.png",
+            press_texture_file_name="resources/icons/Chaos.png",
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - 3*self.btn_diff
@@ -88,9 +90,9 @@ class Menu(arcade.Section):
         self.third_animation_mode_btn.on_click = self.third_animation_btn_on_click
 
         self.first_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Circle.png",
+            hover_texture_file_name="resources/icons/Circle.png",
+            press_texture_file_name="resources/icons/Circle.png",
             _scale=2,
             _x=self.right - 445,
             _y=self.top - 50 - self.btn_diff
@@ -100,9 +102,9 @@ class Menu(arcade.Section):
         self.first_figure_btn.on_click = self.first_figure_btn_on_click
 
         self.second_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Triangle.png",
+            hover_texture_file_name="resources/icons/Triangle.png",
+            press_texture_file_name="resources/icons/Triangle.png",
             _scale=2,
             _x = self.right - 445,
             _y = self.top - 50 - 2*self.btn_diff
@@ -112,9 +114,9 @@ class Menu(arcade.Section):
         self.second_figure_btn.on_click = self.second_figure_btn_on_click
 
         self.third_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            hover_texture_file_name="resources/icons/Надо бы текстур добавить.png",
-            press_texture_file_name="resources/icons/Надо бы текстур добавить.png",
+            texture_file_name="resources/icons/Square.png",
+            hover_texture_file_name="resources/icons/Square.png",
+            press_texture_file_name="resources/icons/Square.png",
             _scale=2,
             _x = self.right - 445,
             _y = self.top - 50 - 3*self.btn_diff
@@ -159,22 +161,22 @@ class Menu(arcade.Section):
                 self.enabled = False
 
     def first_animation_btn_on_click(self, *_):
-        self.animation_type = ...
+        self.animation = Tornado()
 
     def second_animation_btn_on_click(self, *_):
-        self.animation_type = ...
+        self.animation = Wave()
 
     def third_animation_btn_on_click(self, *_):
-        self.animation_type = ...
+        self.animation = Chaos()
 
     def first_figure_btn_on_click(self, *_):
-        self.figure = ...
+        self.figure = 'cicle'
 
     def second_figure_btn_on_click(self, *_):
-        self.figure = ...
+        self.figure = 'triangle'
 
     def third_figure_btn_on_click(self, *_):
-        self.figure = ...
+        self.figure = 'square'
 
     def close_btn_on_click(self, *_):
         self.enabled = False
