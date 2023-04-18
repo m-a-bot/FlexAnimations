@@ -16,6 +16,7 @@ from assets.scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
 from animations.tornado import Tornado
 from animations.confusion import Chaos
+from animations.wave import Wave
 
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
@@ -38,10 +39,16 @@ class GUI(arcade.View):
 
         self.time = 0.0
 
+        ### Physics
+        #
+        # self.space = pymunk.Space()
+        # self.space.gravity = Vec2d(0, 0)
+        # self.space.damping = 0.99
+        # self.animation = None
+
         self.sprites = arcade.SpriteList()
         self.stop_animations = False
         
-        #
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
         self.sound_bar_is_visible = False  # видна ли планка с саундом
@@ -55,7 +62,6 @@ class GUI(arcade.View):
         self.my_music = self.load_wav()
 
         samplerate, self.mdata = wavfile.read((self.songs[self.cur_song_index]))
-
         print(samplerate)
 
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
@@ -72,13 +78,16 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
-        # self.tornado = Tornado()
-        # self.tornado.fill_sprites(self.sprites)
+        self.tornado = Tornado()
+        self.tornado.fill_sprites(self.sprites)
+        # self.wave = Wave()
+        # self.wave.fill_sprites(self.sprites)
 
-        self.sim = PhysicsSimulation(self.window)
-        self.setup_simulation()
-        self.chaos = Chaos()
-        self.chaos.simulation = self.sim
+
+        # self.sim = PhysicsSimulation(self.window)
+        # self.setup_simulation()
+        # self.chaos = Chaos()
+        # self.chaos.simulation = self.sim
 
     
     def update(self, delta_time: float):
@@ -86,8 +95,8 @@ class GUI(arcade.View):
         self.time += delta_time
 
         # self.tornado.animation_run(self.sprites, delta_time)
-        
-        self.chaos.animation_run(self.sprites, delta_time)    
+        # self.wave.animation_run(self.sprites, delta_time)
+        # self.chaos.animation_run(self.sprites, delta_time)
 
 
     
