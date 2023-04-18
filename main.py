@@ -5,6 +5,7 @@ from Views.test import TestView
 from GUI import GUI
 import pyglet
 from animations.tornado import Tornado
+from animations.wave import Wave
 
 from GUI import GUI
 
