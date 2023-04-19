@@ -4,7 +4,6 @@ from animations.tornado import Tornado
 from animations.wave import Wave
 from animations.confusion import Chaos
 from animations.animation import FiguresType
-
 class Buttons(arcade.View):
        def add_texture_button(texture_file_name: str,
                            hover_texture_file_name: str,
@@ -39,6 +38,9 @@ class Menu(arcade.Section):
         self.figure = FiguresType
         
         self.gui_elements = SpriteList()
+
+        self.gui_sprites = SpriteList()
+        self.gui_animation = None
 
         self.available_area = [self.left + 0, self.bottom + 100, self.width, self.height]
         self.shift = (self.height - 250) / 4
@@ -218,13 +220,14 @@ class Menu(arcade.Section):
             self.apply_button.available = False
 
     def close_btn_on_click(self, *_):
-        self.animation = self.previous_animation
+        self.gui_animation = self.previous_animation
         self.figure = None
         self.enabled = False
 
     def apply_button_on_click(self, *_):
         if self.apply_button.available:
-            self.animation = self.pre_animation(self.pre_figure)
+            self.gui_animation = self.pre_animation(self.pre_figure)
+            self.gui_animation.fill_sprites(self.gui_sprites)
             self.figure = self.pre_figure
             self.enabled = False
 
