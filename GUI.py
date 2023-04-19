@@ -21,8 +21,7 @@ from animations.animation import AnimationMode, FiguresType
 
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
-DEBUG = True
-
+DEBUG = False
 class GUI(arcade.View):
 
     def __init__(self):
@@ -47,7 +46,6 @@ class GUI(arcade.View):
         # self.space.damping = 0.99
 
 
-        self.sprites = arcade.SpriteList()
         self.stop_animations = False
         
         self.paused = True  # True, если музыка играет, False, если пауза
@@ -73,6 +71,7 @@ class GUI(arcade.View):
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
+
         self.section_manager.add_section(self.music_track)
         self.section_manager.add_section(self.menu)
 
@@ -81,23 +80,17 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
-        self.tornado = Tornado(FiguresType.CIRCLE)
-        self.tornado.fill_sprites(self.sprites)
-        # self.wave = Wave()
-        # self.wave.fill_sprites(self.sprites)
-
-
         # self.sim = PhysicsSimulation(self.window)
         # self.setup_simulation()
         # self.chaos = Chaos()
         # self.chaos.simulation = self.sim
 
-    
+
     def update(self, delta_time: float):
 
         self.time += delta_time
-        if self.menu.animation is not None:
-            self.menu.animation.animation_run(self.sprites, delta_time)
+        if self.menu.gui_animation is not None:
+            self.menu.gui_animation.animation_run(self.menu.gui_sprites, delta_time)
 
     def on_draw(self):
         self.clear()
@@ -109,7 +102,7 @@ class GUI(arcade.View):
         # arcade.draw_line(*self.g_rt, *self.g_rb, (150,0,0,140), 3)
         # arcade.draw_line(*self.g_lb, *self.g_rb, (150,0,0,140), 3)
 
-        self.sprites.draw()
+        self.menu.gui_sprites.draw()
         
         if DEBUG:
             if len(self.songs) > 0:

@@ -41,17 +41,17 @@ class Tornado(Animation):
         self.center = (self.center_x, self.center_y)
 
         if figure_type == FiguresType.CIRCLE:
-            self.texture = "resources/icons/icons8-настройки-96.png"
+            self.texture = "resources/icons/Круг.png"
         if figure_type == FiguresType.TRIANGLE:
-            self.texture = "resources/icons/icons8-звездочка-96.png"
+            self.texture = "resources/icons/Треугольник.png"
         if figure_type == FiguresType.SQUARE:
-            self.texture = "resources/icons/icons8-гроомкий-звук-96.png"
+            self.texture = "resources/icons/Квадрат.png"
 
     def fill_sprites(self, sprites):
         super().fill_sprites(sprites)
         x, y = move_cart_to_center(*self.center)
         r, phi = cart_to_polar(x, y)
-        distances_delta = [100, 200, 300]
+        distances_delta = [75, 175, 275]
         layer1 = list(np.linspace(0, 2*np.pi, 6))
         layer2 = list(np.linspace(0, 2*np.pi, 11))
         layer3 = list(np.linspace(0, 2*np.pi, 16))
@@ -64,7 +64,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                              center_x=x,
                              center_y=y,
-                             scale=0.5)
+                             scale=0.9)
             )
 
         for layer in layer2:
@@ -75,7 +75,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                              center_x=x,
                              center_y=y,
-                             scale=0.5)
+                             scale=0.9)
             )
 
         for layer in layer3:
@@ -86,7 +86,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                              center_x=x,
                              center_y=y,
-                             scale=0.5)
+                             scale=0.9)
             )
 
 
