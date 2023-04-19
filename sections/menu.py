@@ -3,6 +3,7 @@ from arcade import SpriteSolidColor, SpriteList
 from animations.tornado import Tornado
 from animations.wave import Wave
 from animations.confusion import Chaos
+from animations.animation import FiguresType
 
 class Buttons(arcade.View):
        def add_texture_button(texture_file_name: str,
@@ -35,9 +36,7 @@ class Menu(arcade.Section):
 
         self.enabled = False
 
-        self.animation_type = None
-
-        self.figure = None
+        self.figure = FiguresType
         
         self.gui_elements = SpriteList()
 
@@ -60,7 +59,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.first_animation_mode_btn)
         self.first_animation_mode_btn.on_click = self.first_animation_btn_on_click
@@ -72,7 +70,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - 2*self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.second_animation_mode_btn)
         self.second_animation_mode_btn.on_click = self.second_animation_btn_on_click
@@ -84,7 +81,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x = self.left + 318,
             _y = self.top - 50 - 3*self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.third_animation_mode_btn)
         self.third_animation_mode_btn.on_click = self.third_animation_btn_on_click
@@ -96,7 +92,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x=self.right - 445,
             _y=self.top - 50 - self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.first_figure_btn)
         self.first_figure_btn.on_click = self.first_figure_btn_on_click
@@ -108,7 +103,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x = self.right - 445,
             _y = self.top - 50 - 2*self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.second_figure_btn)
         self.second_figure_btn.on_click = self.second_figure_btn_on_click
@@ -120,7 +114,6 @@ class Menu(arcade.Section):
             _scale=2,
             _x = self.right - 445,
             _y = self.top - 50 - 3*self.btn_diff
-
         )
         self.animation_buttons_manager.add(self.third_figure_btn)
         self.third_figure_btn.on_click = self.third_figure_btn_on_click
@@ -132,22 +125,29 @@ class Menu(arcade.Section):
             _scale=.1,
             _x=self.right-100,
             _y=self.top
-
         )
         self.animation_buttons_manager.add(self.close_btn)
         self.close_btn.on_click = self.close_btn_on_click
+
+        self.apply_button = Buttons.add_texture_button(
+            texture_file_name="resources/icons/apply_white.png",
+            hover_texture_file_name="resources/icons/apply_white.png",
+            press_texture_file_name="resources/icons/apply_white.png",
+            _scale=2,
+            _x=(self.right+self.left)//2-75,
+            _y=self.bottom+100
+        )
+        self.apply_button.available = False
+        self.animation_buttons_manager.add(self.apply_button)
+        self.apply_button.on_click = self.apply_button_on_click
 
     def on_draw(self):
 
         arcade.draw_xywh_rectangle_filled(*self.available_area, (50, 50, 50, 200))
 
-        self. animation_buttons_manager.enable()
+        self.animation_buttons_manager.enable()
         self.animation_buttons_manager.draw()
-
         self.gui_elements.draw()
-
-        #arcade.draw_text("Контейнер",self.left + 50, self.top - 4 * self.shift, font_size=20, bold=True)
-        #arcade.draw_text("Цвет анимации",self.left + 50, self.top - 2 * self.shift, font_size=20, bold=True)
 
         arcade.draw_text("Режим анимации", self.left + 300, self.top - 50, font_size=20, bold=True)
 
@@ -161,22 +161,71 @@ class Menu(arcade.Section):
                 self.enabled = False
 
     def first_animation_btn_on_click(self, *_):
-        self.animation = Tornado()
+        self.pre_animation = Tornado
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
 
     def second_animation_btn_on_click(self, *_):
-        self.animation = Wave()
+        self.pre_animation = Wave
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
 
     def third_animation_btn_on_click(self, *_):
-        self.animation = Chaos()
-
+        self.pre_animation = Chaos
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
     def first_figure_btn_on_click(self, *_):
-        self.figure = 'cicle'
-
+        self.pre_figure = FiguresType.CIRCLE
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
     def second_figure_btn_on_click(self, *_):
-        self.figure = 'triangle'
-
+        self.pre_figure = FiguresType.TRIANGLE
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
     def third_figure_btn_on_click(self, *_):
-        self.figure = 'square'
+        self.pre_figure = FiguresType.SQUARE
+        try:
+            if self.pre_animation is None or self.pre_figure is None:
+                self.apply_button.available = False
+            else:
+                self.apply_button.available = True
+        except AttributeError:
+            self.apply_button.available = False
 
     def close_btn_on_click(self, *_):
+        self.animation = self.previous_animation
+        self.figure = None
         self.enabled = False
+
+    def apply_button_on_click(self, *_):
+        if self.apply_button.available:
+            self.animation = self.pre_animation(self.pre_figure)
+            self.figure = self.pre_figure
+            self.enabled = False
+
+
