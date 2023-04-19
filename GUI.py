@@ -71,6 +71,7 @@ class GUI(arcade.View):
 
         self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
         self.menu.animation = None
+        self.menu.pre_animation = self.menu.animation
 
         self.section_manager.add_section(self.music_track)
         self.section_manager.add_section(self.menu)
@@ -319,7 +320,7 @@ class GUI(arcade.View):
     def open_settings(self, *_):
 
         self.menu.enabled = True
-
+        self.menu.previous_animation = self.menu.animation
         self.hud_is_visible = False
 
     def play_button_on(self):
