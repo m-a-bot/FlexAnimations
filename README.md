@@ -43,6 +43,8 @@ Discord, Telegram
 
 ![image](https://user-images.githubusercontent.com/54447582/229621891-8ffc291d-3b4c-4e07-b183-0badc5699346.png)
 
+![image](https://user-images.githubusercontent.com/54447582/233476794-55257ec9-10fa-4469-8085-c9078d83811d.png)
+
 
 ### Tasks
 
