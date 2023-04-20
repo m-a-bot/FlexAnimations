@@ -38,9 +38,8 @@ class Wave(Animation):
         self.a = 400
         self.b = 100
         self.c = 0.05
-        self.d = - WIDTH / 2
-        self.sprite_width = 160
-        self.first_x = 160
+        self.d = - WIDTH // 2
+        self.out_of_screen = WIDTH // 8
 
         self.number = 0
         self.rng = 150
@@ -49,8 +48,8 @@ class Wave(Animation):
 
         super().fill_sprites(sprites)
 
-        for cur_x in range(0, 1600, 160):
-            for cur_y in (self.center_y - self.rng, self.center_y, self.center_y - self.rng):
+        for cur_x in range(0, WIDTH + self.out_of_screen * 2, WIDTH // 8):
+            for _ in range(3):
                 cur_y, self.number = move(cur_x, self.number, 0, self.a, self.b, self.c, self.d, self.rng)[1:]
                 sprites.append(arcade.Sprite(filename=self.texture,
                                              center_x=cur_x,
@@ -58,8 +57,8 @@ class Wave(Animation):
                                              scale=0.9))
 
     def update_sprite(self, delta_time, sprite):
-        if sprite.center_x > WIDTH + self.sprite_width:
-            sprite.center_x = - self.first_x
+        if sprite.center_x > WIDTH + self.out_of_screen:
+            sprite.center_x = - self.out_of_screen
         sprite.center_x, sprite.center_y, self.number = move(sprite.center_x, self.number, delta_time * self.speed,
                                                              self.a, self.b, self.c, self.d, self.rng)
 
