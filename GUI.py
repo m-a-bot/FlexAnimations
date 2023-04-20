@@ -68,7 +68,7 @@ class GUI(arcade.View):
         self.music_track.enabled = False
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
-        self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
+        self.menu = Menu(self.width//8, self.height//9, self.width//4*3, self.height//10 * 8)
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
