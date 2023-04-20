@@ -8,21 +8,43 @@ class PhysicsSprite(arcade.Sprite):
         super().__init__(filename=file_name, texture=_texture, scale=sprite_scale, center_x=position[0], center_y=position[1])
         
         moment = pymunk.moment_for_poly(mass, self.get_hit_box())
-        body = pymunk.Body(mass, moment, body_type)
-        body.position = Vec2d(*position)
+        
+        self.speed = 300
+        self.body = pymunk.Body(mass, moment, body_type)
+        self.body.position = Vec2d(*position)
+        self.body.velocity = Vec2d(direction[0]*self.speed, direction[1]*self.speed)
 
         def constant_velocity(body, gravity, damping, dt):
-                body.velocity = body.velocity.normalized() * constant_speed
+                body.velocity = body.velocity.normalized() * self.speed
 
-        if direction is not None:
-            body.apply_impulse_at_local_point(direction)
+        
+        def limit_velocity(body, gravity, damping, dt):
+            max_velocity = 600
+            pymunk.Body.update_velocity(body, gravity, damping, dt)
+            l = body.velocity.length
+            if l > max_velocity:
+                scale = max_velocity / l
+                body.velocity = body.velocity * scale
 
-            body.velocity_func = constant_velocity
+            if l < self.speed:
+                body.velocity = body.velocity.normalized() * self.speed
 
-        self.shape = pymunk.Poly(body, self.get_hit_box())
+        self.body.velocity_func = limit_velocity
+
+        # if direction is not None:
+        #     self.body.apply_impulse_at_local_point(direction)
+
+        #     self.body.velocity_func = constant_velocity
+
+        self.shape = pymunk.Poly(self.body, self.get_hit_box())
         self.shape.elasticity = elasticity
 
-        space.add(body, self.shape)
+        space.add(self.body, self.shape)
+
+
+    def remove_from_space(self, space):
+         
+         space.remove(self.body, self.shape)
 
 
     def rotate(self, point, degrees: float, rot=True):

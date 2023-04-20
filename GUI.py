@@ -81,11 +81,6 @@ class GUI(arcade.View):
         self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
         self.slider.on_change = self.set_player_volume
 
-        # self.sim = PhysicsSimulation(self.window)
-        # self.setup_simulation()
-        # self.chaos = Chaos()
-        # self.chaos.simulation = self.sim
-
 
     def update(self, delta_time: float):
 
