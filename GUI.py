@@ -22,8 +22,9 @@ from animations.animation import AnimationMode, FiguresType
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
 DEBUG = False
-class GUI(arcade.View):
 
+
+class GUI(arcade.View):
     def __init__(self):
         super().__init__()
         # region
