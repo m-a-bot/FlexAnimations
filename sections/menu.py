@@ -56,67 +56,67 @@ class Menu(arcade.Section):
         self.btn_diff = self.height // 5
 
         self.first_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Tornado.png",
-            hover_texture_file_name="resources/icons/Tornado.png",
-            press_texture_file_name="resources/icons/Tornado.png",
-            _scale=2,
-            _x=self.left + 318,
-            _y=self.top - 50 - self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Торнадо.png",
+            hover_texture_file_name="resources/icons/Кнопка-Торнадо.png",
+            press_texture_file_name="resources/icons/Кнопка-Торнадо.png",
+            _scale=1,
+            _x=self.left + 250,
+            _y=self.top - self.btn_diff
         )
         self.animation_buttons_manager.add(self.first_animation_mode_btn)
         self.first_animation_mode_btn.on_click = self.first_animation_btn_on_click
 
         self.second_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Wave.png",
-            hover_texture_file_name="resources/icons/Wave.png",
-            press_texture_file_name="resources/icons/Wave.png",
-            _scale=2,
-            _x=self.left + 318,
-            _y=self.top - 50 - 2 * self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Волна.png",
+            hover_texture_file_name="resources/icons/Кнопка-Волна.png",
+            press_texture_file_name="resources/icons/Кнопка-Волна.png",
+            _scale=1,
+            _x=self.left + 250,
+            _y=self.top - 2 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.second_animation_mode_btn)
         self.second_animation_mode_btn.on_click = self.second_animation_btn_on_click
 
         self.third_animation_mode_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Chaos.png",
-            hover_texture_file_name="resources/icons/Chaos.png",
-            press_texture_file_name="resources/icons/Chaos.png",
-            _scale=2,
-            _x=self.left + 318,
-            _y=self.top - 50 - 3 * self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Хаос.png",
+            hover_texture_file_name="resources/icons/Кнопка-Хаос.png",
+            press_texture_file_name="resources/icons/Кнопка-Хаос.png",
+            _scale=1,
+            _x=self.left + 250,
+            _y=self.top - 3 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.third_animation_mode_btn)
         self.third_animation_mode_btn.on_click = self.third_animation_btn_on_click
 
         self.first_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Circle.png",
-            hover_texture_file_name="resources/icons/Circle.png",
-            press_texture_file_name="resources/icons/Circle.png",
-            _scale=2,
-            _x=self.right - 445,
-            _y=self.top - 50 - self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Круг.png",
+            hover_texture_file_name="resources/icons/Кнопка-Круг.png",
+            press_texture_file_name="resources/icons/Кнопка-Круг.png",
+            _scale=1,
+            _x=self.right - 350,
+            _y=self.top - self.btn_diff
         )
         self.animation_buttons_manager.add(self.first_figure_btn)
         self.first_figure_btn.on_click = self.first_figure_btn_on_click
 
         self.second_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Triangle.png",
-            hover_texture_file_name="resources/icons/Triangle.png",
-            press_texture_file_name="resources/icons/Triangle.png",
-            _scale=2,
-            _x=self.right - 445,
-            _y=self.top - 50 - 2 * self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Треугольник.png",
+            hover_texture_file_name="resources/icons/Кнопка-Треугольник.png",
+            press_texture_file_name="resources/icons/Кнопка-Треугольник.png",
+            _scale=1,
+            _x=self.right - 350,
+            _y=self.top - 2 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.second_figure_btn)
         self.second_figure_btn.on_click = self.second_figure_btn_on_click
 
         self.third_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Square.png",
-            hover_texture_file_name="resources/icons/Square.png",
-            press_texture_file_name="resources/icons/Square.png",
-            _scale=2,
-            _x=self.right - 445,
-            _y=self.top - 50 - 3 * self.btn_diff
+            texture_file_name="resources/icons/Кнопка-Квадрат.png",
+            hover_texture_file_name="resources/icons/Кнопка-Квадрат.png",
+            press_texture_file_name="resources/icons/Кнопка-Квадрат.png",
+            _scale=1,
+            _x=self.right - 350,
+            _y=self.top - 3 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.third_figure_btn)
         self.third_figure_btn.on_click = self.third_figure_btn_on_click
@@ -125,36 +125,43 @@ class Menu(arcade.Section):
             texture_file_name="resources/icons/close.png",
             hover_texture_file_name="resources/icons/close.png",
             press_texture_file_name="resources/icons/close.png",
-            _scale=.1,
-            _x=self.right - 100,
-            _y=self.top
+            _scale=1,
+            _x=self.right -20,
+            _y=self.top+80
         )
         self.animation_buttons_manager.add(self.close_btn)
         self.close_btn.on_click = self.close_btn_on_click
 
         self.apply_button = Buttons.add_texture_button(
-            texture_file_name="resources/icons/apply_white.png",
-            hover_texture_file_name="resources/icons/apply_white.png",
-            press_texture_file_name="resources/icons/apply_white.png",
-            _scale=2,
-            _x=(self.right + self.left) // 2 - 75,
+            texture_file_name="resources/icons/Подтвердить.png",
+            hover_texture_file_name="resources/icons/Подтвердить.png",
+            press_texture_file_name="resources/icons/Подтвердить.png",
+            _scale=1,
+            _x=(self.right + self.left) // 2 - 125,
             _y=self.bottom + 100
         )
         self.apply_button.available = False
         self.animation_buttons_manager.add(self.apply_button)
         self.apply_button.on_click = self.apply_button_on_click
 
+        self.remove_all_animations = Buttons.add_texture_button(
+            texture_file_name="resources/icons/Убрать.png",
+            hover_texture_file_name="resources/icons/Убрать.png",
+            press_texture_file_name="resources/icons/Убрать.png",
+            _scale=.9,
+            _x=self.left+250,
+            _y=self.top - 3.7 * self.btn_diff
+        )
+        self.animation_buttons_manager.add(self.remove_all_animations)
+        self.remove_all_animations.on_click = self.remove_all_animations_on_click
     def on_draw(self):
 
         arcade.draw_xywh_rectangle_filled(*self.available_area, (50, 50, 50, 200))
-
+        arcade.draw_xywh_rectangle_filled(self.left, self.top+80, self.right-self.left, 20, arcade.color.BLACK)
+        arcade.draw_text('Настройки', self.left, self.top +80)
         self.animation_buttons_manager.enable()
         self.animation_buttons_manager.draw()
         self.gui_elements.draw()
-
-        arcade.draw_text("Режим анимации", self.left + 300, self.top - 50, font_size=20, bold=True)
-
-        arcade.draw_text("Фигуры", self.right - 400, self.top - 50, font_size=20, bold=True)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
 
@@ -222,9 +229,11 @@ class Menu(arcade.Section):
         except AttributeError:
             self.apply_button.available = False
 
+    def remove_all_animations_on_click(self, *_):
+        self.gui_sprites.clear()
+        self.gui_animation = None
+
     def close_btn_on_click(self, *_):
-        self.gui_animation = self.previous_animation
-        self.figure = None
         self.enabled = False
 
     def apply_button_on_click(self, *_):
