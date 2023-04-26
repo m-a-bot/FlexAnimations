@@ -142,7 +142,7 @@ class GUI(arcade.View):
             _scale=0.9 * SCALE_BUTTONS
         )
 
-        self.settings.on_click = self.open_settings  # type: ignore                                        
+        #self.settings.on_click = self....  # type: ignore
         self.buttons.add(self.settings)
 
         # Star button
@@ -152,7 +152,7 @@ class GUI(arcade.View):
             press_texture_file_name="resources/icons/icons8-звездочка-96.png",
             _scale=0.9 * SCALE_BUTTONS
         )
-
+        self.star.on_click = self.open_settings
         self.center_buttons.add(self.star)
 
         self.left_button = self.add_texture_button(

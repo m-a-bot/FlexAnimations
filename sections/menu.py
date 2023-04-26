@@ -46,11 +46,6 @@ class Menu(arcade.Section):
         self.available_area = [self.left + 0, self.bottom + 100, self.width, self.height]
         self.shift = (self.height - 250) / 4
 
-        self.back_button = SpriteSolidColor(100, 50, (0, 0, 177, 180))
-        self.back_button.set_position(self.left + self.width / 2, self.bottom + 50)
-
-        self.gui_elements.append(self.back_button)
-
         self.animation_buttons_manager = arcade.gui.UIManager(self.window)
 
         self.btn_diff = self.height // 5
