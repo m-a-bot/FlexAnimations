@@ -209,7 +209,7 @@ class SettingsView(arcade.View):
         self.current_mode = None
         self.current_template = None
 
-        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png"]
+        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png", "arrow.png", "heart.png", "plus.png"]
 
         self.manager = arcade.gui.UIManager(self.window)
 
@@ -254,6 +254,7 @@ class SettingsView(arcade.View):
 
         temp1 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
         temp2 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
+        temp3 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
 
         for i in range(3):
             tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
@@ -265,8 +266,14 @@ class SettingsView(arcade.View):
             tp.on_click = self.image_clicked
             temp2.add(tp.with_space_around(2, 2, 2, 2, BLUE))
 
-        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp1, anchor_y="bottom", align_y=180))
-        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp2, anchor_y="bottom", align_y=90))
+        for i in range(6, 9):
+            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
+            tp.on_click = self.image_clicked
+            temp3.add(tp.with_space_around(2, 2, 2, 2, BLUE))
+
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp1, anchor_y="bottom", align_y=270))
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp2, anchor_y="bottom", align_y=180))
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp3, anchor_y="bottom", align_y=90))
 
         self.llayout.add(
             arcade.gui.UIAnchorWidget(child=layout, anchor_x="left", align_x=50, anchor_y="top", align_y=-65))
