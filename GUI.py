@@ -6,6 +6,7 @@ from assets.physics import PhysicsSimulation
 from settings import FPS
 from sections.music_track import MusicTrack
 from sections.menu import Menu
+from sections.settings import SettingsSection
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
@@ -72,13 +73,36 @@ class GUI(arcade.View):
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
+        self.settings_sec = SettingsSection(self.width//8, self.height//10, self.width//4*3, self.height//10 * 8)
 
         self.section_manager.add_section(self.music_track)
         self.section_manager.add_section(self.menu)
+        self.section_manager.add_section(self.settings_sec)
 
         self.setup_gui()
 
-        self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40)
+        """
+        normal_bg: Color = (94, 104, 117)
+        normal_border: Color = (77, 81, 87)
+        normal_border_width: int = 1
+        normal_filled_bar: Color = (50, 50, 50)
+        normal_unfilled_bar: Color = (116, 125, 123)
+
+        # hovered
+        hovered_bg: Color = (96, 103, 112)
+        hovered_border: Color = (77, 81, 87)
+        hovered_border_width: int = 2
+        hovered_filled_bar: Color = (50, 50, 50)
+        hovered_unfilled_bar: Color = (116, 125, 123)
+
+        # pressed
+        pressed_bg: Color = (96, 103, 112)
+        pressed_border: Color = (77, 81, 87)
+        pressed_border_width: int = 3
+        pressed_filled_bar: Color = (50, 50, 50)
+        pressed_unfilled_bar: Color = (116, 125, 123)
+        """
+        self.slider = UISlider(value=self.volume_level, x=self.volume.left, y=self.hud_height + 5, width=120, height=40, style={"normal_filled_bar":(238, 20, 223), "hovered_filled_bar":(238, 20, 223), "pressed_filled_bar":(238, 20, 223)})
         self.slider.on_change = self.set_player_volume
 
 
@@ -142,7 +166,7 @@ class GUI(arcade.View):
             _scale=0.9 * SCALE_BUTTONS
         )
 
-        #self.settings.on_click = self....  # type: ignore
+        self.settings.on_click = self.open_settings1
         self.buttons.add(self.settings)
 
         # Star button
@@ -310,6 +334,11 @@ class GUI(arcade.View):
 
         self.menu.enabled = True
         self.menu.previous_animation = self.menu.animation
+        self.hud_is_visible = False
+
+    def open_settings1(self, *_):
+
+        self.settings_sec.enabled = True
         self.hud_is_visible = False
 
     def play_button_on(self):
