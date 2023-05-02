@@ -67,7 +67,8 @@ class Settings:
         ...
 
     def add_gradient_colors(self, color1, color2):
-        ...
+        
+        self.gradient_colors = [color1, color2]
 
     def add_only_color(self, color):
         self.only_color = color
@@ -104,6 +105,32 @@ class SingleColorModeFactory(AnimationFactory):
             for j, y in enumerate(row):
                 if template[i][j][3] != 0:
                     _nb[i][j][:3] = color
+
+        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
+
+    def update_object(self):
+        ...
+
+
+class GradientModeFactory(AnimationFactory):
+
+    def create_object(self, template):
+
+        return self.__create_object_gradient_mode(template, *self.settings.gradient_colors)
+
+    def __create_object_gradient_mode(self, template, color1, color2):
+
+        vert = False
+
+        width, height, _ = template.shape
+
+        colors = numpy.round(numpy.linspace(color1, color2, width)) if vert else numpy.round(numpy.linspace(color1, color2, height))
+
+        _nb = template.copy()
+
+        for x in range(0, width):
+            for y in range(0, height):
+                _nb[x, y, :3] = colors[x if vert else y]
 
         return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
 
@@ -173,6 +200,8 @@ class SettingsView(arcade.View):
         self._settings = Settings()
         self.factory: AnimationFactory = None
         self.single_color_factory = SingleColorModeFactory(self._settings)
+        self.gradient_factory = GradientModeFactory(self._settings)
+
         self.current_mode = None
         self.current_template = None
 
@@ -205,12 +234,12 @@ class SettingsView(arcade.View):
         # self.apply_button.on_click = self.apply_button_on_click
         # ------------------
 
-        padding = 25
-        self.llayout = arcade.gui.UILayout(self.left, self.bottom,
-                                           self.width // 3, self.height)
+        padding = 40
+        self.llayout = arcade.gui.UILayout(self.left + padding, self.bottom,
+                                           self.width * 4 // 10 - padding, self.height)
 
-        self.rlayout = arcade.gui.UILayout(self.left + self.width // 3, self.bottom,
-                                           self.width * 2 // 3, self.height)
+        self.rlayout = arcade.gui.UILayout(self.left + self.width * 4 // 10 + padding, self.bottom,
+                                           self.width // 2 + self.width//10 - padding, self.height)
 
         layout = arcade.gui.UIBoxLayout(vertical=True, space_between=self.llayout.height // 12, align="left")
 
@@ -223,12 +252,12 @@ class SettingsView(arcade.View):
         temp2 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
 
         for i in range(3):
-            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.1)
+            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
             tp.on_click = self.image_clicked
             temp1.add(tp.with_space_around(2, 2, 2, 2, BLUE))
 
         for i in range(3, 6):
-            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.1)
+            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
             tp.on_click = self.image_clicked
             temp2.add(tp.with_space_around(2, 2, 2, 2, BLUE))
 
@@ -236,7 +265,7 @@ class SettingsView(arcade.View):
         self.llayout.add(arcade.gui.UIAnchorWidget(child=temp2, anchor_y="bottom", align_y=90))
 
         self.llayout.add(
-            arcade.gui.UIAnchorWidget(child=layout, anchor_x="left", align_x=25, anchor_y="top", align_y=-25))
+            arcade.gui.UIAnchorWidget(child=layout, anchor_x="left", align_x=50, anchor_y="top", align_y=-65))
 
         self.r_group1 = None
         self.g_group1 = None
@@ -308,6 +337,16 @@ class SettingsView(arcade.View):
 
     def update(self, delta_time: float):
 
+        if self.current_mode == Mode.Gradient:
+
+            new_colors = [(self.r_group1.value, self.g_group1.value, self.b_group1.value), (self.r_group2.value, self.g_group2.value, self.b_group2.value)]
+
+            if self._settings.gradient_colors != new_colors:
+                self._settings.add_gradient_colors(*new_colors)
+
+            if self.current_template is not None:
+                self.result_texture = self.factory.create_object(self.current_template)
+
         if self.current_mode == Mode.Single:
             new_color = (self.r_group1.value, self.g_group1.value, self.b_group1.value)
             if self._settings.only_color != new_color:
@@ -377,6 +416,8 @@ class SettingsView(arcade.View):
             self.rlayout.add(self.group1)
             self.rlayout.add(self.group2)
 
+            self.factory = self.gradient_factory
+
         if obj.mode == Mode.Single:
             self.rlayout.add(self.group1)
 
@@ -390,7 +431,7 @@ class SettingsView(arcade.View):
 
         if self.result_texture is not None:
 
-            self.result_texture.draw_scaled(self.width*2//3, self.height//5, scale=0.25)
+            self.result_texture.draw_scaled(self.width*3//4, self.height//5, scale=1)
 
         self.manager.enable()
         self.manager.draw()
