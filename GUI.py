@@ -6,7 +6,7 @@ from assets.physics import PhysicsSimulation
 from settings import FPS
 from sections.music_track import MusicTrack
 from sections.menu import Menu
-from sections._settings import SettingsSection
+from sections._settings import SettingsView
 from tkinter.filedialog import askopenfilename
 from arcade.experimental.uislider import UISlider
 from scipy.io import wavfile
@@ -74,11 +74,8 @@ class GUI(arcade.View):
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
-        self.__settings = SettingsSection(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
-
         self.section_manager.add_section(self.music_track)
         self.section_manager.add_section(self.menu)
-        self.section_manager.add_section(self.__settings)
 
         self.setup_gui()
 
@@ -340,8 +337,8 @@ class GUI(arcade.View):
         self.hud_is_visible = False
 
     def open_settings1(self, *_):
-        self.hud_is_visible = False
-        self.__settings.enabled = True
+        
+        self.window.show_view(SettingsView(self))
 
     def play_button_on(self):
         self.play_button.texture_pressed = \

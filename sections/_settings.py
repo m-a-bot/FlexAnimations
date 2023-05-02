@@ -182,12 +182,14 @@ class Template(arcade.gui.UITextureButton):
                          size_hint_min, size_hint_max, style, **kwargs)
 
 
-class SettingsSection(arcade.Section):
+class SettingsView(arcade.View):
 
-    def __init__(self, left: int, bottom: int, width: int, height: int, *, name: str | None = None, accept_keyboard_events: bool | Iterable = True, prevent_dispatch: Iterable | None = None, prevent_dispatch_view: Iterable | None = None, local_mouse_coordinates: bool = False, enabled: bool = True, modal: bool = False):
-        super().__init__(left, bottom, width, height, name=name, accept_keyboard_events=accept_keyboard_events, prevent_dispatch=prevent_dispatch, prevent_dispatch_view=prevent_dispatch_view, local_mouse_coordinates=local_mouse_coordinates, enabled=enabled, modal=modal)
+    def __init__(self, main_view):
+        super().__init__()
+        self.main_view = main_view
+        self.bg = arcade.load_texture("resources/icons/фон.png")
 
-        self.enabled = False
+        #self.enabled = False
 
         self.left = 0
         self.bottom = 0
@@ -423,6 +425,8 @@ class SettingsSection(arcade.Section):
             self.factory = self.single_color_factory
 
     def on_draw(self):
+        
+        arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
 
         if self.result_texture is not None:
 
@@ -433,4 +437,4 @@ class SettingsSection(arcade.Section):
 
     def close_btn_on_click(self, *_):
 
-        self.enabled = False
+        self.window.show_view(self.main_view)
