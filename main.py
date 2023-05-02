@@ -1,6 +1,5 @@
 import arcade
 from settings import *
-import pyglet
 
 from GUI import GUI
 if __name__ == "__main__":
