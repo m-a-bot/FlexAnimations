@@ -70,12 +70,11 @@ class GUI(arcade.View):
         if self.mdata is not None:
             self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
-        self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
+        self.menu = Menu(self)
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
         self.section_manager.add_section(self.music_track)
-        self.section_manager.add_section(self.menu)
 
         self.setup_gui()
 
@@ -108,6 +107,7 @@ class GUI(arcade.View):
 
         for sprite in self.menu.gui_sprites:
             sprite.texture = texture
+            sprite.scale = 0.5
 
 
     def update(self, delta_time: float):
@@ -340,6 +340,7 @@ class GUI(arcade.View):
 
         self.menu.enabled = True
         self.menu.previous_animation = self.menu.animation
+        self.window.show_view(self.menu)
         self.hud_is_visible = False
 
     def open_settings1(self, *_):
