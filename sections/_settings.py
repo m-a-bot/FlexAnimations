@@ -142,6 +142,9 @@ import arcade
 import arcade.gui
 from arcade.experimental.uislider import UISlider
 from settings import ROOT_DIR
+RED = (255, 0, 0)
+GREEN = (0,255,0)
+BLUE1=(0,0,255)
 
 
 class Check(arcade.gui.UITextureButton):
@@ -320,14 +323,32 @@ class SettingsView(arcade.View):
     def add_slider_with_different_variables(self, number):
 
         if number == 1:
-            self.r_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
+            self.r_group1 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": RED, 
+                "hovered_filled_bar":RED,
+                "pressed_filled_bar":RED})
+            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": GREEN, 
+                "hovered_filled_bar":GREEN,
+                "pressed_filled_bar":GREEN})
+            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": BLUE1, 
+                "hovered_filled_bar":BLUE1,
+                "pressed_filled_bar":BLUE1})
 
         else:
-            self.r_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
+            self.r_group2 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": RED, 
+                "hovered_filled_bar":RED,
+                "pressed_filled_bar":RED})
+            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": GREEN, 
+                "hovered_filled_bar":GREEN,
+                "pressed_filled_bar":GREEN})
+            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": BLUE1, 
+                "hovered_filled_bar":BLUE1,
+                "pressed_filled_bar":BLUE1})
 
     def add_picture_with_different_variables(self, number):
 
