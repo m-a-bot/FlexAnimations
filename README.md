@@ -39,8 +39,7 @@ Discord, Telegram
 > Sound
 - scipy
 
-![image](https://user-images.githubusercontent.com/54447582/226207957-d69ea2ea-e5d7-4a3d-80de-026f2af63b53.png)
-
+![image](https://user-images.githubusercontent.com/54447582/235671268-ed1d6c0a-078d-425b-942c-9a20dd14c2a0.png)
 ![image](https://user-images.githubusercontent.com/54447582/229621891-8ffc291d-3b4c-4e07-b183-0badc5699346.png)
 
 ![image](https://user-images.githubusercontent.com/54447582/233476794-55257ec9-10fa-4469-8085-c9078d83811d.png)
