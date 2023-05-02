@@ -160,9 +160,7 @@ class Menu(arcade.Section):
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
 
-        if button == arcade.MOUSE_BUTTON_LEFT:
-            if self.back_button.collides_with_point((x, y)):
-                self.enabled = False
+        ...
 
     def first_animation_btn_on_click(self, *_):
         self.pre_animation = Tornado
