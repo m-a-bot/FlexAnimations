@@ -21,6 +21,8 @@
 
 Таск менеджер [Trello](https://trello.com/b/B6NQIt8N/командный-проект).
 
+### Описание тестов https://docs.google.com/document/d/1HIQE76W_ijKvxIVK_OqRz12Cx86fH7rtGqx14pb0kT0/edit 
+
 Проект бьется на две части, gui и анимация.
 
 Постоянных ролей нет.
