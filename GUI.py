@@ -104,6 +104,12 @@ class GUI(arcade.View):
         self.slider.on_change = self.set_player_volume
 
 
+    def rebase_gui_sprites_texture(self, texture):
+
+        for sprite in self.menu.gui_sprites:
+            sprite.texture = texture
+
+
     def update(self, delta_time: float):
 
         self.time += delta_time

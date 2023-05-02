@@ -232,7 +232,7 @@ class SettingsView(arcade.View):
         )
         self.apply_button.available = False
         self.manager.add(self.apply_button)
-        # self.apply_button.on_click = self.apply_button_on_click
+        self.apply_button.on_click = self.apply_button_on_click
         # ------------------
 
         padding = 40
@@ -434,6 +434,17 @@ class SettingsView(arcade.View):
 
         self.manager.enable()
         self.manager.draw()
+
+
+    def apply_button_on_click(self, *_):
+
+        if self.result_texture is None:
+            return
+
+        self.main_view.rebase_gui_sprites_texture(self.result_texture)
+
+        self.window.show_view(self.main_view)
+        
 
     def close_btn_on_click(self, *_):
 
