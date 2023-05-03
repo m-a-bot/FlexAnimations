@@ -22,7 +22,7 @@ from animations.animation import AnimationMode, FiguresType
 
 PINK = (238, 20, 223)
 SCALE_BUTTONS = 0.7
-DEBUG = False
+DEBUG = True
 
 
 class GUI(arcade.View):
@@ -48,7 +48,7 @@ class GUI(arcade.View):
         # self.space.damping = 0.99
 
 
-        self.stop_animations = False
+        self.play_animations = False
         
         self.paused = True  # True, если музыка играет, False, если пауза
         self.hud_is_visible = False  # виден ли плеер
@@ -62,20 +62,19 @@ class GUI(arcade.View):
         self.media_player = None
         self.my_music = self.load_wav()
 
-        samplerate, self.mdata = wavfile.read((self.songs[self.cur_song_index]))
-        print(samplerate)
+        samplerate, self.mdata = self.get_music_data()
 
         self.music_track = MusicTrack(25, self.hud_height + 50, self.width - 50, 100)
         self.music_track.enabled = False
-        self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
-        self.menu = Menu(self.width//8, self.height//10 - 50, self.width//4*3, self.height//10 * 8)
+        if self.mdata is not None:
+            self.music_track.set_music_data(samplerate, self.mdata[:,0])
+
+        self.menu = Menu(self)
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 
-
         self.section_manager.add_section(self.music_track)
-        self.section_manager.add_section(self.menu)
 
         self.setup_gui()
 
@@ -104,10 +103,18 @@ class GUI(arcade.View):
         self.slider.on_change = self.set_player_volume
 
 
+    def rebase_gui_sprites_texture(self, texture):
+
+        for sprite in self.menu.gui_sprites:
+            sprite.texture = texture
+            sprite.scale = 0.5
+
+
     def update(self, delta_time: float):
 
         self.time += delta_time
-        if self.menu.gui_animation is not None:
+
+        if self.menu.gui_animation is not None and self.play_animations:
             self.menu.gui_animation.animation_run(self.menu.gui_sprites, delta_time)
 
     def on_draw(self):
@@ -120,6 +127,7 @@ class GUI(arcade.View):
         # arcade.draw_line(*self.g_rt, *self.g_rb, (150,0,0,140), 3)
         # arcade.draw_line(*self.g_lb, *self.g_rb, (150,0,0,140), 3)
 
+        
         self.menu.gui_sprites.draw()
         
         if DEBUG:
@@ -332,13 +340,12 @@ class GUI(arcade.View):
 
         self.menu.enabled = True
         self.menu.previous_animation = self.menu.animation
+        self.window.show_view(self.menu)
         self.hud_is_visible = False
 
     def open_settings1(self, *_):
-
-        settings = SettingsView(self)
-
-        self.window.show_view(settings)
+        
+        self.window.show_view(SettingsView(self))
 
     def play_button_on(self):
         self.play_button.texture_pressed = \
@@ -347,7 +354,7 @@ class GUI(arcade.View):
             arcade.load_texture("resources/icons/icons8-pause-в-круге-96.png")
         self.play_button.texture_hovered = \
         arcade.load_texture("resources/icons/icons8-pause-в-круге-96.png")
-        self.stop_animations = True
+
 
     def play_button_off(self):
         self.play_button.texture_pressed = \
@@ -357,7 +364,6 @@ class GUI(arcade.View):
         self.play_button.texture_hovered = \
             arcade.load_texture("resources/icons/icons8-play-в-круге-96.png")
 
-        self.stop_animations = False
         # сам медиа-плеер
 
     def music_over(self):
@@ -366,6 +372,7 @@ class GUI(arcade.View):
         self.play_button_off()
         self.cur_song_index += 1
         self.music_track.current_song_index=0
+        self.play_animations = False
 
         if self.cur_song_index >= len(self.songs):
             self.cur_song_index = 0
@@ -378,23 +385,32 @@ class GUI(arcade.View):
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
 
-            samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+            samplerate, self.mdata = self.get_music_data()
 
             print(samplerate)
             self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
 
     def load_wav(self):
+        if len(self.songs) == 0:
+            return
         return arcade.load_sound(self.songs[self.cur_song_index])
 
+
+    def get_music_data(self):
+
+        if len(self.songs) == 0:
+            return None, None
+        return wavfile.read(self.songs[self.cur_song_index])
 
     def left_button_clicked(self, *_):
         
         self.cur_song_index = max(0, self.cur_song_index-1)
 
-        samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+        samplerate, self.mdata = self.get_music_data()
 
-        print(samplerate)
+        if self.mdata is None:
+            return
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
         self.my_music = self.load_wav()
 
@@ -414,9 +430,10 @@ class GUI(arcade.View):
         
         self.cur_song_index = min(self.cur_song_index+1, len(self.songs)-1)
         self.my_music = self.load_wav()
-        samplerate, self.mdata = wavfile.read(self.songs[self.cur_song_index])
+        samplerate, self.mdata = self.get_music_data()
 
-        print(samplerate)
+        if self.mdata is None:
+            return
         self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
         if self.media_player is not None:
@@ -433,6 +450,11 @@ class GUI(arcade.View):
     def play_button_clicked(self, *_):
         self.paused = False
         self.music_track.enabled = True
+
+        if self.my_music is None:
+            return
+
+        self.play_animations = not self.play_animations
         if not self.media_player:
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
@@ -460,7 +482,18 @@ class GUI(arcade.View):
 
     def upload(self, *_):
         filename = askopenfilename()
+        if filename == "":
+            return
         self.songs.append(filename)
+
+        if len(self.songs) == 1:
+
+            self.my_music = self.load_wav()
+            samplerate, self.mdata = self.get_music_data()
+
+            if self.mdata is None:
+                return
+            self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
         # показывает/убирает hud в зависимости от положения мыши
 

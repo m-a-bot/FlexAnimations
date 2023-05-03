@@ -142,6 +142,9 @@ import arcade
 import arcade.gui
 from arcade.experimental.uislider import UISlider
 from settings import ROOT_DIR
+RED = (255, 0, 0)
+GREEN = (0,255,0)
+BLUE1=(0,0,255)
 
 
 class Check(arcade.gui.UITextureButton):
@@ -186,9 +189,10 @@ class SettingsView(arcade.View):
 
     def __init__(self, main_view):
         super().__init__()
-
         self.main_view = main_view
         self.bg = arcade.load_texture("resources/icons/фон.png")
+
+        #self.enabled = False
 
         self.left = 0
         self.bottom = 0
@@ -205,7 +209,7 @@ class SettingsView(arcade.View):
         self.current_mode = None
         self.current_template = None
 
-        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png"]
+        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png", "arrow.png", "heart.png", "plus.png"]
 
         self.manager = arcade.gui.UIManager(self.window)
 
@@ -231,7 +235,7 @@ class SettingsView(arcade.View):
         )
         self.apply_button.available = False
         self.manager.add(self.apply_button)
-        # self.apply_button.on_click = self.apply_button_on_click
+        self.apply_button.on_click = self.apply_button_on_click
         # ------------------
 
         padding = 40
@@ -250,6 +254,7 @@ class SettingsView(arcade.View):
 
         temp1 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
         temp2 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
+        temp3 = arcade.gui.UIBoxLayout(vertical=False, space_between=self.llayout.width // 5)
 
         for i in range(3):
             tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
@@ -261,8 +266,14 @@ class SettingsView(arcade.View):
             tp.on_click = self.image_clicked
             temp2.add(tp.with_space_around(2, 2, 2, 2, BLUE))
 
-        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp1, anchor_y="bottom", align_y=180))
-        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp2, anchor_y="bottom", align_y=90))
+        for i in range(6, 9):
+            tp = Template(ROOT_DIR + r"/resources/icons/templates/" + self.templates[i], scale=0.5)
+            tp.on_click = self.image_clicked
+            temp3.add(tp.with_space_around(2, 2, 2, 2, BLUE))
+
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp1, anchor_y="bottom", align_y=270))
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp2, anchor_y="bottom", align_y=180))
+        self.llayout.add(arcade.gui.UIAnchorWidget(child=temp3, anchor_y="bottom", align_y=90))
 
         self.llayout.add(
             arcade.gui.UIAnchorWidget(child=layout, anchor_x="left", align_x=50, anchor_y="top", align_y=-65))
@@ -319,14 +330,32 @@ class SettingsView(arcade.View):
     def add_slider_with_different_variables(self, number):
 
         if number == 1:
-            self.r_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40)
+            self.r_group1 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": RED, 
+                "hovered_filled_bar":RED,
+                "pressed_filled_bar":RED})
+            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": GREEN, 
+                "hovered_filled_bar":GREEN,
+                "pressed_filled_bar":GREEN})
+            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": BLUE1, 
+                "hovered_filled_bar":BLUE1,
+                "pressed_filled_bar":BLUE1})
 
         else:
-            self.r_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
-            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40)
+            self.r_group2 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": RED, 
+                "hovered_filled_bar":RED,
+                "pressed_filled_bar":RED})
+            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": GREEN, 
+                "hovered_filled_bar":GREEN,
+                "pressed_filled_bar":GREEN})
+            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
+                "normal_filled_bar": BLUE1, 
+                "hovered_filled_bar":BLUE1,
+                "pressed_filled_bar":BLUE1})
 
     def add_picture_with_different_variables(self, number):
 
@@ -416,7 +445,7 @@ class SettingsView(arcade.View):
             self.rlayout.add(self.group1)
             self.rlayout.add(self.group2)
 
-            self.factory = self.gradient_factory
+        self.factory = self.gradient_factory
 
         if obj.mode == Mode.Single:
             self.rlayout.add(self.group1)
@@ -424,9 +453,7 @@ class SettingsView(arcade.View):
             self.factory = self.single_color_factory
 
     def on_draw(self):
-
-        self.clear()
-
+        
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
 
         if self.result_texture is not None:
@@ -435,6 +462,17 @@ class SettingsView(arcade.View):
 
         self.manager.enable()
         self.manager.draw()
+
+
+    def apply_button_on_click(self, *_):
+
+        if self.result_texture is None:
+            return
+
+        self.main_view.rebase_gui_sprites_texture(self.result_texture)
+
+        self.window.show_view(self.main_view)
+        
 
     def close_btn_on_click(self, *_):
 

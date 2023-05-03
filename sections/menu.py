@@ -29,10 +29,19 @@ class Buttons(arcade.View):
         )
 
 
-class Menu(arcade.Section):
+class Menu(arcade.View):
 
-    def __init__(self, left, bottom, width, height):
-        super().__init__(left, bottom, width, height, modal=True)
+    def __init__(self, main_view):
+        super().__init__()
+
+        self.left = 0
+        self.bottom = 0
+        self.width = self.window.width
+        self.height = self.window.height
+        self.top = self.height - self.bottom
+        self.right = self.width - self.left
+        self.main_view = main_view
+        self.bg = arcade.load_texture("resources/icons/фон.png")
 
         self.enabled = False
 
@@ -122,7 +131,7 @@ class Menu(arcade.Section):
             press_texture_file_name="resources/icons/close.png",
             _scale=1,
             _x=self.right -20,
-            _y=self.top+80
+            _y=self.top-20
         )
         self.animation_buttons_manager.add(self.close_btn)
         self.close_btn.on_click = self.close_btn_on_click
@@ -144,14 +153,14 @@ class Menu(arcade.Section):
             hover_texture_file_name="resources/icons/Убрать.png",
             press_texture_file_name="resources/icons/Убрать.png",
             _scale=.9,
-            _x=self.left+250,
+            _x=self.left+275,
             _y=self.top - 3.7 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.remove_all_animations)
         self.remove_all_animations.on_click = self.remove_all_animations_on_click
     def on_draw(self):
 
-        arcade.draw_xywh_rectangle_filled(*self.available_area, (50, 50, 50, 200))
+        arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
         arcade.draw_xywh_rectangle_filled(self.left, self.top+80, self.right-self.left, 20, arcade.color.BLACK)
         arcade.draw_text('Настройки', self.left, self.top +80)
         self.animation_buttons_manager.enable()
@@ -160,9 +169,7 @@ class Menu(arcade.Section):
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
 
-        if button == arcade.MOUSE_BUTTON_LEFT:
-            if self.back_button.collides_with_point((x, y)):
-                self.enabled = False
+        ...
 
     def first_animation_btn_on_click(self, *_):
         self.pre_animation = Tornado
@@ -227,8 +234,11 @@ class Menu(arcade.Section):
     def remove_all_animations_on_click(self, *_):
         self.gui_sprites.clear()
         self.gui_animation = None
+        self.window.show_view(self.main_view)
 
     def close_btn_on_click(self, *_):
+
+        self.window.show_view(self.main_view)
         self.enabled = False
 
     def apply_button_on_click(self, *_):
@@ -237,3 +247,4 @@ class Menu(arcade.Section):
             self.gui_animation.fill_sprites(self.gui_sprites)
             self.figure = self.pre_figure
             self.enabled = False
+            self.window.show_view(self.main_view)
