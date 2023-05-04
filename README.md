@@ -41,10 +41,11 @@ Discord, Telegram
 > Sound
 - scipy
 
-![image](https://user-images.githubusercontent.com/54447582/235671268-ed1d6c0a-078d-425b-942c-9a20dd14c2a0.png)
-![image](https://user-images.githubusercontent.com/54447582/229621891-8ffc291d-3b4c-4e07-b183-0badc5699346.png)
+![image](https://user-images.githubusercontent.com/54447582/235769508-46c61b4c-8ed5-4c5a-a986-1cedb8ba7a10.png)
 
-![image](https://user-images.githubusercontent.com/54447582/233476794-55257ec9-10fa-4469-8085-c9078d83811d.png)
+![image](https://user-images.githubusercontent.com/54447582/235769580-1393bb0d-384b-4e26-a42c-9515db2ae1aa.png)
+
+![image](https://user-images.githubusercontent.com/54447582/235769749-53380f32-365d-4fa5-a8dc-57bfb9a2f297.png)
 
 
 ### Tasks
