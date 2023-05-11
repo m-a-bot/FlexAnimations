@@ -110,8 +110,12 @@ class GUI(arcade.View):
 
 
     def rebase_gui_sprites_texture(self, texture):
-        self.menu.pre_figure = arcade.Sprite(texture = texture)
+        try:
+            os.remove('resources/icons/current_figure.png')
+        except:
+            pass
         self.menu.gui_sprites.clear()
+        self.menu.pre_figure = arcade.Sprite(texture = texture)
         img = self.menu.pre_figure.texture.image
         img.save('resources/icons/current_figure.png')
 
@@ -349,7 +353,9 @@ class GUI(arcade.View):
         self.hud_is_visible = False
 
     def open_settings1(self, *_):
-        
+
+        self.menu.pre_figure = None
+        self.menu.gui_sprites.clear()
         self.window.show_view(SettingsView(self))
 
     def play_button_on(self):

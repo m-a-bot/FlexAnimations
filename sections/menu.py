@@ -161,9 +161,10 @@ class Menu(arcade.View):
     def apply_button_on_click(self, *_):
         try:
             if self.pre_animation is not None:
-                self.gui_animation = self.pre_animation(self.pre_figure)
-                self.gui_animation.texture = 'resources/icons/current_figure.png'
+                self.gui_sprites.clear()
+                self.gui_animation = self.pre_animation(None) # None не должно иметь значения, тк мы теперь создаём анимацию не от фигуры, а от картинки
                 self.gui_animation.fill_sprites(self.gui_sprites)
+
         except:
             pass
         self.enabled = False

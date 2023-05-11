@@ -51,6 +51,7 @@ class Tornado(Animation):
             self.texture = "resources/icons/Треугольник.png"
         if figure_type == FiguresType.SQUARE:
             self.texture = "resources/icons/Квадрат.png"
+        self.texture = 'resources/icons/current_figure.png'
 
 
     def fill_sprites(self, sprites):
