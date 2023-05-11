@@ -52,6 +52,7 @@ class Tornado(Animation):
         if figure_type == FiguresType.SQUARE:
             self.texture = "resources/icons/Квадрат.png"
 
+
     def fill_sprites(self, sprites):
         super().fill_sprites(sprites)
         # x, y = move_cart_to_center(*self.center)
@@ -69,8 +70,10 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.9)
+                                         scale=0.5
+                                         )
                            )
+
 
         for layer in layer2:
             r = distances_delta[1]
@@ -80,8 +83,11 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.9)
+                                         scale=0.5
+                                         )
                            )
+
+
 
         for layer in layer3:
             r = distances_delta[2]
@@ -91,7 +97,11 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.9))
+                                         scale=0.5
+                                         )
+                           )
+
+
 
     def update_sprite(self, delta_time, sprite, vector):
         sprite.center_x, sprite.center_y = increase_angle(sprite.center_x, sprite.center_y,

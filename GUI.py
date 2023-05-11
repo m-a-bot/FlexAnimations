@@ -15,6 +15,7 @@ import pymunk
 from pymunk import Vec2d
 from assets.scripts.Render import *
 from assets.MovementSprite import PhysicsSprite
+import os
 from animations.tornado import Tornado
 from animations.confusion import Chaos
 from animations.wave import Wave
@@ -40,6 +41,11 @@ class GUI(arcade.View):
         self.text = arcade.Text("", 50, self.height - 50, PINK, 14)
 
         self.time = 0.0
+
+        try:
+            os.remove('resources/icons/current_figure.png')
+        except:
+            pass
 
         ### Physics
         #
@@ -104,11 +110,10 @@ class GUI(arcade.View):
 
 
     def rebase_gui_sprites_texture(self, texture):
-
-        for sprite in self.menu.gui_sprites:
-            sprite.texture = texture
-            sprite.scale = 0.5
-
+        self.menu.pre_figure = arcade.Sprite(texture = texture)
+        self.menu.gui_sprites.clear()
+        img = self.menu.pre_figure.texture.image
+        img.save('resources/icons/current_figure.png')
 
     def update(self, delta_time: float):
 

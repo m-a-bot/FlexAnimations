@@ -26,7 +26,7 @@ class Chaos(Animation):
         dynamic = pymunk.Body.DYNAMIC
         kynematic = pymunk.Body.KINEMATIC
         shift = 50
-        scale = 0.9
+        scale = 0.5
 
         if isinstance(sprites, PhysicsSprite):
             for sprite in sprites:
