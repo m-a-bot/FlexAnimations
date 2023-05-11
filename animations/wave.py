@@ -34,6 +34,7 @@ class Wave(Animation):
             self.texture = "resources/icons/Треугольник.png"
         if figure_type == FiguresType.SQUARE:
             self.texture = "resources/icons/Квадрат.png"
+        self.texture = 'resources/icons/current_figure.png'
 
         self.a = 400
         self.b = 100
@@ -47,6 +48,7 @@ class Wave(Animation):
     def fill_sprites(self, sprites):
 
         super().fill_sprites(sprites)
+
 
         for cur_x in range(0, WIDTH + self.out_of_screen * 2, WIDTH // 8):
             for _ in range(3):
