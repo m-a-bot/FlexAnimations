@@ -31,8 +31,10 @@ class Buttons(arcade.View):
 
 class Menu(arcade.View):
 
-    def __init__(self, main_view):
+    def __init__(self, main_view, music_track):
         super().__init__()
+
+        self.music_track = music_track
 
         self.left = 0
         self.bottom = 0
@@ -243,7 +245,7 @@ class Menu(arcade.View):
 
     def apply_button_on_click(self, *_):
         if self.apply_button.available:
-            self.gui_animation = self.pre_animation(self.pre_figure)
+            self.gui_animation = self.pre_animation(self.pre_figure, self.music_track)
             self.gui_animation.fill_sprites(self.gui_sprites)
             self.figure = self.pre_figure
             self.enabled = False

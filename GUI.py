@@ -70,7 +70,7 @@ class GUI(arcade.View):
         if self.mdata is not None:
             self.music_track.set_music_data(samplerate, self.mdata[:,0])
 
-        self.menu = Menu(self)
+        self.menu = Menu(self, self.music_track)
         self.menu.animation = None
         self.menu.pre_animation = self.menu.animation
 

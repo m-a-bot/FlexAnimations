@@ -12,8 +12,9 @@ class FiguresType(Enum):
 
 class Animation():
     figure_type = None
-    def __init__(self, figure_type):
+    def __init__(self, figure_type, music_track):
         self.figure_type = figure_type
+        self.music_track = music_track
     def fill_sprites(self, sprites):
         sprites.clear()
 
