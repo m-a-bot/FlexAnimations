@@ -7,7 +7,9 @@ from settings import HEIGHT, WIDTH
 
 class Chaos(Animation):
 
-    def __init__(self, figure_type):
+    def __init__(self, figure_type, music_track):
+
+        super().__init__(figure_type, music_track)
         
         self.simulation = None
 

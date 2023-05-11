@@ -38,8 +38,8 @@ def increase_angle(x, y, inc):
 
 
 class Tornado(Animation):
-    def __init__(self, figure_type):
-        super().__init__(figure_type)
+    def __init__(self, figure_type, music_track):
+        super().__init__(figure_type, music_track)
         self.speed = 1
         self.center_x = WIDTH // 2
         self.center_y = HEIGHT // 2
