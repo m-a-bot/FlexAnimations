@@ -52,6 +52,8 @@ class Menu(arcade.View):
         self.gui_sprites = SpriteList()
         self.gui_animation = None
 
+        self.pre_figure = None
+
         self.available_area = [self.left + 0, self.bottom + 100, self.width, self.height]
         self.shift = (self.height - 250) / 4
 
@@ -64,7 +66,7 @@ class Menu(arcade.View):
             hover_texture_file_name="resources/icons/Кнопка-Торнадо.png",
             press_texture_file_name="resources/icons/Кнопка-Торнадо.png",
             _scale=1,
-            _x=self.left + 250,
+            _x=(self.right + self.left) // 2 - 165,
             _y=self.top - self.btn_diff
         )
         self.animation_buttons_manager.add(self.first_animation_mode_btn)
@@ -75,7 +77,7 @@ class Menu(arcade.View):
             hover_texture_file_name="resources/icons/Кнопка-Волна.png",
             press_texture_file_name="resources/icons/Кнопка-Волна.png",
             _scale=1,
-            _x=self.left + 250,
+            _x=(self.right + self.left) // 2 - 165,
             _y=self.top - 2 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.second_animation_mode_btn)
@@ -86,51 +88,19 @@ class Menu(arcade.View):
             hover_texture_file_name="resources/icons/Кнопка-Хаос.png",
             press_texture_file_name="resources/icons/Кнопка-Хаос.png",
             _scale=1,
-            _x=self.left + 250,
+            _x=(self.right + self.left) // 2 - 165,
             _y=self.top - 3 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.third_animation_mode_btn)
         self.third_animation_mode_btn.on_click = self.third_animation_btn_on_click
 
-        self.first_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Кнопка-Круг.png",
-            hover_texture_file_name="resources/icons/Кнопка-Круг.png",
-            press_texture_file_name="resources/icons/Кнопка-Круг.png",
-            _scale=1,
-            _x=self.right - 350,
-            _y=self.top - self.btn_diff
-        )
-        self.animation_buttons_manager.add(self.first_figure_btn)
-        self.first_figure_btn.on_click = self.first_figure_btn_on_click
-
-        self.second_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Кнопка-Треугольник.png",
-            hover_texture_file_name="resources/icons/Кнопка-Треугольник.png",
-            press_texture_file_name="resources/icons/Кнопка-Треугольник.png",
-            _scale=1,
-            _x=self.right - 350,
-            _y=self.top - 2 * self.btn_diff
-        )
-        self.animation_buttons_manager.add(self.second_figure_btn)
-        self.second_figure_btn.on_click = self.second_figure_btn_on_click
-
-        self.third_figure_btn = Buttons.add_texture_button(
-            texture_file_name="resources/icons/Кнопка-Квадрат.png",
-            hover_texture_file_name="resources/icons/Кнопка-Квадрат.png",
-            press_texture_file_name="resources/icons/Кнопка-Квадрат.png",
-            _scale=1,
-            _x=self.right - 350,
-            _y=self.top - 3 * self.btn_diff
-        )
-        self.animation_buttons_manager.add(self.third_figure_btn)
-        self.third_figure_btn.on_click = self.third_figure_btn_on_click
 
         self.close_btn = Buttons.add_texture_button(
             texture_file_name="resources/icons/close.png",
             hover_texture_file_name="resources/icons/close.png",
             press_texture_file_name="resources/icons/close.png",
             _scale=1,
-            _x=self.right -20,
+            _x= self.right - 20,
             _y=self.top-20
         )
         self.animation_buttons_manager.add(self.close_btn)
@@ -144,7 +114,6 @@ class Menu(arcade.View):
             _x=(self.right + self.left) // 2 - 125,
             _y=self.bottom + 100
         )
-        self.apply_button.available = False
         self.animation_buttons_manager.add(self.apply_button)
         self.apply_button.on_click = self.apply_button_on_click
 
@@ -153,7 +122,7 @@ class Menu(arcade.View):
             hover_texture_file_name="resources/icons/Убрать.png",
             press_texture_file_name="resources/icons/Убрать.png",
             _scale=.9,
-            _x=self.left+275,
+            _x=(self.right + self.left) // 2 - 220,
             _y=self.top - 3.7 * self.btn_diff
         )
         self.animation_buttons_manager.add(self.remove_all_animations)
@@ -168,68 +137,17 @@ class Menu(arcade.View):
         self.gui_elements.draw()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-
         ...
 
     def first_animation_btn_on_click(self, *_):
         self.pre_animation = Tornado
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
 
     def second_animation_btn_on_click(self, *_):
         self.pre_animation = Wave
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
 
     def third_animation_btn_on_click(self, *_):
         self.pre_animation = Chaos
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
 
-    def first_figure_btn_on_click(self, *_):
-        self.pre_figure = FiguresType.CIRCLE
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
-
-    def second_figure_btn_on_click(self, *_):
-        self.pre_figure = FiguresType.TRIANGLE
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
-
-    def third_figure_btn_on_click(self, *_):
-        self.pre_figure = FiguresType.SQUARE
-        try:
-            if self.pre_animation is None or self.pre_figure is None:
-                self.apply_button.available = False
-            else:
-                self.apply_button.available = True
-        except AttributeError:
-            self.apply_button.available = False
 
     def remove_all_animations_on_click(self, *_):
         self.gui_sprites.clear()
@@ -237,14 +155,18 @@ class Menu(arcade.View):
         self.window.show_view(self.main_view)
 
     def close_btn_on_click(self, *_):
-
         self.window.show_view(self.main_view)
         self.enabled = False
 
     def apply_button_on_click(self, *_):
-        if self.apply_button.available:
-            self.gui_animation = self.pre_animation(self.pre_figure)
-            self.gui_animation.fill_sprites(self.gui_sprites)
-            self.figure = self.pre_figure
-            self.enabled = False
-            self.window.show_view(self.main_view)
+        try:
+            if self.pre_animation is not None:
+                self.gui_animation = self.pre_animation(self.pre_figure)
+                self.gui_animation.texture = 'resources/icons/current_figure.png'
+                self.gui_animation.fill_sprites(self.gui_sprites)
+        except:
+            pass
+        self.enabled = False
+        self.window.show_view(self.main_view)
+
+

@@ -54,7 +54,7 @@ class Wave(Animation):
                 sprites.append(arcade.Sprite(filename=self.texture,
                                              center_x=cur_x,
                                              center_y=cur_y,
-                                             scale=0.9))
+                                             scale=0.5))
 
     def update_sprite(self, delta_time, sprite):
         if sprite.center_x > WIDTH + self.out_of_screen:
