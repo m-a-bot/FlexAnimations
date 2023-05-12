@@ -247,8 +247,6 @@ class SettingsView(arcade.View):
 
         layout = arcade.gui.UIBoxLayout(vertical=True, space_between=self.llayout.height // 12, align="left")
 
-        layout.add(self.check_box(Mode.Custom, "Кастомный"))
-        layout.add(self.check_box(Mode.Random, "Случайный"))
         layout.add(self.check_box(Mode.Gradient, "Градиент"))
         layout.add(self.check_box(Mode.Single, "Однотонный"))
 

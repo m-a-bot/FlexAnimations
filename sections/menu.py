@@ -140,13 +140,14 @@ class Menu(arcade.View):
         ...
 
     def first_animation_btn_on_click(self, *_):
-        self.pre_animation = Tornado
+        self.pre_animation = Tornado(None)
 
     def second_animation_btn_on_click(self, *_):
-        self.pre_animation = Wave
+        self.pre_animation = Wave(None)
 
     def third_animation_btn_on_click(self, *_):
-        self.pre_animation = Chaos
+        self.pre_animation = Chaos(None)
+
 
 
     def remove_all_animations_on_click(self, *_):
@@ -161,10 +162,8 @@ class Menu(arcade.View):
     def apply_button_on_click(self, *_):
         try:
             if self.pre_animation is not None:
-                self.gui_sprites.clear()
-                self.gui_animation = self.pre_animation(None) # None не должно иметь значения, тк мы теперь создаём анимацию не от фигуры, а от картинки
+                self.gui_animation = self.pre_animation
                 self.gui_animation.fill_sprites(self.gui_sprites)
-
         except:
             pass
         self.enabled = False

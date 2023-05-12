@@ -110,15 +110,18 @@ class GUI(arcade.View):
 
 
     def rebase_gui_sprites_texture(self, texture):
-        try:
-            os.remove('resources/icons/current_figure.png')
-        except:
-            pass
-        self.menu.gui_sprites.clear()
-        self.menu.pre_figure = arcade.Sprite(texture = texture)
-        img = self.menu.pre_figure.texture.image
-        img.save('resources/icons/current_figure.png')
-
+        if len(self.menu.gui_sprites) == 0:
+            try:
+                os.remove('resources/icons/current_figure.png')
+            except:
+                pass
+            self.menu.pre_figure = arcade.Sprite(texture = texture)
+            img = self.menu.pre_figure.texture.image
+            img.save('resources/icons/current_figure.png')
+        else:
+            for sprite in self.menu.gui_sprites:
+                sprite.texture = texture
+                sprite.scale = 0.5
     def update(self, delta_time: float):
 
         self.time += delta_time
@@ -355,7 +358,6 @@ class GUI(arcade.View):
     def open_settings1(self, *_):
 
         self.menu.pre_figure = None
-        self.menu.gui_sprites.clear()
         self.window.show_view(SettingsView(self))
 
     def play_button_on(self):
