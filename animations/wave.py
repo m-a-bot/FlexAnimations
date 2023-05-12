@@ -21,8 +21,8 @@ def move(x, number, inc, a, b, c, d, rng):
 
 
 class Wave(Animation):
-    def __init__(self, figure_type):
-        super().__init__(figure_type)
+    def __init__(self, figure_type, music_track):
+        super().__init__(figure_type, music_track)
         self.speed = 80
         self.center_x = WIDTH // 2
         self.center_y = HEIGHT // 4
@@ -53,16 +53,35 @@ class Wave(Animation):
         for cur_x in range(0, WIDTH + self.out_of_screen * 2, WIDTH // 8):
             for _ in range(3):
                 cur_y, self.number = move(cur_x, self.number, 0, self.a, self.b, self.c, self.d, self.rng)[1:]
-                sprites.append(arcade.Sprite(filename=self.texture,
+                sprite = arcade.Sprite(filename=self.texture,
                                              center_x=cur_x,
                                              center_y=cur_y,
-                                             scale=0.5))
+                                             scale=0.5)
+                sprite.koef = 1
+                sprite.prev = math.sin(self.c * sprite.center_x + self.d)
+                sprites.append(sprite)
+
 
     def update_sprite(self, delta_time, sprite):
-        if sprite.center_x > WIDTH + self.out_of_screen:
+
+        if sprite.center_x >= WIDTH + self.out_of_screen:
             sprite.center_x = - self.out_of_screen
         sprite.center_x, sprite.center_y, self.number = move(sprite.center_x, self.number, delta_time * self.speed,
-                                                             self.a, self.b, self.c, self.d, self.rng)
+                                                             self.a,
+                                                             self.b * sprite.koef,
+                                                             self.c,
+                                                             self.d, self.rng)
+
+        sprite_cur = math.sin(self.c * sprite.center_x + self.d)
+
+        if sprite_cur * sprite.prev <= 0:
+            sprite.koef = (sum(self.music_track.points) / len(self.music_track.points) - 0.3) * 7
+            # sprite.koef = min(self.music_track.points)
+            # sprite.koef = sum(self.music_track.points) / len(self.music_track.points)
+            # sprite.koef = (self.music_track.music_data[self.music_track.current_song_index] - 100) / 20
+            # print(sprite.koef)
+
+        sprite.prev = sprite_cur
 
     def animation_run(self, sprites, delta_time):
         for sprite in sprites:

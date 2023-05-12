@@ -31,8 +31,10 @@ class Buttons(arcade.View):
 
 class Menu(arcade.View):
 
-    def __init__(self, main_view):
+    def __init__(self, main_view, music_track):
         super().__init__()
+
+        self.music_track = music_track
 
         self.left = 0
         self.bottom = 0
@@ -140,13 +142,13 @@ class Menu(arcade.View):
         ...
 
     def first_animation_btn_on_click(self, *_):
-        self.pre_animation = Tornado(None)
+        self.pre_animation = Tornado(None, self.music_track)
 
     def second_animation_btn_on_click(self, *_):
-        self.pre_animation = Wave(None)
+        self.pre_animation = Wave(None, self.music_track)
 
     def third_animation_btn_on_click(self, *_):
-        self.pre_animation = Chaos(None)
+        self.pre_animation = Chaos(None, self.music_track)
 
 
 
@@ -168,5 +170,3 @@ class Menu(arcade.View):
             pass
         self.enabled = False
         self.window.show_view(self.main_view)
-
-
