@@ -23,6 +23,7 @@ class MusicTrack(arcade.Section):
         self.current_song_index = 0
 
         self.points = []
+        self.piece_of_points = []
 
         self.x = np.linspace(self.left + 15, self.right - 15, step * 2)
 
@@ -39,15 +40,34 @@ class MusicTrack(arcade.Section):
     def update(self, *_):
         
         self.points.clear()
+        self.piece_of_points.clear()
 
         if self.music_data is not None:
-            s = 0
-            i = 0
+            
 
             try:
                 self.single_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+1) * self.frame] 
                 two_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+2) * self.frame]
 
+                s = 0
+                i = 0
+                for x in self.single_frame_data:
+                    s += x
+                    i += 1
+                    if i == self.sound_group:
+                        self.piece_of_points.append(s / i)
+                        s = 0
+                        i = 0
+
+                A = min(self.piece_of_points)
+                B = max(self.piece_of_points)
+
+                if A != B:
+                    for i, x in enumerate(self.piece_of_points):
+                        self.piece_of_points[i] = (x - A) / (B - A)
+
+                s = 0
+                i = 0
                 for x in two_frame_data:
                     s += x
                     i += 1
@@ -59,8 +79,9 @@ class MusicTrack(arcade.Section):
                 A = min(self.points)
                 B = max(self.points)
 
-                for i, x in enumerate(self.points):
-                    self.points[i] = (x - A) / (B - A)
+                if A != B:
+                    for i, x in enumerate(self.points):
+                        self.points[i] = (x - A) / (B - A)
             
             except Exception as e:
                 print(e)

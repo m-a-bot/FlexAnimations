@@ -56,7 +56,7 @@ class Settings:
         self.mode: Mode = None
 
         self.custom_colors = []
-        self.random_colors = []
+        self.random_color = None
         self.gradient_colors = []
         self.only_color = None
 
@@ -65,6 +65,9 @@ class Settings:
 
     def add_random_colors(self, color1, color2):
         ...
+
+    def add_random_color(self, color):
+        self.random_color = color
 
     def add_gradient_colors(self, color1, color2):
         
@@ -87,6 +90,26 @@ class AnimationFactory(ABC):
         ...
 
     @abstractmethod
+    def update_object(self):
+        ...
+
+class RandomColorModeFactory(AnimationFactory):
+
+    def create_object(self, template):
+
+        return self.__create_object_random_color_mode(template, self.settings.random_color)
+
+    def __create_object_random_color_mode(self, template, color):
+
+        _nb = template.copy()
+
+        for i, row in enumerate(template):
+            for j, y in enumerate(row):
+                if template[i][j][3] != 0:
+                    _nb[i][j][:3] = color
+
+        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
+
     def update_object(self):
         ...
 
@@ -202,12 +225,14 @@ class SettingsView(arcade.View):
         self.top = self.height - self.bottom
 
         self._settings = Settings()
-        self.factory: AnimationFactory = None
+        self._settings.add_random_color((0,0,0))
+        self.random_color_factory = RandomColorModeFactory(self._settings)
         self.single_color_factory = SingleColorModeFactory(self._settings)
         self.gradient_factory = GradientModeFactory(self._settings)
+        self.factory: AnimationFactory = self.random_color_factory
 
-        self.current_mode = None
-        self.current_template = None
+        self.current_mode = Mode.Random
+        self.current_template = imageio.imread(ROOT_DIR + r"/resources/icons/templates/" + "circle.png", mode='RGBA')
 
         self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png", "arrow.png", "heart.png", "plus.png"]
 
@@ -247,6 +272,7 @@ class SettingsView(arcade.View):
 
         layout = arcade.gui.UIBoxLayout(vertical=True, space_between=self.llayout.height // 12, align="left")
 
+        layout.add(self.check_box(Mode.Random, "Рандом"))
         layout.add(self.check_box(Mode.Gradient, "Градиент"))
         layout.add(self.check_box(Mode.Single, "Однотонный"))
 
@@ -371,22 +397,19 @@ class SettingsView(arcade.View):
             if self._settings.gradient_colors != new_colors:
                 self._settings.add_gradient_colors(*new_colors)
 
-            if self.current_template is not None:
-                self.result_texture = self.factory.create_object(self.current_template)
-
         if self.current_mode == Mode.Single:
             new_color = (self.r_group1.value, self.g_group1.value, self.b_group1.value)
             if self._settings.only_color != new_color:
                 self._settings.add_only_color(new_color)
-
-            if self.current_template is not None:
-                self.result_texture = self.factory.create_object(self.current_template)
 
         if self.picture1:
             self.picture1.color = (self.r_group1.value, self.g_group1.value, self.b_group1.value)
 
         if self.picture2:
             self.picture2.color = (self.r_group2.value, self.g_group2.value, self.b_group2.value)
+
+        if self.current_template is not None:
+                self.result_texture = self.factory.create_object(self.current_template)
 
     def check_box(self, mode, text):
 
@@ -436,18 +459,20 @@ class SettingsView(arcade.View):
         self.current_mode = obj.mode
 
         if obj.mode == Mode.Random:
-            self.rlayout.add(self.group1)
-            self.rlayout.add(self.group2)
+
+            new_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
+            self._settings.add_random_color(new_color)
+
+            self.factory = self.random_color_factory
 
         if obj.mode == Mode.Gradient:
             self.rlayout.add(self.group1)
             self.rlayout.add(self.group2)
-
-        self.factory = self.gradient_factory
+            self.factory = self.gradient_factory
 
         if obj.mode == Mode.Single:
             self.rlayout.add(self.group1)
-
             self.factory = self.single_color_factory
 
     def on_draw(self):

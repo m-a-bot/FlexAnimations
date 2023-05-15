@@ -3,6 +3,8 @@ from animations.animation import Animation
 from settings import *
 import math
 from animations.animation import FiguresType
+from assets.MovementSprite import PhysicsSprite
+from assets.physics import PhysicsSimulation
 import numpy as np
 
 
@@ -55,6 +57,11 @@ class Tornado(Animation):
 
 
     def fill_sprites(self, sprites):
+        if len(sprites) > 0:
+            if isinstance(sprites[0], PhysicsSprite):
+                for sprite in sprites:
+                    sprite.remove_from_space(PhysicsSimulation.get_space())
+
         super().fill_sprites(sprites)
         # x, y = move_cart_to_center(*self.center)
         # r, phi = cart_to_polar(x, y)

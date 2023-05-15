@@ -397,7 +397,7 @@ class GUI(arcade.View):
             self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
-
+            self.play_animations = True
             samplerate, self.mdata = self.get_music_data()
 
             print(samplerate)
