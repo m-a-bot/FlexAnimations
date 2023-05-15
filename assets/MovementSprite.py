@@ -15,7 +15,7 @@ class PhysicsSprite(arcade.Sprite):
         self.body.velocity = Vec2d(direction[0]*self.speed, direction[1]*self.speed)
 
         def constant_velocity(body, gravity, damping, dt):
-                body.velocity = body.velocity.normalized() * self.speed
+            body.velocity = body.velocity.normalized() * self.speed
 
         
         def limit_velocity(body, gravity, damping, dt):
@@ -41,6 +41,12 @@ class PhysicsSprite(arcade.Sprite):
 
         space.add(self.body, self.shape)
 
+
+    def change_velocity(self, speed):
+        def constant_velocity(body, gravity, damping, dt):
+            body.velocity = body.velocity.normalized() * speed
+
+        self.body.velocity_func = constant_velocity
 
     def remove_from_space(self, space):
          
