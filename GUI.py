@@ -115,13 +115,17 @@ class GUI(arcade.View):
                 os.remove('resources/icons/current_figure.png')
             except:
                 pass
-            self.menu.pre_figure = arcade.Sprite(texture = texture)
-            img = self.menu.pre_figure.texture.image
+            # self.menu.pre_figure = arcade.Sprite(texture = texture)
+            # img = self.menu.pre_figure.texture.image
+
+            img = texture.image.resize((60,60))
+
             img.save('resources/icons/current_figure.png')
         else:
             for sprite in self.menu.gui_sprites:
                 sprite.texture = texture
                 sprite.scale = 0.5
+                
     def update(self, delta_time: float):
 
         self.time += delta_time
@@ -141,6 +145,7 @@ class GUI(arcade.View):
 
         
         self.menu.gui_sprites.draw()
+        #self.menu.gui_sprites.draw_hit_boxes()
         
         if DEBUG:
             if len(self.songs) > 0:
@@ -389,11 +394,11 @@ class GUI(arcade.View):
 
         if self.cur_song_index >= len(self.songs):
             self.cur_song_index = 0
-            
+            self.play_animations = True
             self.paused = True
             self.play_button_off()
             self.music_track.enabled=False
-        if not self.paused:
+        elif not self.paused:
             self.my_music = arcade.load_sound(self.songs[self.cur_song_index])
             self.media_player = self.my_music.play(volume=self.volume_level / 100)
             self.media_player.push_handlers(on_eos=self.music_over)
