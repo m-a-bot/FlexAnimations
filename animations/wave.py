@@ -71,6 +71,8 @@ class Wave(Animation):
 
     def update_sprite(self, delta_time, sprite):
 
+        # print(self.music_track.piece_of_points)
+
         if sprite.center_x >= WIDTH + self.out_of_screen:
             sprite.center_x = - self.out_of_screen
         sprite.center_x, sprite.center_y, self.number = move(sprite.center_x, self.number, delta_time * self.speed,
@@ -82,7 +84,9 @@ class Wave(Animation):
         sprite_cur = math.sin(self.c * sprite.center_x + self.d)
 
         if sprite_cur * sprite.prev <= 0:
-            sprite.koef = (sum(self.music_track.points) / len(self.music_track.points) - 0.3) * 7
+            sprite.koef = (sum(self.music_track.points) / len(self.music_track.points) - 0.4) * 7
+            # help = [k for k in self.music_track.points if k > 0.9]
+            # sprite.koef = len(help) / 10
             # sprite.koef = min(self.music_track.points)
             # sprite.koef = sum(self.music_track.points) / len(self.music_track.points)
             # sprite.koef = (self.music_track.music_data[self.music_track.current_song_index] - 100) / 20

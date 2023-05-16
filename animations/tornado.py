@@ -112,8 +112,9 @@ class Tornado(Animation):
 
 
     def update_sprite(self, delta_time, sprite, vector):
+        koef = (sum(self.music_track.points) / len(self.music_track.points) - 0.4) * 8
         sprite.center_x, sprite.center_y = increase_angle(sprite.center_x, sprite.center_y,
-                                                          self.speed * delta_time * vector)
+                                                          self.speed * koef * delta_time * vector)
 
     def animation_run(self, sprites, delta_time):
         vector = 1
