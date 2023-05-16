@@ -56,22 +56,18 @@ class Wave(Animation):
 
         super().fill_sprites(sprites)
 
-
         for cur_x in range(0, WIDTH + self.out_of_screen * 2, WIDTH // 8):
             for _ in range(3):
                 cur_y, self.number = move(cur_x, self.number, 0, self.a, self.b, self.c, self.d, self.rng)[1:]
                 sprite = arcade.Sprite(filename=self.texture,
-                                             center_x=cur_x,
-                                             center_y=cur_y,
-                                             scale=1)
+                                       center_x=cur_x,
+                                       center_y=cur_y,
+                                       scale=1)
                 sprite.koef = 1
                 sprite.prev = math.sin(self.c * sprite.center_x + self.d)
                 sprites.append(sprite)
 
-
     def update_sprite(self, delta_time, sprite):
-
-        # print(self.music_track.piece_of_points)
 
         if sprite.center_x >= WIDTH + self.out_of_screen:
             sprite.center_x = - self.out_of_screen
@@ -85,12 +81,6 @@ class Wave(Animation):
 
         if sprite_cur * sprite.prev <= 0:
             sprite.koef = (sum(self.music_track.points) / len(self.music_track.points) - 0.4) * 7
-            # help = [k for k in self.music_track.points if k > 0.9]
-            # sprite.koef = len(help) / 10
-            # sprite.koef = min(self.music_track.points)
-            # sprite.koef = sum(self.music_track.points) / len(self.music_track.points)
-            # sprite.koef = (self.music_track.music_data[self.music_track.current_song_index] - 100) / 20
-            # print(sprite.koef)
 
         sprite.prev = sprite_cur
 

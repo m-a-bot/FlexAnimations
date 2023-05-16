@@ -96,14 +96,13 @@ class Menu(arcade.View):
         self.animation_buttons_manager.add(self.third_animation_mode_btn)
         self.third_animation_mode_btn.on_click = self.third_animation_btn_on_click
 
-
         self.close_btn = Buttons.add_texture_button(
             texture_file_name="resources/icons/close.png",
             hover_texture_file_name="resources/icons/close.png",
             press_texture_file_name="resources/icons/close.png",
             _scale=1,
-            _x= self.right - 20,
-            _y=self.top-20
+            _x=self.right - 20,
+            _y=self.top - 20
         )
         self.animation_buttons_manager.add(self.close_btn)
         self.close_btn.on_click = self.close_btn_on_click
@@ -129,11 +128,12 @@ class Menu(arcade.View):
         )
         self.animation_buttons_manager.add(self.remove_all_animations)
         self.remove_all_animations.on_click = self.remove_all_animations_on_click
+
     def on_draw(self):
 
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
-        arcade.draw_xywh_rectangle_filled(self.left, self.top+80, self.right-self.left, 20, arcade.color.BLACK)
-        arcade.draw_text('Настройки', self.left, self.top +80)
+        arcade.draw_xywh_rectangle_filled(self.left, self.top + 80, self.right - self.left, 20, arcade.color.BLACK)
+        arcade.draw_text('Настройки', self.left, self.top + 80)
         self.animation_buttons_manager.enable()
         self.animation_buttons_manager.draw()
         self.gui_elements.draw()
@@ -149,8 +149,6 @@ class Menu(arcade.View):
 
     def third_animation_btn_on_click(self, *_):
         self.pre_animation = Chaos(None, self.music_track)
-
-
 
     def remove_all_animations_on_click(self, *_):
         self.gui_sprites.clear()

@@ -7,8 +7,7 @@ step = 40
 PINK = (238, 20, 223)
 BLUE = (20, 230, 238)
 
-# TODO
-# Переименовать self.current_song_index
+
 class MusicTrack(arcade.Section):
 
     def __init__(self, left: int, bottom: int, width: int, height: int):
@@ -27,7 +26,6 @@ class MusicTrack(arcade.Section):
 
         self.x = np.linspace(self.left + 15, self.right - 15, step * 2)
 
-
     def set_music_data(self, samplerate, data):
 
         self.music_data = data
@@ -36,19 +34,17 @@ class MusicTrack(arcade.Section):
 
         self.sound_group = self.frame // step
 
-
     def update(self, *_):
-        
         self.points.clear()
         self.piece_of_points.clear()
 
         if self.music_data is not None:
-            
 
             try:
-                self.single_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+1) * self.frame] 
-                two_frame_data = self.music_data[self.current_song_index * self.frame: (self.current_song_index+2) * self.frame]
-
+                self.single_frame_data = self.music_data[self.current_song_index * self.frame: (
+                                         self.current_song_index + 1) * self.frame]
+                two_frame_data = self.music_data[
+                                 self.current_song_index * self.frame: (self.current_song_index + 2) * self.frame]
                 s = 0
                 i = 0
                 for x in self.single_frame_data:
@@ -82,36 +78,29 @@ class MusicTrack(arcade.Section):
 
                 for i, x in enumerate(self.points):
                     self.points[i] = (x - A) / (B - A)
-            
+
             except Exception as e:
                 print(e)
 
-
     def on_draw(self):
-        
         arcade.draw_xywh_rectangle_filled(self.left, self.bottom, self.width, self.height, (26, 26, 26, 130))
-
         arcade.draw_xywh_rectangle_outline(self.left, self.bottom, self.width, self.height, (87, 87, 87), 4.5)
 
         if self.music_data is not None:
             try:
-
                 i = 0
                 while i < step:
-                    
-                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                  self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
-                                                  color = PINK, tilt_angle=5)
-                    i+=1
+                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height / 2,
+                                                 self.width / (step * 2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                 color=PINK, tilt_angle=5)
+                    i += 1
 
-                while i < step*2:
-
-                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height/2,
-                                                 self.width / (step*2 + 130), self.points[i] * self.height * 0.9 + 1,
-                                                 color = BLUE, tilt_angle=5)
+                while i < step * 2:
+                    arcade.draw_rectangle_filled(self.x[i], self.bottom + self.height / 2,
+                                                 self.width / (step * 2 + 130), self.points[i] * self.height * 0.9 + 1,
+                                                 color=BLUE, tilt_angle=5)
 
                     i += 1
-                    
+
             except:
                 ...
-

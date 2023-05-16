@@ -1,5 +1,6 @@
 import os
 import sys
+
 # Window
 WIDTH = 1280
 HEIGHT = 720
@@ -8,6 +9,7 @@ FPS = 24
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -15,4 +17,3 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
-

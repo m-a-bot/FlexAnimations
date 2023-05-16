@@ -37,7 +37,7 @@ NUM = "0123456789"
 def generate_symbol(symbols=ENG):
     n = len(symbols)
 
-    return symbols[random.randint(0, n-1)]
+    return symbols[random.randint(0, n - 1)]
 
 
 def generate_string(length: int, symbols=ENG) -> str:
@@ -70,7 +70,6 @@ class Settings:
         self.random_color = color
 
     def add_gradient_colors(self, color1, color2):
-        
         self.gradient_colors = [color1, color2]
 
     def add_only_color(self, color):
@@ -93,6 +92,7 @@ class AnimationFactory(ABC):
     def update_object(self):
         ...
 
+
 class RandomColorModeFactory(AnimationFactory):
 
     def create_object(self, template):
@@ -108,7 +108,7 @@ class RandomColorModeFactory(AnimationFactory):
                 if template[i][j][3] != 0:
                     _nb[i][j][:3] = color
 
-        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
+        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm="None")
 
     def update_object(self):
         ...
@@ -129,7 +129,7 @@ class SingleColorModeFactory(AnimationFactory):
                 if template[i][j][3] != 0:
                     _nb[i][j][:3] = color
 
-        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
+        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm="None")
 
     def update_object(self):
         ...
@@ -147,7 +147,8 @@ class GradientModeFactory(AnimationFactory):
 
         width, height, _ = template.shape
 
-        colors = numpy.round(numpy.linspace(color1, color2, width)) if vert else numpy.round(numpy.linspace(color1, color2, height))
+        colors = numpy.round(numpy.linspace(color1, color2, width)) if vert else numpy.round(
+            numpy.linspace(color1, color2, height))
 
         _nb = template.copy()
 
@@ -155,7 +156,7 @@ class GradientModeFactory(AnimationFactory):
             for y in range(0, height):
                 _nb[x, y, :3] = colors[x if vert else y]
 
-        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm = "None")
+        return arcade.Texture(generate_string(50, ENG), image=Image.fromarray(_nb, "RGBA"), hit_box_algorithm="None")
 
     def update_object(self):
         ...
@@ -165,9 +166,10 @@ import arcade
 import arcade.gui
 from arcade.experimental.uislider import UISlider
 from settings import ROOT_DIR
+
 RED = (255, 0, 0)
-GREEN = (0,255,0)
-BLUE1=(0,0,255)
+GREEN = (0, 255, 0)
+BLUE1 = (0, 0, 255)
 
 
 class Check(arcade.gui.UITextureButton):
@@ -215,7 +217,7 @@ class SettingsView(arcade.View):
         self.main_view = main_view
         self.bg = arcade.load_texture("resources/icons/фон.png")
 
-        #self.enabled = False
+        # self.enabled = False
 
         self.left = 0
         self.bottom = 0
@@ -225,7 +227,7 @@ class SettingsView(arcade.View):
         self.top = self.height - self.bottom
 
         self._settings = Settings()
-        self._settings.add_random_color((0,0,0))
+        self._settings.add_random_color((0, 0, 0))
         self.random_color_factory = RandomColorModeFactory(self._settings)
         self.single_color_factory = SingleColorModeFactory(self._settings)
         self.gradient_factory = GradientModeFactory(self._settings)
@@ -234,7 +236,8 @@ class SettingsView(arcade.View):
         self.current_mode = Mode.Random
         self.current_template = imageio.imread(ROOT_DIR + r"/resources/icons/templates/" + "circle.png", mode='RGBA')
 
-        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png", "arrow.png", "heart.png", "plus.png"]
+        self.templates = ["circle.png", "octagon.png", "pentagon.png", "square.png", "star.png", "triangle.png",
+                          "arrow.png", "heart.png", "plus.png"]
 
         self.manager = arcade.gui.UIManager(self.window)
 
@@ -268,7 +271,7 @@ class SettingsView(arcade.View):
                                            self.width * 4 // 10 - padding, self.height)
 
         self.rlayout = arcade.gui.UILayout(self.left + self.width * 4 // 10 + padding, self.bottom,
-                                           self.width // 2 + self.width//10 - padding, self.height)
+                                           self.width // 2 + self.width // 10 - padding, self.height)
 
         layout = arcade.gui.UIBoxLayout(vertical=True, space_between=self.llayout.height // 12, align="left")
 
@@ -355,31 +358,31 @@ class SettingsView(arcade.View):
 
         if number == 1:
             self.r_group1 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
-                "normal_filled_bar": RED, 
-                "hovered_filled_bar":RED,
-                "pressed_filled_bar":RED})
-            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
-                "normal_filled_bar": GREEN, 
-                "hovered_filled_bar":GREEN,
-                "pressed_filled_bar":GREEN})
-            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
-                "normal_filled_bar": BLUE1, 
-                "hovered_filled_bar":BLUE1,
-                "pressed_filled_bar":BLUE1})
+                "normal_filled_bar": RED,
+                "hovered_filled_bar": RED,
+                "pressed_filled_bar": RED})
+            self.g_group1 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": GREEN,
+                "hovered_filled_bar": GREEN,
+                "pressed_filled_bar": GREEN})
+            self.b_group1 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": BLUE1,
+                "hovered_filled_bar": BLUE1,
+                "pressed_filled_bar": BLUE1})
 
         else:
             self.r_group2 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
-                "normal_filled_bar": RED, 
-                "hovered_filled_bar":RED,
-                "pressed_filled_bar":RED})
-            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
-                "normal_filled_bar": GREEN, 
-                "hovered_filled_bar":GREEN,
-                "pressed_filled_bar":GREEN})
-            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40,style={
-                "normal_filled_bar": BLUE1, 
-                "hovered_filled_bar":BLUE1,
-                "pressed_filled_bar":BLUE1})
+                "normal_filled_bar": RED,
+                "hovered_filled_bar": RED,
+                "pressed_filled_bar": RED})
+            self.g_group2 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": GREEN,
+                "hovered_filled_bar": GREEN,
+                "pressed_filled_bar": GREEN})
+            self.b_group2 = UISlider(min_value=0, max_value=255, width=200, height=40, style={
+                "normal_filled_bar": BLUE1,
+                "hovered_filled_bar": BLUE1,
+                "pressed_filled_bar": BLUE1})
 
     def add_picture_with_different_variables(self, number):
 
@@ -392,7 +395,8 @@ class SettingsView(arcade.View):
 
         if self.current_mode == Mode.Gradient:
 
-            new_colors = [(self.r_group1.value, self.g_group1.value, self.b_group1.value), (self.r_group2.value, self.g_group2.value, self.b_group2.value)]
+            new_colors = [(self.r_group1.value, self.g_group1.value, self.b_group1.value),
+                          (self.r_group2.value, self.g_group2.value, self.b_group2.value)]
 
             if self._settings.gradient_colors != new_colors:
                 self._settings.add_gradient_colors(*new_colors)
@@ -409,7 +413,7 @@ class SettingsView(arcade.View):
             self.picture2.color = (self.r_group2.value, self.g_group2.value, self.b_group2.value)
 
         if self.current_template is not None:
-                self.result_texture = self.factory.create_object(self.current_template)
+            self.result_texture = self.factory.create_object(self.current_template)
 
     def check_box(self, mode, text):
 
@@ -459,7 +463,6 @@ class SettingsView(arcade.View):
         self.current_mode = obj.mode
 
         if obj.mode == Mode.Random:
-
             new_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
             self._settings.add_random_color(new_color)
@@ -476,16 +479,14 @@ class SettingsView(arcade.View):
             self.factory = self.single_color_factory
 
     def on_draw(self):
-        
+
         arcade.draw_lrwh_rectangle_textured(0, 0, self.width, self.height, self.bg)
 
         if self.result_texture is not None:
-
-            self.result_texture.draw_scaled(self.width*3//4, self.height//5, scale=1)
+            self.result_texture.draw_scaled(self.width * 3 // 4, self.height // 5, scale=1)
 
         self.manager.enable()
         self.manager.draw()
-
 
     def apply_button_on_click(self, *_):
 
@@ -495,7 +496,6 @@ class SettingsView(arcade.View):
         self.main_view.rebase_gui_sprites_texture(self.result_texture)
 
         self.window.show_view(self.main_view)
-        
 
     def close_btn_on_click(self, *_):
 
