@@ -1,0 +1,183 @@
+@startuml Class Diagram 
+
+class GUI
+{
++__init__()
++update(delta_time float)
++setup_gui()
++add_texture_bottom(texture_file_name str, hover_texture_file_name str, press_texture_file_name str, _scale float, _x float, _y float)
++open_settings()
++play_button_on()
++play_button_off()
++music_over()
++load_wav()
++left_button_clicked()
++right_button_clicked()
++play_button_clicked()
++on_draw()
++up_down_button_clicked()
++upload()
++on_mouse_motion(x int, y int, dx int, dy int)
++switch_sound_bar()
++on_update(delta_time float)
++show_sound_bar()
++on_mouse_press(x int, y int, button, modifiers)
++set_player_volume()
+}
+
+class arcade.Section
+{
++...
++__init__(left int, bottom int, width int, height int)
++...(...)
+}
+
+class arcade.View
+{
++...
++__init__(window: Window = None)
++...()
+}
+
+class sections.Buttons
+{
++add_texture_button(texture_file_name: str,hover_texture_file_name: str,press_texture_file_name: str,_scale: float = 1,_x: float = 0,_y: float = 0)
+}
+
+class sections.MusicTrack
+{
++__init__(left int, bottom int, width int, height int)
++update(delta_time float)
++on_draw()
+}
+
+class sections.Menu
+{
++__init__(left int, bottom int, width int, height int)
++update(delta_time float)
++on_draw()
++on_mouse_press(x: int, y: int, button: int, modifiers: int)
++first_animation_btn_on_click()
++second_animation_btn_on_click()
++third_animation_btn_on_click()
++first_figure_btn_on_click()
++second_figure_btn_on_click()
++third_figure_btn_on_click()
++emove_all_animations_on_click()
++close_btn_on_click()
++apply_button_on_click()
+}
+
+class sections.Settings
+{
++__init__()
++set_mode(mode: int)
++add_random_colors(color1: Color, color2: Color)
++add_random_color(color: Color)
++add_gradient_colors(color1: Color, color2: Color)
++add_only_color(color: Color)
+}
+
+abstract class sections.AnimationFactory
+{
++__init__(settings: Settings)
+}
+
+class sections.RandomColorModeFactory
+{
++__init__(settings: Settings)
++create_object(template: Template)
++__create_object_random_color_mode(template: Template, color: Color) -> arcade.Texture
+}
+
+class sections.SingleColorModeFactory
+{
++__init__(settings: Settings)
++create_object(template: Template)
++__create_object_random_color_mode(template: Template, color: Color) -> arcade.Texture
+}
+
+class sections.GradientModeFactory
+{
++__init__(settings: Settings)
++create_object(template: Template)
++__create_object_random_color_mode(template: Template, color: Color) -> arcade.Texture
+}
+
+class sections.SettingsView
+{
++__init__(main_view: View)
++manipulate_color(number: int)
++add_slider_with_different_variables(number: int)
++add_picture_with_different_variables(number: int)
++update(delta_time: float)
++check_box(mode: int, text: str)
++image_clicked(event: UIOnClickEvent)
++handler_checkbox(event: UIOnClickEvent)
++on_draw()
++apply_button_on_click()
++close_btn_on_click()
+}
+
+class animations.Animation
+{
++__init__(figure_type: FiguresType)
++fill_sprites(sprites: SpriteList)
++animation_run(self, sprites: SpriteList, delta_time: float)
+}
+
+class animations.Tornado
+{
++__init__(figure_type: FiguresType)
++fill_sprites(sprites: SpriteList)
++animation_run(self, sprites: SpriteList, delta_time: float)
++update_sprite(self, delta_time: float, sprite: SpriteList, vector: int)
+}
+
+class animations.Wave
+{
++__init__(figure_type: FiguresType)
++fill_sprites(sprites: SpriteList)
++animation_run(self, sprites: SpriteList, delta_time: float)
++update_sprite(self, delta_time: float, sprite: SpriteList)
+}
+
+class animations.Chaos
+{
++__init__(figure_type: FiguresType)
++fill_sprites(sprites: SpriteList)
++animation_run(self, sprites: SpriteList, delta_time: float)
+}
+
+Menu --|> arcade.Section
+GUI --|> arcade.View
+Buttons -o Menu
+Buttons -|> arcade.View
+MusicTrack --|> arcade.Section
+
+GUI -* MusicTrack
+GUI --* Menu
+
+Animation <|-- Tornado
+Animation <|-- Wave
+Animation <|-- Chaos
+
+Tornado -down-o Menu
+Wave -down-o Menu
+Chaos -down-o Menu
+
+sections.Settings -* sections.AnimationFactory
+sections.AnimationFactory <|.. sections.RandomColorModeFactory
+sections.AnimationFactory <|.. sections.SingleColorModeFactory
+sections.AnimationFactory <|.. sections.GradientModeFactory
+
+sections.RandomColorModeFactory -- arcade.Texture
+sections.SingleColorModeFactory -- arcade.Texture
+sections.GradientModeFactory -- arcade.Texture
+
+sections.SettingsView o-- sections.Settings
+sections.SettingsView o-- sections.AnimationFactory
+
+sections.SettingsView -|> arcade.View
+
+@enduml

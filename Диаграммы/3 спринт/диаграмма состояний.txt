@@ -1,0 +1,40 @@
+@startuml
+
+[*] --> Active
+
+state Active {
+  [*] --> Pause
+  Pause --> Play : gui.play_button_on()
+  Play --> Pause : gui.play_button_off()
+  Pause : // Воспроизведение остановлено\ngui.paused = False
+  Play : // Музыка играет\ngui.paused = True
+  
+  ||
+  
+  [*] --> MenuClosed
+  
+  AnimationMenuOpened -> MenuClosed : menu.on_mouse_press(),\nmenu.close_btn_on_click(),\nmenu.apply_button_on_click()
+  
+  MenuClosed -> AnimationMenuOpened : gui.open_settings()
+  
+  MenuClosed -> FigureMenuOpened : gui.open_settings()
+  
+  FigureMenuOpened -> MenuClosed : menu.on_mouse_press(),\nmenu.close_btn_on_click(),\nmenu.apply_button_on_click()
+  
+  MenuClosed : // Меню закрыто\nmenu.enabled = False
+  AnimationMenuOpened : // Меню анимаций открыто\nmenu.enabled = True
+  
+  FigureMenuOpened : // Меню фигур открыто\nmenu.enabled = True
+  
+  ||
+  
+  [*] --> AnimationOff
+  AnimationOff --> AnimationOn : play_button_on(),\nmenu.apply_button_on_click()
+  AnimationOn --> AnimationOff : play_button_off(),\nmenu.remove_all_animations_on_click()
+  AnimationOff : // Анимация выключена\ngui.stop_animations = False
+  AnimationOn : // Анимация включена\ngui.stop_animations = True
+}
+
+Active --> [*]
+
+@enduml

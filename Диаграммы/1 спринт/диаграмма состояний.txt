@@ -1,0 +1,17 @@
+@startuml
+
+[*] --> Pause
+
+Pause -> Play : gui.play_button_on()
+
+Play -> Pause : gui.play_button_off()
+
+Pause --> [*]
+
+Play --> [*]
+
+Pause : Воспроизведение остановлено
+
+Play : МУзыкы воспроизводится
+
+@enduml

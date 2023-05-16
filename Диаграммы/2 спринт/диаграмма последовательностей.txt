@@ -1,0 +1,26 @@
+@startuml
+
+participant window
+participant gui
+participant gui.menu
+participant gui.music_track
+
+activate window
+
+window -> gui : window.show_view(GUI())
+
+activate gui
+activate gui.menu
+activate gui.music_track
+
+gui -> gui.menu : gui.open_settings()
+gui <-- gui.menu : gui.menu.close_btn_on_click()\napply_button_on_click()\non_mouse_press()
+
+window <-- gui
+
+deactivate gui.music_track
+deactivate gui.menu
+deactivate gui
+deactivate window
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml Class Diagram 
+
+class GUI
+{
++__init__()
++update(delta_time float)
++setup_gui()
++add_texture_bottom(texture_file_name str, hover_texture_file_name str, press_texture_file_name str, _scale float, _x float, _y float)
++open_settings()
++play_button_on()
++play_button_off()
++music_over()
++load_wav()
++left_button_clicked()
++right_button_clicked()
++play_button_clicked()
++on_draw()
++up_down_button_clicked()
++upload()
++on_mouse_motion(x int, y int, dx int, dy int)
++switch_sound_bar()
++on_update(delta_time float)
++show_sound_bar()
++on_mouse_press(x int, y int, button, modifiers)
++set_player_volume()
+}
+
+class arcade.Section
+{
++__init__(left int, bottom int, width int, height int)
+}
+
+class arcade.View
+{
++__init__()
+}
+
+class MusicTrack
+{
++__init__(left int, bottom int, width int, height int)
++update(delta_time float)
++on_draw()
+}
+
+arcade.Section -- MusicTrack
+arcade.View -- GUI
+
+GUI - MusicTrack
+
+@enduml
