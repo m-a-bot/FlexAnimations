@@ -78,7 +78,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.5
+                                         scale=1
                                          )
                            )
 
@@ -91,7 +91,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.5
+                                         scale=1
                                          )
                            )
 
@@ -105,7 +105,7 @@ class Tornado(Animation):
             sprites.append(arcade.Sprite(filename=self.texture,
                                          center_x=x,
                                          center_y=y,
-                                         scale=0.5
+                                         scale=1
                                          )
                            )
 

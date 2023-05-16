@@ -37,7 +37,7 @@ class PhysicsSimulation:
     @staticmethod
     def update(sprites):
 
-        if sprites:
+        if sprites is not None:
             PhysicsSimulation.__space.step(1 / FPS)
 
             for sprite in sprites:

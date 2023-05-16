@@ -62,10 +62,11 @@ class MusicTrack(arcade.Section):
                 A = min(self.piece_of_points)
                 B = max(self.piece_of_points)
 
-                if A != B:
-                    for i, x in enumerate(self.piece_of_points):
-                        self.piece_of_points[i] = (x - A) / (B - A)
-
+                for i, x in enumerate(self.piece_of_points):
+                    self.piece_of_points[i] = (x - A) / (B - A)
+            except:
+                ...
+            try:
                 s = 0
                 i = 0
                 for x in two_frame_data:
@@ -79,9 +80,8 @@ class MusicTrack(arcade.Section):
                 A = min(self.points)
                 B = max(self.points)
 
-                if A != B:
-                    for i, x in enumerate(self.points):
-                        self.points[i] = (x - A) / (B - A)
+                for i, x in enumerate(self.points):
+                    self.points[i] = (x - A) / (B - A)
             
             except Exception as e:
                 print(e)

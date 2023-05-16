@@ -63,7 +63,7 @@ class Wave(Animation):
                 sprite = arcade.Sprite(filename=self.texture,
                                              center_x=cur_x,
                                              center_y=cur_y,
-                                             scale=0.5)
+                                             scale=1)
                 sprite.koef = 1
                 sprite.prev = math.sin(self.c * sprite.center_x + self.d)
                 sprites.append(sprite)
